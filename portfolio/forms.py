@@ -1,4 +1,6 @@
 from django import forms
+from django.core.mail import EmailMessage
+from django.conf import settings
 
 
 class ContactForm(forms.Form):
@@ -43,3 +45,20 @@ class ContactForm(forms.Form):
         if not phone_number.isdigit():
             raise forms.ValidationError('Phone number should only contain digits')
         return phone_number
+    
+    def send_email(self):
+        full_name = self.cleaned_data['full_name']
+        email = self.cleaned_data['email']
+        phone_number = self.cleaned_data['phone_number']
+        message = self.cleaned_data['message']
+
+        subject = f'Contact form submission from {full_name}'
+        body = f'Full Name: {full_name}\nEmail: {email}\nPhone Number: {phone_number}\n\nMessage:\n{message}'
+
+        email = EmailMessage(
+            subject,
+            body,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[settings.DEFAULT_TO_EMAIL]
+        )
+        email.send()

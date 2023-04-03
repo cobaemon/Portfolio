@@ -129,3 +129,20 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# メールを実際に送る
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# メールホスト
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+# ポート
+EMAIL_PORT = os.environ.get('EMAIL_PORT', int)
+# メールの暗号化
+EMAIL_USE_TLS = True
+# 送信元
+EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
+# パスワード
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+# デフォルトの送信元
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+# デフォルトの送信先
+DEFAULT_TO_EMAIL = os.environ.get('DEFAULT_TO_EMAIL')

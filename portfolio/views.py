@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import FormView
 from django.http import HttpResponse
+from django.contrib import messages
 from .forms import ContactForm
+
 
 # トップページ
 class Top(FormView):
@@ -10,8 +12,7 @@ class Top(FormView):
 
     # フォームがバリデーションを通過した場合に呼ばれる
     def form_valid(self, form):
-        # form.send_mail()
-        # return super().form_valid(form)
+        form.send_email()
         return HttpResponse("Form submission successful")
         
     def get_context_data(self, **kwargs):
