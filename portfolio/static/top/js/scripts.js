@@ -103,13 +103,24 @@ window.addEventListener('DOMContentLoaded', event => {
         });
 
         if (response.ok) {
+            contactForm.reset();
             successMessage.style.display = 'block';
             errorMessage.style.display = 'none';
-            contactForm.reset();
         } else {
             // エラーハンドリング
             successMessage.style.display = 'none';
             errorMessage.style.display = 'block';
         }
+    });
+    
+    const successCloseButton = document.querySelector('#successMessage .btn-close');
+    const errorCloseButton = document.querySelector('#errorMessage .btn-close');
+
+    successCloseButton.addEventListener('click', () => {
+        successMessage.style.display = 'none';
+    });
+
+    errorCloseButton.addEventListener('click', () => {
+        errorMessage.style.display = 'none';
     });
 });

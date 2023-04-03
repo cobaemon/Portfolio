@@ -207,36 +207,16 @@
                                     {% endfor %}
                                 {% endif %}
                             </div>
-                            <!-- Submit success message-->
-                            {% if messages %}
-                                {% for message in messages %}
-                                    {% if message.tags == "success" %}
-                                        <div class="d-none" id="submitSuccessMessage">
-                                            <div class="text-center mb-3">
-                                                <div class="fw-bolder">{{ message }}</div>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endif %}
-                            <!-- Submit error message-->
-                            {% if messages %}
-                                {% for message in messages %}
-                                    {% if message.tags == "error" %}
-                                        <div class="d-none" id="submitErrorMessage">
-                                        <div class="text-center text-danger mb-3">{{ message }}</div>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endif %}
                             <!-- Submit Button-->
-                            <div id="successMessage" class="alert alert-success" role="alert" style="display: none;">
+                            <div id="successMessage" class="alert alert-success " role="alert" style="display: none;">
                                 Your message has been sent successfully.
+                                <button type="button" class="btn-close float-end" aria-label="Close"></button>
                             </div>
                             <div id="errorMessage" class="alert alert-danger" role="alert" style="display: none;">
                                 Your message could not be sent. Please try again.
+                                <button type="button" class="btn-close float-end" aria-label="Close"></button>
                             </div>
-                            <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Send</button>
+                            <button class="btn btn-primary btn-xl float-end" id="submitButton" type="submit">Send</button>
                         </form>
                     </div>
                 </div>
@@ -246,39 +226,14 @@
         <footer class="footer text-center">
             <div class="container">
                 <div class="row">
-                    <!-- Footer Location-->
-                    <div class="col-lg-4 mb-5 mb-lg-0">
-                        <h4 class="text-uppercase mb-4">Location</h4>
-                        <p class="lead mb-0">
-                            2215 John Daniel Drive
-                            <br />
-                            Clark, MO 65243
-                        </p>
-                    </div>
                     <!-- Footer Social Icons-->
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Around the Web</h4>
-                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-linkedin-in"></i></a>
-                        <a class="btn btn-outline-light btn-social mx-1" href="#!"><i class="fab fa-fw fa-dribbble"></i></a>
-                    </div>
-                    <!-- Footer About Text-->
-                    <div class="col-lg-4">
-                        <h4 class="text-uppercase mb-4">About Freelancer</h4>
-                        <p class="lead mb-0">
-                            Freelance is a free to use, MIT licensed Bootstrap theme created by
-                            <a href="http://startbootstrap.com">Start Bootstrap</a>
-                            .
-                        </p>
+                        <a class="btn btn-outline-light btn-social mx-1" href="https://github.com/cobaemon" target="_blank"><i class="fab fa-fw fa-github"></i></a>
                     </div>
                 </div>
             </div>
         </footer>
-        <!-- Copyright Section-->
-        <div class="copyright py-4 text-center text-white">
-            <div class="container"><small>Copyright &copy; Your Website 2023</small></div>
-        </div>
         <!-- Portfolio Modals-->
         <!-- Portfolio Modal 1-->
         <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" aria-labelledby="portfolioModal1" aria-hidden="true">
