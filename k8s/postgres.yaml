@@ -17,14 +17,20 @@ spec:
         image: postgres:13.4
         env:
         - name: POSTGRES_USER
-          value: cobalt
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_USER
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
               name: postgres-secrets
-              key: postgres-password
+              key: POSTGRES_PASSWORD
         - name: POSTGRES_DB
-          value: portfolio
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_DB
         ports:
         - containerPort: 5432
         volumeMounts:

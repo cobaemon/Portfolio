@@ -14,10 +14,10 @@ spec:
     spec:
       containers:
       - name: django
-        image: cobalten/portfolio
+        image: cobalten/portfolio:dev-deploy
         env:
         - name: DJANGO_SETTINGS_MODULE
-          value: config.settings.production
+          value: config.settings
         - name: DJANGO_SECRET_KEY
           valueFrom:
             secretKeyRef:
@@ -90,6 +90,6 @@ spec:
     app: django
   ports:
     - protocol: TCP
-      port: 8000
+      port: 80
       targetPort: 8000
   type: ClusterIP
