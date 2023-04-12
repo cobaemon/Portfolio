@@ -3,6 +3,11 @@ FROM python:3.10-slim
 
 # 環境変数を設定
 ENV PYTHONUNBUFFERED=1
+ENV LANG ja_JP.UTF-8
+ENV LANGUAGE ja_JP:ja
+ENV LC_ALL ja_JP.UTF-8
+ENV TZ JST-9
+ENV TERM xterm
 
 # 作業ディレクトリを設定
 RUN mkdir /app

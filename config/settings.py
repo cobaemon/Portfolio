@@ -77,8 +77,13 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT'),
+        'ATOMIC_REQUESTS': True,
     }
 }
 
@@ -133,9 +138,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # メールを実際に送る
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # メールホスト
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST = os.environ.get('DJANGO_EMAIL_HOST')
 # ポート
-EMAIL_PORT = os.environ.get('EMAIL_PORT', int)
+EMAIL_PORT = os.environ.get('DJANGO_EMAIL_PORT', int)
 # メールの暗号化
 EMAIL_USE_TLS = True
 # 送信元

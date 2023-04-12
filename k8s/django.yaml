@@ -18,7 +18,42 @@ spec:
         env:
         - name: DJANGO_SETTINGS_MODULE
           value: config.settings.production
-        - name: DATABASE_URL
+        - name: DJANGO_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: django-secrets
+              key: DJANGO_SECRET_KEY
+        - name: DJANGO_EMAIL_HOST
+          valueFrom:
+            secretKeyRef:
+              name: django-secrets
+              key: DJANGO_EMAIL_HOST
+        - name: DJANGO_EMAIL_PORT
+          valueFrom:
+            secretKeyRef:
+              name: django-secrets
+              key: DJANGO_EMAIL_PORT
+        - name: EMAIL_HOST_USER
+          valueFrom:
+            secretKeyRef:
+              name: django-secrets
+              key: EMAIL_HOST_USER
+        - name: EMAIL_HOST_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: django-secrets
+              key: EMAIL_HOST_PASSWORD
+        - name: DEFAULT_FROM_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: django-secrets
+              key: DEFAULT_FROM_EMAIL
+        - name: DEFAULT_TO_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: django-secrets
+              key: DEFAULT_TO_EMAIL
+        - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
               name: postgres-secrets
@@ -33,6 +68,16 @@ spec:
             secretKeyRef:
               name: postgres-secrets
               key: POSTGRES_DB
+        - name: POSTGRES_HOST
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_HOST
+        - name: POSTGRES_PORT
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_PORT
         ports:
         - containerPort: 8000
 ---
