@@ -77,14 +77,18 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('POSTGRES_DB'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('POSTGRES_HOST'),
-        'PORT': os.environ.get('POSTGRES_PORT'),
-        'ATOMIC_REQUESTS': True,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': os.environ.get('POSTGRES_DB'),
+    #     'USER': os.environ.get('POSTGRES_USER'),
+    #     'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+    #     'HOST': os.environ.get('POSTGRES_HOST'),
+    #     'PORT': os.environ.get('POSTGRES_PORT'),
+    #     'ATOMIC_REQUESTS': True,
+    # }
 }
 
 
@@ -124,11 +128,7 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'portfolio', 'static', 'css'),
-    os.path.join(BASE_DIR, 'portfolio', 'static', 'js'),
-    os.path.join(BASE_DIR, 'portfolio', 'static', 'assets'),
-]
+STATICFILES_DIRS = []
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -156,18 +156,27 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'file': {
+        'settings_file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': 'logs/settings.log',
         },
+	'portfolio_file': {
+	    'level': 'DEBUG',
+	    'class': 'logging.FileHandler',
+	    'filename': 'logs/portfolio.log'
+	}
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
+            'handlers': ['settings_file'],
             'level': 'DEBUG',
             'propagate': True,
         },
+	'portfolio': {
+	    'handlers': ['portfolio_file'],
+	    'level': 'DEBUG',
+	    'propagate': True,
+	}
     },
 }
-

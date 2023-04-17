@@ -1,16 +1,19 @@
 # Pythonイメージをベースにする
-FROM python:3.10-slim
+FROM python:3.10
 
 # 環境変数を設定
 ENV PYTHONUNBUFFERED=1
 ENV LANG ja_JP.UTF-8
 ENV LANGUAGE ja_JP:ja
 ENV LC_ALL ja_JP.UTF-8
-ENV TZ JST-9
+ENV TZ Asia/Tokyo
 ENV TERM xterm
 
+# タイムゾーンの反映
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # 作業ディレクトリを設定
-RUN mkdir /app
+RUN mkdir -p /app/logs
 WORKDIR /app
 
 # pipのアップグレード
@@ -27,4 +30,4 @@ COPY . .
 # 静的ファイルを収集
 RUN python manage.py collectstatic --no-input
 
-# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "config.wsgi:application"]
+# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", "--settings=config.local_settings"]

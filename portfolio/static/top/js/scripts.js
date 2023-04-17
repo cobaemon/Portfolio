@@ -66,8 +66,15 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     });
 
+    const submitButton = document.querySelector('#contactForm button[type="submit"]');
     const emailField = document.querySelector('[name="email"]');
     const phoneNumberField = document.querySelector('[name="phone_number"]');
+
+    // エラーメッセージが表示されているかどうかをチェックし、送信ボタンを無効化/有効化する関数を作成
+    function toggleSubmitButton() {
+        const hasError = document.querySelector('#contactForm .is-invalid');
+        submitButton.disabled = !!hasError;
+    }
 
     emailField.addEventListener('input', () => {
         if (!validateEmail(emailField.value)) {
@@ -75,6 +82,7 @@ window.addEventListener('DOMContentLoaded', event => {
         } else {
             showErrorMessage(emailField, '');
         }
+        toggleSubmitButton();
     });
 
     phoneNumberField.addEventListener('input', () => {
@@ -83,6 +91,7 @@ window.addEventListener('DOMContentLoaded', event => {
         } else {
             showErrorMessage(phoneNumberField, '');
         }
+	    toggleSubmitButton();
     });
 
     const contactForm = document.getElementById('contactForm');
@@ -91,6 +100,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
     contactForm.addEventListener('submit', async (event) => {
         event.preventDefault();
+	    submitButton.disabled = false;
 
         const formData = new FormData(contactForm);
         const response = await fetch(contactForm.action, {
@@ -111,6 +121,7 @@ window.addEventListener('DOMContentLoaded', event => {
             successMessage.style.display = 'none';
             errorMessage.style.display = 'block';
         }
+	    toggleSubmitButton();
     });
     
     const successCloseButton = document.querySelector('#successMessage .btn-close');
