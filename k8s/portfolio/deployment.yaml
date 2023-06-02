@@ -1,21 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: django
+  name: portfolio-deployment
+  namespace: portfolio
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: django
+      app: portfolio-app
   template:
     metadata:
       labels:
-        app: django
+        app: portfolio-app
     spec:
       containers:
-      - name: django
+      - name: portfolio-app-container
+        image: python:3.10
         image: cobalten/portfolio:dev-deploy
-        command: ['/bin/bash', 'run.sh']
+        command: ['/bin/bash', '/app/run.sh']
         ports:
         - containerPort: 8000
         env:
@@ -56,41 +58,3 @@ spec:
             secretKeyRef:
               name: django-secrets
               key: DEFAULT_TO_EMAIL
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secrets
-              key: POSTGRES_USER
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secrets
-              key: POSTGRES_PASSWORD
-        - name: POSTGRES_DB
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secrets
-              key: POSTGRES_DB
-        - name: POSTGRES_HOST
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secrets
-              key: POSTGRES_HOST
-        - name: POSTGRES_PORT
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secrets
-              key: POSTGRES_PORT
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: django
-spec:
-  selector:
-    app: django
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8000
-  type: ClusterIP

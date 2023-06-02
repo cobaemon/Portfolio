@@ -4,12 +4,9 @@ metadata:
   name: letsencrypt-prod
 spec:
   acme:
-    server: https://acme-v02.api.letsencrypt.org/directory
-    email: 
-      valueFrom:
-        secretKeyRef:
-          name: letsencrypt-secrets
-          key: EMAIL
+    # server: https://acme-v02.api.letsencrypt.org/directory
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: mgnco@outlook.jp
     privateKeySecretRef:
       name: letsencrypt-prod
     solvers:

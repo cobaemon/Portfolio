@@ -1,6 +1,11 @@
 # Pythonイメージをベースにする
 FROM python:3.10
 
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y locales
+RUN locale-gen ja_JP.UTF-8
+
 # 環境変数を設定
 ENV PYTHONUNBUFFERED=1
 ENV LANG ja_JP.UTF-8
@@ -27,7 +32,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # アプリケーションコードをコピー
 COPY . .
 
-# 静的ファイルを収集
-RUN python manage.py collectstatic --no-input
+# run.sh に実行権限を付与
+RUN chmod +x /app/run.sh
 
-# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", "--settings=config.local_settings"]
+# # 静的ファイルを収集
+# RUN python manage.py collectstatic --no-input
