@@ -16,12 +16,11 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -117,32 +116,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'portfolio', 'static', 'css'),
-    os.path.join(BASE_DIR, 'portfolio', 'static', 'js'),
-    os.path.join(BASE_DIR, 'portfolio', 'static', 'assets'),
-]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# メールを実際に送る
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# メールホスト
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
-# ポート
-EMAIL_PORT = os.environ.get('EMAIL_PORT', int)
-# メールの暗号化
-EMAIL_USE_TLS = True
-# 送信元
-EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
-# パスワード
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-# デフォルトの送信元
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
-# デフォルトの送信先
-DEFAULT_TO_EMAIL = os.environ.get('DEFAULT_TO_EMAIL')
