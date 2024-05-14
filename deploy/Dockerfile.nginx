@@ -1,0 +1,19 @@
+# ベースイメージ
+FROM nginx:latest
+
+RUN apt-get update && apt-get upgrade -y
+
+# スクリプトのコピー
+COPY ./start-nginx.sh /start-nginx.sh
+
+# 設定ファイルのコピー
+COPY ./container_portfolio.conf /etc/nginx/conf.d/
+
+# 実行権限の付与
+RUN chmod +x /start-nginx.sh
+
+# ポートの開放
+EXPOSE 80 443
+
+# Nginxの起動スクリプトを実行
+CMD ["/start-nginx.sh"]

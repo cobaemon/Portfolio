@@ -1,0 +1,19 @@
+# ベースイメージ
+FROM python:3.10-slim
+
+# 必要なパッケージのインストール
+RUN apt-get update && apt-get upgrade -y && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+
+# 作業ディレクトリの設定
+WORKDIR /app
+RUN git clone -b dev-deploy-nginx https://github.com/cobaemon/Portfolio.git
+
+# 依存関係のインストール
+WORKDIR	/app/Portfolio
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
+
+# アプリケーションの起動
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "config.wsgi:application", \
+     "--access-logfile", "/app/Portfolio/logs/gunicorn_access.log", \
+     "--error-logfile", "/app/Portfolio/logs/gunicorn_error.log"]
