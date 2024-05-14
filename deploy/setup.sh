@@ -72,6 +72,7 @@ sudo systemctl start nginx
 sudo systemctl enable nginx
 
 # Nginxの設定ファイルをコピー
+sudo cp $SCRIPT_DIR/host_nginx.conf /etc/nginx/nginx.conf
 sudo cp $SCRIPT_DIR/host_portfolio.conf /etc/nginx/conf.d/portfolio.conf
 
 # Nginxのリロード
