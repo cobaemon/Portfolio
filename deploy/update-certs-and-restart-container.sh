@@ -19,8 +19,8 @@ sed -i "s|^SSL_CERTIFICATE_KEY=.*$|SSL_CERTIFICATE_KEY=$ENCODED_KEY|" "$ENV_FILE
 # Dockerコンテナの再起動
 cd /home/cobalt/deploy/Portfolio
 docker compose -f deploy/docker-compose.yaml down
-docker-compose -f deploy/docker-compose.yaml build --no-cache
-docker-compose -f deploy/docker-compose.yaml up -d
+docker compose -f deploy/docker-compose.yaml build --no-cache
+docker compose -f deploy/docker-compose.yaml up -d
 
 # ログの記録
 sudo sh -c 'echo "$(date): SSL certificates updated and containers restarted." >> /var/log/cert_update.log'
