@@ -6,7 +6,18 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y git && rm -rf /va
 
 # 作業ディレクトリの設定
 WORKDIR /app
-RUN git clone -b dev-deploy-nginx https://github.com/cobaemon/Portfolio.git
+
+# リポジトリのURLを環境変数として設定
+ENV REPO_URL=https://github.com/user/repository.git
+ENV REPO_DIR=/app/Portfolio
+ENV REPO_BRANCH="dev-deploy-nginx"
+
+# リポジトリのクローンまたは更新
+RUN if [ -d "$REPO_DIR" ]; then \
+        cd $REPO_DIR && git pull; \
+    else \
+        git clone -b $REPO_BRANCH $REPO_URL; \
+    fi
 
 # 依存関係のインストール
 WORKDIR	/app/Portfolio
