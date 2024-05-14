@@ -77,11 +77,22 @@ LOGGING = {
             'filename': os.path.join(BASE_DIR, 'logs/django_critical.log'),
             'formatter': 'verbose',
         },
+        'file_csp_report': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/csp-report.log'),
+            'formatter': 'verbose',
+        },
     },
     'loggers': {
         'django': {
             'handlers': ['file_debug', 'file_info', 'file_warning', 'file_error', 'file_critical'],
             'level': 'DEBUG',
+            'propagate': True,
+        },
+        'csp_report': {
+            'handlers': ['file_csp_report'],
+            'level': 'INFO',
             'propagate': True,
         },
     },
