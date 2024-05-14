@@ -10,7 +10,7 @@ WORKDIR /app
 # リポジトリのURLを環境変数として設定
 ENV REPO_URL=https://github.com/cobaemon/Portfolio.git
 ENV REPO_DIR=/app/Portfolio
-ENV BRANCH_NAME=dev-deploy-nginx
+ENV BRANCH_NAME=deploy-nginx
 
 # リポジトリのクローンまたは更新
 RUN if [ -d "$REPO_DIR/.git" ]; then \
