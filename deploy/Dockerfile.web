@@ -8,17 +8,17 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y git && rm -rf /va
 WORKDIR /app
 
 # リポジトリのURLを環境変数として設定
-ENV REPO_URL=https://github.com/user/repository.git
+ENV REPO_URL=https://github.com/cobaemon/Portfolio.git
 ENV REPO_DIR=/app/Portfolio
-ENV REPO_BRANCH="dev-deploy-nginx"
+ENV BRANCH_NAME=dev-deploy-nginx
 
 # リポジトリのクローンまたは更新
-RUN if [ -d "$REPO_DIR" ]; then \
-        cd $REPO_DIR && git pull; \
+RUN if [ -d "$REPO_DIR/.git" ]; then \
+        cd $REPO_DIR && git pull origin $BRANCH_NAME; \
     else \
-        git clone -b $REPO_BRANCH $REPO_URL; \
+        git clone -b $BRANCH_NAME $REPO_URL $REPO_DIR; \
     fi
-
+    
 # 依存関係のインストール
 WORKDIR	/app/Portfolio
 RUN pip install --upgrade pip
