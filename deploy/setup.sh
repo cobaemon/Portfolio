@@ -3,6 +3,19 @@
 # スクリプトのディレクトリを基準にパスを設定
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
+# .envファイルの読み込み
+set -a
+[ -f "$SCRIPT_DIR/.env" ] && source "$SCRIPT_DIR/.env"
+set +a
+
+# メールアドレスの取得
+EMAIL=$DEFAULT_TO_EMAIL
+
+if [ -z "$EMAIL" ]; then
+  echo "Email address not set in .env file. Please set DEFAULT_TO_EMAIL in .env."
+  exit 1
+fi
+
 # OSを検出
 if [ -f /etc/lsb-release ]; then
     # Ubuntu
@@ -64,7 +77,14 @@ sudo cp $SCRIPT_DIR/host_portfolio.conf /etc/nginx/conf.d/portfolio.conf
 # Nginxのリロード
 sudo systemctl reload nginx
 
-# Certbotを使用して証明書を取得
-sudo certbot --nginx -d portfolio.cobaemon.com --non-interactive --agree-tos -m your-email@example.com
-
+# 証明書の存在を確認
+if sudo certbot certificates --cert-name portfolio.cobaemon.com > /dev/null 2>&1; then
+    # 証明書が存在する場合は更新
+    echo "Updating existing certificate for portfolio.cobaemon.com..."
+    sudo certbot renew --cert-name portfolio.cobaemon.com
+else
+    # 証明書が存在しない場合は新規取得
+    echo "Obtaining new certificate for portfolio.cobaemon.com..."
+    sudo certbot --nginx -d portfolio.cobaemon.com --non-interactive --agree-tos -m "$EMAIL"
+fi
 echo "Docker, Nginx, and Certbot installation and setup completed."

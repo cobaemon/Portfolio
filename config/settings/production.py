@@ -31,7 +31,7 @@ CSRF_COOKIE_SECURE = True
 # CSRF設定
 CSRF_TRUSTED_ORIGINS = [
     'https://portfolio.cobaemon.com',
-    'http://portfolio.cobaemon.com'  # 必要に応じてHTTPも追加
+    'http://portfolio.cobaemon.com'
 ]
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
