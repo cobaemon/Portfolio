@@ -4,13 +4,22 @@
 iptables -F
 iptables -X
 
+# デフォルトポリシーを設定
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+iptables -P OUTPUT ACCEPT
+
+# DOCKERチェーンの手動作成（既に存在する場合はスキップ）
+iptables -N DOCKER 2>/dev/null
+
 # HTTPおよびHTTPSトラフィックの許可
 iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 
 # Dockerインターフェースへのトラフィックの許可
-iptables -A FORWARD -o docker0 -j ACCEPT
+iptables -A FORWARD -o docker0 -j DOCKER
 iptables -A FORWARD -i docker0 -j ACCEPT
+iptables -A FORWARD -o br-918b2a66b087 -j DOCKER
 
 # ホストのNginxからコンテナのNginxへの通信を許可
 iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
