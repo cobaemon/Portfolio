@@ -125,10 +125,9 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
     // Prevent the dropdown menu from closing when clicking inside
-    const dropdown = document.querySelector('.navbar .dropdown');
-    if (dropdown) {
-        dropdown.addEventListener('click', function (event) {
-            event.stopPropagation();
+    document.querySelectorAll('.dropdown-menu').forEach(function (element) {
+        element.addEventListener('click', function (e) {
+            e.stopPropagation();
         });
-    }
+    });
 });
