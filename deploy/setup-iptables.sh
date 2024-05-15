@@ -50,4 +50,6 @@ service iptables save
 # iptablesサービスの再起動
 service iptables restart
 
+systemctl restart docker
+
 echo "Success iptable setup"
