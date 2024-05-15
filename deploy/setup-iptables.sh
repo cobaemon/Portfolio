@@ -28,8 +28,13 @@ iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
 # その他のトラフィックを拒否
 iptables -A INPUT -j DROP
 
+# Dockerインターフェースを有効化
 ip link set docker0 up
 
+# iptablesルールの保存
 service iptables save
+
+# iptablesサービスの再起動
+service iptables restart
 
 echo "Success iptable setup"
