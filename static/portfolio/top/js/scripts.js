@@ -123,11 +123,4 @@ window.addEventListener('DOMContentLoaded', event => {
     errorCloseButton.addEventListener('click', () => {
         errorMessage.style.display = 'none';
     });
-
-    // Prevent the dropdown menu from closing when clicking inside
-    document.querySelectorAll('.dropdown-menu').forEach(function (element) {
-        element.addEventListener('click', function (e) {
-            e.stopPropagation();
-        });
-    });
 });
