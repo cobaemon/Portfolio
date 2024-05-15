@@ -4,6 +4,10 @@
 iptables -F
 iptables -X
 
+# 必要なモジュールのロード
+modprobe xt_conntrack
+modprobe nf_conntrack
+
 # デフォルトポリシーを設定
 iptables -P INPUT DROP
 iptables -P FORWARD DROP
