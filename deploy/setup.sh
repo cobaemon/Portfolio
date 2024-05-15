@@ -20,9 +20,11 @@ fi
 if [ -f /etc/lsb-release ]; then
     # Ubuntu
     PKG_MANAGER="apt"
+    OS="ubuntu"
 elif [ -f /etc/redhat-release ]; then
     # CentOS
     PKG_MANAGER="yum"
+    OS="centos"
 else
     echo "Unsupported OS"
     exit 1
@@ -75,9 +77,10 @@ sudo systemctl enable nginx
 DEST_DIR="/var/www/html/errors"
 
 # コピー先ディレクトリが存在しない場合に作成
-if [ ! -d "$DEST_DIR" ]; then
+if [ ! -d "$DEST_DIR" ];then
     sudo mkdir -p "$DEST_DIR"
 fi
+
 # カスタムエラーページのコピー
 sudo cp -r "$SCRIPT_DIR/errors/"* "$DEST_DIR"
 
@@ -99,3 +102,25 @@ else
     sudo certbot --nginx -d portfolio.cobaemon.com --non-interactive --agree-tos -m "$EMAIL"
 fi
 echo "Docker, Nginx, and Certbot installation and setup completed."
+
+# Fail2banのインストール
+if [ "$OS" = "centos" ]; then
+    sudo $PKG_MANAGER install -y fail2ban
+elif [ "$OS" = "ubuntu" ]; then
+    sudo $PKG_MANAGER install -y fail2ban
+fi
+
+# Fail2ban設定ファイルのコピー先ディレクトリの存在確認
+if [ ! -d /etc/fail2ban/filter.d ]; then
+    sudo mkdir -p /etc/fail2ban/filter.d
+fi
+
+# Fail2banの設定ファイルをコピー
+sudo cp $SCRIPT_DIR/jail.local /etc/fail2ban/jail.local
+sudo cp $SCRIPT_DIR/nginx-http-auth.conf /etc/fail2ban/filter.d/nginx-http-auth.conf
+
+# Fail2banのリロード
+sudo systemctl restart fail2ban
+sudo systemctl enable fail2ban
+
+echo "Fail2ban installation and setup completed."

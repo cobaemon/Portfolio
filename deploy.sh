@@ -8,6 +8,9 @@ chmod +x deploy/encode-certs.sh
 chmod +x deploy/setup.sh
 chmod +x deploy/start-nginx.sh
 chmod +x deploy/update-certs-and-restart-container.sh
+chmod +x deploy/setup-iptables.sh
+
+bash deploy/setup-iptables.sh
 
 bash deploy/setup.sh
 
