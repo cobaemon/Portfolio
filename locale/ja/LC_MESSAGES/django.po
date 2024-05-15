@@ -51,7 +51,7 @@ msgid ""
 "projects. My diverse technical expertise and teamwork will surely be put to "
 "good use in future projects."
 msgstr ""
-"ファイル共有アプリや家計簿アプリの開発など、チームプロジェクトに積極的に参加してきました。この経験により、チーム開発スキルを磨き、他のメンバーと協力してプロジェクトを進める能力を身につけました。私の多様な技術的専門知識とチームワークは、今後のプロジェクトで必ず役立つことでしょう。"
+"ファイル共有アプリや家計簿アプリの開発など、チームプロジェクトに積極的に参加してきました。この経験により、チーム開発スキルを磨き、他のメンバーと協力してプロジェクトを進める能力を身につけました。今まで身に付けてきた技術や知識を今後のプロジェクトでも生かしていきたいと思います。"
 
 #: .\portfolio\templates\index.html:197
 msgid "Your message has been sent successfully."
@@ -77,7 +77,7 @@ msgstr ""
 
 #: .\portfolio\templates\index.html:279
 msgid "This is an implementation of a vocabulary notebook on the web."
-msgstr "これは、ウェブ上の単語帳の実装です。"
+msgstr "これは、Web上で単語帳を再現したものです。"
 
 #: .\portfolio\templates\index.html:281
 msgid ""
@@ -86,7 +86,7 @@ msgid ""
 "thought it would be even more convenient if such a notebook could be used on "
 "the web."
 msgstr ""
-"単語帳を持つことは、国家試験などの勉強で単語やフレーズを覚えるのに便利です。このような単語帳がウェブ上で利用できれば、さらに便利になると考えて、このサービスを作成しました。"
+"単語帳があれば、国家試験などの勉強で単語やフレーズを覚えるのに便利です。このような単語帳がウェブ上で利用できれば、さらに便利になると考えて、このサービスを作成しました。"
 
 #: .\portfolio\templates\index.html:314
 msgid ""
@@ -114,7 +114,7 @@ msgstr ""
 
 #: .\portfolio\templates\index.html:352
 msgid "Each member used their preferred language to create it."
-msgstr "各メンバーは、自分の得意な言語を使って作成しました。"
+msgstr "各メンバーの、自分の得意な言語や学びたい言語を使って作成しました。"
 
 #: .\portfolio\templates\index.html:353
 msgid ""
