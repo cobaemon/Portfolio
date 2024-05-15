@@ -71,6 +71,16 @@ fi
 sudo systemctl start nginx
 sudo systemctl enable nginx
 
+# コピー先ディレクトリを設定
+DEST_DIR="/var/www/html/errors"
+
+# コピー先ディレクトリが存在しない場合に作成
+if [ ! -d "$DEST_DIR" ]; then
+    sudo mkdir -p "$DEST_DIR"
+fi
+# カスタムエラーページのコピー
+sudo cp -r "$SCRIPT_DIR/errors/"* "$DEST_DIR"
+
 # Nginxの設定ファイルをコピー
 sudo cp $SCRIPT_DIR/host_nginx.conf /etc/nginx/nginx.conf
 sudo cp $SCRIPT_DIR/host_portfolio.conf /etc/nginx/conf.d/portfolio.conf
