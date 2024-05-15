@@ -123,4 +123,12 @@ window.addEventListener('DOMContentLoaded', event => {
     errorCloseButton.addEventListener('click', () => {
         errorMessage.style.display = 'none';
     });
+
+    // Prevent the dropdown menu from closing when clicking inside
+    const dropdown = document.querySelector('.navbar .dropdown');
+    if (dropdown) {
+        dropdown.addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+    }
 });
