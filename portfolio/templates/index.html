@@ -34,27 +34,25 @@
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Contact</a></li>
                     </ul>
                 </div>
+                <!-- Select Language section-->
+                <section class="page-section" id="favorite-books">
+                    <div class="container">
+                        <h2>"Language"</h2>
+                        <ul class="accordion-menu">
+                            <li>
+                                <div class="dropdownlink"><i class="fa fa-language" aria-hidden="true"></i> Languages
+                                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                </div>
+                                <ul class="submenuItems">
+                                    <li><a href="{% url 'set_language' %}?next={{ request.path }}&language=ja">日本語</a></li>
+                                    <li><a href="{% url 'set_language' %}?next={{ request.path }}&language=en">English</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
             </div>
         </nav>
-
-        <!-- Select Language section-->
-        <section class="page-section" id="favorite-books">
-            <div class="container">
-                <h2>{% trans "Select Language" %}</h2>
-                <ul class="accordion-menu">
-                    <li>
-                        <div class="dropdownlink"><i class="fa fa-language" aria-hidden="true"></i> {% trans "Languages" %}
-                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                        </div>
-                        <ul class="submenuItems">
-                            <li><a href="{% url 'set_language' %}?next={{ request.path }}&language=ja">日本語</a></li>
-                            <li><a href="{% url 'set_language' %}?next={{ request.path }}&language=en">English</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </section>
-
         <!-- Masthead-->
         <header class="masthead bg-primary text-white text-center">
             <div class="container d-flex align-items-center flex-column">
