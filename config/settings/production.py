@@ -28,6 +28,8 @@ DEFAULT_TO_EMAIL = os.environ.get('DEFAULT_TO_EMAIL')
 # Security settings
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+CSRF_COOKIE_HTTPONLY = True
 # CSRF設定
 CSRF_TRUSTED_ORIGINS = [
     'https://portfolio.cobaemon.com',
