@@ -14,7 +14,7 @@ ENV BRANCH_NAME=dev-deploy-nginx
 
 # リポジトリのクローンまたは更新
 RUN if [ -d "$REPO_DIR/.git" ]; then \
-        cd $REPO_DIR && git stash && git pull origin $BRANCH_NAME; \
+        cd $REPO_DIR && git reset --hard && git pull origin $BRANCH_NAME; \
     else \
         git clone -b $BRANCH_NAME $REPO_URL $REPO_DIR; \
     fi
