@@ -29,38 +29,14 @@ DEFAULT_TO_EMAIL = os.environ.get('DEFAULT_TO_EMAIL')
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
-CORS_ALLOW_CREDENTIALS = True
-
-# CORS設定
-CORS_ALLOWED_ORIGINS = [
-    'https://portfolio.cobaemon.com',
-    'http://portfolio.cobaemon.com',
-]
-
 # CSRF設定
 CSRF_TRUSTED_ORIGINS = [
     'https://portfolio.cobaemon.com',
     'http://portfolio.cobaemon.com'
 ]
-
-# CORSに関連する追加の設定
-CORS_ALLOW_HEADERS = (
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-    'access-control-allow-origin',
-)
-
-# その他の設定例
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-X_FRAME_OPTIONS = 'DENY'
 SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 LOGGING = {
     'version': 1,
