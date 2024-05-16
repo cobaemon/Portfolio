@@ -38,18 +38,20 @@
                             </a>
                             <ul class="dropdown-menu bg-dark rounded p-3" aria-labelledby="navbarDropdown">
                                 <li>
-                                    <form method="post" action="{% url 'set_language' %}">
+                                    <form id="languages" method="post" action="{% url 'set_language' %}">
                                         {% csrf_token %}
                                         <input type="hidden" name="next" value="{{ request.path }}">
                                         <input type="hidden" name="language" value="ja">
+                                        <input type="hidden" name="language_form" value="1">
                                         <button type="submit" class="dropdown-item text-uppercase text-primary py-3 px-0 px-lg-3 rounded btn btn-link nav-link"><div class="ps-3">日本語</div></button>
                                     </form>
                                 </li>
                                 <li>
-                                    <form method="post" action="{% url 'set_language' %}">
+                                    <form id="languages" method="post" action="{% url 'set_language' %}">
                                         {% csrf_token %}
                                         <input type="hidden" name="next" value="{{ request.path }}">
                                         <input type="hidden" name="language" value="en">
+                                        <input type="hidden" name="language_form" value="1">
                                         <button type="submit" class="dropdown-item text-uppercase text-primary py-3 px-0 px-lg-3 rounded btn btn-link nav-link"><div class="ps-3">English</div></button>
                                     </form>
                                 </li>
@@ -168,55 +170,55 @@
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
-                <!-- Contact Section Form-->
+                <!-- Contact Section Form -->
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-xl-7">
                         <form id="contactForm" data-sb-form-api-token="API_TOKEN" method="post" action="{% url 'portfolio:top' %}">
                             {% csrf_token %}
                             <!-- Name input-->
                             <div class="form-floating mb-3">
-                                {{ form.full_name }}
-                                <label for="{{ form.full_name.id_for_label }}">{{ form.full_name.label }}</label>
-                                {% if form.full_name.errors %}
-                                    {% for error in form.full_name.errors %}
+                                {{ contact_form.full_name }}
+                                <label for="{{ contact_form.full_name.id_for_label }}">{{ contact_form.full_name.label }}</label>
+                                {% if contact_form.full_name.errors %}
+                                    {% for error in contact_form.full_name.errors %}
                                         <div class="invalid-feedback">{{ error }}</div>
                                     {% endfor %}
                                 {% endif %}
                             </div>
                             <!-- Email address input-->
                             <div class="form-floating mb-3">
-                                {{ form.email }}
-                                <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                                {{ contact_form.email }}
+                                <label for="{{ contact_form.email.id_for_label }}">{{ contact_form.email.label }}</label>
                                 <div class="invalid-feedback" id="emailError"></div>
-                                {% if form.email.errors %}
-                                    {% for error in form.email.errors %}
+                                {% if contact_form.email.errors %}
+                                    {% for error in contact_form.email.errors %}
                                         <div class="invalid-feedback">{{ error }}</div>
                                     {% endfor %}
                                 {% endif %}
                             </div>
                             <!-- Phone number input-->
                             <div class="form-floating mb-3">
-                                {{ form.phone_number }}
-                                <label for="{{ form.phone_number.id_for_label }}">{{ form.phone_number.label }}</label>
+                                {{ contact_form.phone_number }}
+                                <label for="{{ contact_form.phone_number.id_for_label }}">{{ contact_form.phone_number.label }}</label>
                                 <div class="invalid-feedback" id="phoneError"></div>
-                                {% if form.phone_number.errors %}
-                                    {% for error in form.phone_number.errors %}
+                                {% if contact_form.phone_number.errors %}
+                                    {% for error in contact_form.phone_number.errors %}
                                         <div class="invalid-feedback">{{ error }}</div>
                                     {% endfor %}
                                 {% endif %}
                             </div>
                             <!-- Message input-->
                             <div class="form-floating mb-3">
-                                {{ form.message }}
-                                <label for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
-                                {% if form.message.errors %}
-                                    {% for error in form.message.errors %}
+                                {{ contact_form.message }}
+                                <label for="{{ contact_form.message.id_for_label }}">{{ contact_form.message.label }}</label>
+                                {% if contact_form.message.errors %}
+                                    {% for error in contact_form.message.errors %}
                                         <div class="invalid-feedback">{{ error }}</div>
                                     {% endfor %}
                                 {% endif %}
                             </div>
                             <!-- Submit Button-->
-                            <div id="successMessage" class="alert alert-success " role="alert" style="display: none;">
+                            <div id="successMessage" class="alert alert-success" role="alert" style="display: none;">
                                 {% trans "Your message has been sent successfully." %}
                                 <button type="button" class="btn-close float-end" aria-label="Close"></button>
                             </div>
@@ -224,6 +226,7 @@
                                 {% trans "Your message could not be sent. Please try again." %}
                                 <button type="button" class="btn-close float-end" aria-label="Close"></button>
                             </div>
+                            <input type="hidden" name="contact_form" value="1">
                             <button class="btn btn-primary btn-xl float-end" id="submitButton" type="submit">Send</button>
                         </form>
                     </div>

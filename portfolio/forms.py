@@ -62,3 +62,7 @@ class ContactForm(forms.Form):
             to=[settings.DEFAULT_TO_EMAIL]
         )
         email.send()
+
+
+class LanguageForm(forms.Form):
+    language = forms.ChoiceField(choices=settings.LANGUAGES, widget=forms.Select)

@@ -1,21 +1,33 @@
-from django.shortcuts import render
-from django.views.generic import FormView
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.utils.translation import activate
+from django.conf import settings
 from django.contrib import messages
-from .forms import ContactForm
+from .forms import ContactForm, LanguageForm
 
+def top_view(request):
+    if request.method == 'POST':
+        if 'contact_form' in request.POST:
+            contact_form = ContactForm(request.POST)
+            language_form = LanguageForm()
+            if contact_form.is_valid():
+                contact_form.send_email()
+                messages.success(request, "Contact form submitted successfully.")
+                return redirect('portfolio:top')
+        elif 'language_form' in request.POST:
+            contact_form = ContactForm()
+            language_form = LanguageForm(request.POST)
+            if language_form.is_valid():
+                lang_code = language_form.cleaned_data['language']
+                activate(lang_code)
+                response = redirect(request.POST.get('next', '/'))
+                response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang_code)
+                return response
+    else:
+        contact_form = ContactForm()
+        language_form = LanguageForm()
 
-# トップページ
-class Top(FormView):
-    template_name = 'index.html'
-    form_class = ContactForm
-
-    # フォームがバリデーションを通過した場合に呼ばれる
-    def form_valid(self, form):
-        form.send_email()
-        return HttpResponse("Form submission successful")
-        
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = self.form_class()
-        return context
+    return render(request, 'index.html', {
+        'contact_form': contact_form,
+        'language_form': language_form,
+    })
