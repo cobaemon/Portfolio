@@ -73,7 +73,11 @@
         <header class="masthead bg-primary text-white text-center">
             <div class="container d-flex align-items-center flex-column">
                 <!-- Masthead Avatar Image-->
-                <img class="masthead-avatar mb-5" src="{% static '/top/assets/img/avatar.jpg' %}" alt="..." />
+                <picture>
+                    <source srcset="{% static '/top/assets/img/portfolio/avatar.avif' %}" type="image/avif">
+                    <source srcset="{% static '/top/assets/img/portfolio/avatar.webp' %}" type="image/webp">
+                    <img class="masthead-avatar mb-5" src="{% static '/top/assets/img/avatar.jpg' %}" alt="..." />
+                </picture>
                 <!-- Masthead Heading-->
                 <h1 class="masthead-heading text-uppercase mb-0">Hirotaka Kobayashi</h1>
                 <!-- Icon Divider-->
