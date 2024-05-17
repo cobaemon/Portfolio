@@ -70,7 +70,6 @@ LANGUAGE_COOKIE_DOMAIN = 'portfolio.cobaemon.com'
 LANGUAGE_COOKIE_HTTPONLY = True
 LANGUAGE_COOKIE_SECURE = True
 
-# ログ設定
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -83,33 +82,43 @@ LOGGING = {
     'handlers': {
         'file_debug': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'logs/django_debug.log'),
             'formatter': 'verbose',
+            'maxBytes': 1024*1024*5,  # 5MB
+            'backupCount': 3,
         },
         'file_info': {
             'level': 'INFO',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'logs/django_info.log'),
             'formatter': 'verbose',
+            'maxBytes': 1024*1024*5,  # 5MB
+            'backupCount': 3,
         },
         'file_warning': {
             'level': 'WARNING',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'logs/django_warning.log'),
             'formatter': 'verbose',
+            'maxBytes': 1024*1024*5,  # 5MB
+            'backupCount': 3,
         },
         'file_error': {
             'level': 'ERROR',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'logs/django_error.log'),
             'formatter': 'verbose',
+            'maxBytes': 1024*1024*5,  # 5MB
+            'backupCount': 3,
         },
         'file_critical': {
             'level': 'CRITICAL',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'logs/django_critical.log'),
             'formatter': 'verbose',
+            'maxBytes': 1024*1024*5,  # 5MB
+            'backupCount': 3,
         },
     },
     'loggers': {
