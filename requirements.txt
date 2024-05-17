@@ -1,4 +1,5 @@
 django
+django-cors-headers
 django-environ
 django-storages
 boto3
