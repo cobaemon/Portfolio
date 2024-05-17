@@ -3,7 +3,7 @@
 {% load i18n %}
 {% load cache %}
 {% get_current_language as LANGUAGE_CODE %}
-<html lang="en">
+<html lang="ja">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -106,7 +106,11 @@
                             <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-                            <img class="img-fluid" src="{% static '/top/assets/img/portfolio/password-box.png' %}" alt="..." />
+                            <picture>
+                                <source srcset="{% static '/top/assets/img/portfolio/password-box.avif' %}" type="image/avif">
+                                <source srcset="{% static '/top/assets/img/portfolio/password-box.webp' %}" type="image/webp">
+                                <img class="img-fluid" src="{% static '/top/assets/img/portfolio/password-box.png' %}" alt="...">
+                            </picture>
                         </div>
                     </div>
                     <!-- Portfolio Item 2-->
@@ -115,7 +119,11 @@
                             <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-                            <img class="img-fluid" src="{% static '/top/assets/img/portfolio/vocabulary-notebook.png' %}" alt="..." />
+                            <picture>
+                                <source srcset="{% static '/top/assets/img/portfolio/vocabulary-notebook.avif' %}" type="image/avif">
+                                <source srcset="{% static '/top/assets/img/portfolio/vocabulary-notebook.webp' %}" type="image/webp">
+                                <img class="img-fluid" src="{% static '/top/assets/img/portfolio/vocabulary-notebook.png' %}" alt="...">
+                            </picture>
                         </div>
                     </div>
                     <!-- Portfolio Item 3-->
@@ -124,7 +132,11 @@
                             <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-                            <img class="img-fluid" src="{% static '/top/assets/img/portfolio/dbpepro.png' %}" alt="..." />
+                            <picture>
+                                <source srcset="{% static '/top/assets/img/portfolio/dbpepro.avif' %}" type="image/avif">
+                                <source srcset="{% static '/top/assets/img/portfolio/dbpepro.webp' %}" type="image/webp">
+                                <img class="img-fluid" src="{% static '/top/assets/img/portfolio/dbpepro.png' %}" alt="...">
+                            </picture>
                         </div>
                     </div>
                     <!-- Portfolio Item 4-->
@@ -133,7 +145,11 @@
                             <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-                            <img class="img-fluid" src="{% static '/top/assets/img/portfolio/kakeboo.png' %}" alt="..." />
+                            <picture>
+                                <source srcset="{% static '/top/assets/img/portfolio/kakeboo.avif' %}" type="image/avif">
+                                <source srcset="{% static '/top/assets/img/portfolio/kakeboo.webp' %}" type="image/webp">
+                                <img class="img-fluid" src="{% static '/top/assets/img/portfolio/kakeboo.png' %}" alt="...">
+                            </picture>
                         </div>
                     </div>
                     <!-- Portfolio Item 5-->
@@ -142,7 +158,11 @@
                             <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-                            <img class="img-fluid" src="{% static '/top/assets/img/portfolio/tegaki.png' %}" alt="..." />
+                            <picture>
+                                <source srcset="{% static '/top/assets/img/portfolio/tegaki.avif' %}" type="image/avif">
+                                <source srcset="{% static '/top/assets/img/portfolio/tegaki.webp' %}" type="image/webp">
+                                <img class="img-fluid" src="{% static '/top/assets/img/portfolio/tegaki.png' %}" alt="...">
+                            </picture>
                         </div>
                     </div>
                 </div>
@@ -277,7 +297,11 @@
                                         <div class="divider-custom-line"></div>
                                     </div>
                                     <!-- Portfolio Modal - Image-->
-                                    <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/password-box.png' %}" alt="..." />
+                                    <picture>
+                                        <source srcset="{% static '/top/assets/img/portfolio/password-box.avif' %}" type="image/avif">
+                                        <source srcset="{% static '/top/assets/img/portfolio/password-box.webp' %}" type="image/webp">
+                                        <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/password-box.png' %}" alt="..." />
+                                    </picture>
                                     <!-- Portfolio Modal - Text-->
                                     <h5>Summary</h5>
                                     <p class="mb-4">{% trans "Password Box is a service that allows you to store passwords, account names, and email addresses." %}</p>
@@ -312,7 +336,11 @@
                                         <div class="divider-custom-line"></div>
                                     </div>
                                     <!-- Portfolio Modal - Image-->
-                                    <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/vocabulary-notebook.png' %}" alt="..." />
+                                    <picture>
+                                        <source srcset="{% static '/top/assets/img/portfolio/vocabulary-notebook.avif' %}" type="image/avif">
+                                        <source srcset="{% static '/top/assets/img/portfolio/vocabulary-notebook.webp' %}" type="image/webp">
+                                        <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/vocabulary-notebook.png' %}" alt="..." />
+                                    </picture>
                                     <!-- Portfolio Modal - Text-->
                                     <h5>Summary</h5>
                                     <p class="mb-4">{% trans "This is an implementation of a vocabulary notebook on the web." %}</p>
@@ -347,7 +375,11 @@
                                         <div class="divider-custom-line"></div>
                                     </div>
                                     <!-- Portfolio Modal - Image-->
-                                    <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/dbpepro.png' %}" alt="..." />
+                                    <picture>
+                                        <source srcset="{% static '/top/assets/img/portfolio/dbpepro.avif' %}" type="image/avif">
+                                        <source srcset="{% static '/top/assets/img/portfolio/dbpepro.webp' %}" type="image/webp">
+                                        <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/dbpepro.png' %}" alt="..." />
+                                    </picture>
                                     <!-- Portfolio Modal - Text-->
                                     <h5>Summary</h5>
                                     <p class="mb-4">{% trans "This is an app that allows you to manage database permissions in bulk using a GUI." %}</p>
@@ -382,7 +414,11 @@
                                         <div class="divider-custom-line"></div>
                                     </div>
                                     <!-- Portfolio Modal - Image-->
-                                    <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/kakeboo.png' %}" alt="..." />
+                                    <picture>
+                                        <source srcset="{% static '/top/assets/img/portfolio/kakeboo.avif' %}" type="image/avif">
+                                        <source srcset="{% static '/top/assets/img/portfolio/kakeboo.webp' %}" type="image/webp">
+                                        <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/kakeboo.png' %}" alt="..." />
+                                    </picture>
                                     <!-- Portfolio Modal - Text-->
                                     <h5>Summary</h5>
                                     <p class="mb-4">{% trans "This is a household accounting app." %}</p>
@@ -419,7 +455,11 @@
                                         <div class="divider-custom-line"></div>
                                     </div>
                                     <!-- Portfolio Modal - Image-->
-                                    <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/tegaki.png' %}" alt="..." />
+                                    <picture>
+                                        <source srcset="{% static '/top/assets/img/portfolio/tegaki.avif' %}" type="image/avif">
+                                        <source srcset="{% static '/top/assets/img/portfolio/tegaki.webp' %}" type="image/webp">
+                                        <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/tegaki.png' %}" alt="..." />
+                                    </picture>
                                     <!-- Portfolio Modal - Text-->
                                     <h5>Summary</h5>
                                     <p class="mb-4">{% trans "This is an app that recognizes handwritten characters." %}</p>
