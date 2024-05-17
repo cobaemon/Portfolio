@@ -1,9 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 
-from portfolio import views
+from portfolio.views import Top
 
 app_name = 'portfolio'
 
 urlpatterns = [
-    path('top/', views.top_view, name='top'),
+    path('top/', Top.as_view(), name='top'),
 ]

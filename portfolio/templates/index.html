@@ -29,31 +29,31 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#portfolio">Portfolio</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about">About</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Contact</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#portfolio"><h5>Portfolio</h5></a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about"><h5>About</h5></a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact"><h5>Contact</h5></a></li>
                         <li class="nav-item dropdown mx-0 mx-lg-1 pt-3">
-                            <a class="nav-item dropdown-toggle text-uppercase text-white font-weight-bold py-3 px-0 px-lg-3 rounded" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
-                                Languages
-                            </a>
+                            <a class="nav-item dropdown-toggle text-uppercase text-white font-weight-bold py-3 px-0 px-lg-3 rounded h5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">Languages</a>
                             <ul class="dropdown-menu bg-dark rounded p-3" aria-labelledby="navbarDropdown">
                                 <li>
-                                    <form id="languages" method="post" action="{% url 'set_language' %}">
+                                    <form action="{% url 'set_language' %}" method="post" style="margin: 0;">
                                         {% csrf_token %}
-                                        <input type="hidden" name="next" value="{{ request.path }}">
-                                        <input type="hidden" name="language" value="ja">
-                                        <input type="hidden" name="language_form" value="1">
-                                        <button type="submit" class="dropdown-item text-uppercase text-primary py-3 px-0 px-lg-3 rounded btn btn-link nav-link"><div class="ps-3">日本語</div></button>
+                                        <input name="next" type="hidden" value="{{ request.path }}">
+                                        <button type="submit" name="language" value="ja" class="dropdown-item py-3 px-0 px-lg-3 rounded">
+                                            <div class="nav-link ps-3 text-primary">日本語</div>
+                                        </button>
                                     </form>
+                                    <!-- <a href="{% url 'set_language' %}?language=ja" class="dropdown-item py-3 px-0 px-lg-3 rounded"><dev class="nav-link ps-3 text-primary">日本語</dev></a> -->
                                 </li>
-                                <li>
-                                    <form id="languages" method="post" action="{% url 'set_language' %}">
+                                <li class="pt-3">
+                                    <form action="{% url 'set_language' %}" method="post" style="margin: 0;">
                                         {% csrf_token %}
-                                        <input type="hidden" name="next" value="{{ request.path }}">
-                                        <input type="hidden" name="language" value="en">
-                                        <input type="hidden" name="language_form" value="1">
-                                        <button type="submit" class="dropdown-item text-uppercase text-primary py-3 px-0 px-lg-3 rounded btn btn-link nav-link"><div class="ps-3">English</div></button>
+                                        <input name="next" type="hidden" value="{{ request.path }}">
+                                        <button type="submit" name="language" value="en" class="dropdown-item py-3 px-0 px-lg-3 rounded">
+                                            <div class="nav-link ps-3 text-primary">English</div>
+                                        </button>
                                     </form>
+                                    <!-- <a href="{% url 'set_language' %}?language=en" class="dropdown-item py-3 px-0 px-lg-3 rounded"><dev class="nav-link ps-3 text-primary">English</dev></a> -->
                                 </li>
                             </ul>
                         </li>
@@ -177,42 +177,42 @@
                             {% csrf_token %}
                             <!-- Name input-->
                             <div class="form-floating mb-3">
-                                {{ contact_form.full_name }}
-                                <label for="{{ contact_form.full_name.id_for_label }}">{{ contact_form.full_name.label }}</label>
-                                {% if contact_form.full_name.errors %}
-                                    {% for error in contact_form.full_name.errors %}
+                                {{ form.full_name }}
+                                <label for="{{ form.full_name.id_for_label }}">{{ form.full_name.label }}</label>
+                                {% if form.full_name.errors %}
+                                    {% for error in form.full_name.errors %}
                                         <div class="invalid-feedback">{{ error }}</div>
                                     {% endfor %}
                                 {% endif %}
                             </div>
                             <!-- Email address input-->
                             <div class="form-floating mb-3">
-                                {{ contact_form.email }}
-                                <label for="{{ contact_form.email.id_for_label }}">{{ contact_form.email.label }}</label>
+                                {{ form.email }}
+                                <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
                                 <div class="invalid-feedback" id="emailError"></div>
-                                {% if contact_form.email.errors %}
-                                    {% for error in contact_form.email.errors %}
+                                {% if form.email.errors %}
+                                    {% for error in form.email.errors %}
                                         <div class="invalid-feedback">{{ error }}</div>
                                     {% endfor %}
                                 {% endif %}
                             </div>
                             <!-- Phone number input-->
                             <div class="form-floating mb-3">
-                                {{ contact_form.phone_number }}
-                                <label for="{{ contact_form.phone_number.id_for_label }}">{{ contact_form.phone_number.label }}</label>
+                                {{ form.phone_number }}
+                                <label for="{{ form.phone_number.id_for_label }}">{{ form.phone_number.label }}</label>
                                 <div class="invalid-feedback" id="phoneError"></div>
-                                {% if contact_form.phone_number.errors %}
-                                    {% for error in contact_form.phone_number.errors %}
+                                {% if form.phone_number.errors %}
+                                    {% for error in form.phone_number.errors %}
                                         <div class="invalid-feedback">{{ error }}</div>
                                     {% endfor %}
                                 {% endif %}
                             </div>
                             <!-- Message input-->
                             <div class="form-floating mb-3">
-                                {{ contact_form.message }}
-                                <label for="{{ contact_form.message.id_for_label }}">{{ contact_form.message.label }}</label>
-                                {% if contact_form.message.errors %}
-                                    {% for error in contact_form.message.errors %}
+                                {{ form.message }}
+                                <label for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+                                {% if form.message.errors %}
+                                    {% for error in form.message.errors %}
                                         <div class="invalid-feedback">{{ error }}</div>
                                     {% endfor %}
                                 {% endif %}
@@ -226,7 +226,6 @@
                                 {% trans "Your message could not be sent. Please try again." %}
                                 <button type="button" class="btn-close float-end" aria-label="Close"></button>
                             </div>
-                            <input type="hidden" name="contact_form" value="1">
                             <button class="btn btn-primary btn-xl float-end" id="submitButton" type="submit">Send</button>
                         </form>
                     </div>
