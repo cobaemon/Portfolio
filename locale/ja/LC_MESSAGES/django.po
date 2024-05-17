@@ -18,37 +18,37 @@ msgstr ""
 
 #: .\portfolio\forms.py:14
 msgid "Enter your name..."
-msgstr ""
+msgstr "お名前を入力してください..."
 
 #: .\portfolio\forms.py:17 .\portfolio\forms.py:30 .\portfolio\forms.py:43
 #: .\portfolio\forms.py:55
 msgid "This field is required."
-msgstr ""
+msgstr "このフィールドは必須です。"
 
 #: .\portfolio\forms.py:18
 msgid "Name cannot exceed 100 characters."
-msgstr ""
+msgstr "名前は100文字以内で入力してください。"
 
 #: .\portfolio\forms.py:31
 msgid "Enter a valid email address."
-msgstr ""
+msgstr "有効なメールアドレスを入力してください。"
 
 #: .\portfolio\forms.py:44
 msgid "Phone Number cannot exceed 20 characters."
-msgstr ""
+msgstr "電話番号は20文字以内で入力してください。"
 
 #: .\portfolio\forms.py:52
 msgid "Enter your message here..."
-msgstr ""
+msgstr "ここにメッセージを入力してください..."
 
 #: .\portfolio\forms.py:62
 msgid "Phone number should only contain digits"
-msgstr ""
+msgstr "電話番号は数字のみで入力してください。"
 
 #: .\portfolio\forms.py:84
 #, python-brace-format
 msgid "An error occurred while sending the email: {error}"
-msgstr ""
+msgstr "メールの送信中にエラーが発生しました: {error}"
 
 #: .\portfolio\templates\index.html:163
 msgid ""
