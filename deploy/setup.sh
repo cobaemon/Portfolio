@@ -73,6 +73,34 @@ fi
 sudo systemctl start nginx
 sudo systemctl enable nginx
 
+# Brotliのインストールと設定
+if [ "$OS" = "centos" ]; then
+    if [ ! -f /etc/nginx/modules/ngx_http_brotli_filter_module.so ]; then
+        sudo $PKG_MANAGER install -y epel-release
+        sudo $PKG_MANAGER install -y git gcc pcre-devel zlib-devel make
+        cd /usr/local/src
+        sudo git clone https://github.com/google/ngx_brotli.git
+        cd ngx_brotli
+        sudo git submodule update --init --recursive
+        cd /usr/local/src/nginx
+        sudo ./configure --with-compat --add-dynamic-module=/usr/local/src/ngx_brotli
+        sudo make modules
+        sudo cp objs/ngx_http_brotli_filter_module.so /etc/nginx/modules/
+        sudo cp objs/ngx_http_brotli_static_module.so /etc/nginx/modules/
+    else
+        echo "Brotli module already installed. Skipping..."
+    fi
+elif [ "$OS" = "ubuntu" ]; then
+    if ! nginx -V 2>&1 | grep -q 'brotli'; then
+        sudo $PKG_MANAGER install -y software-properties-common
+        sudo add-apt-repository -y ppa:hda-me/nginx-stable
+        sudo $PKG_MANAGER update
+        sudo $PKG_MANAGER install -y nginx nginx-module-brotli
+    else
+        echo "Brotli module already installed. Skipping..."
+    fi
+fi
+
 # コピー先ディレクトリを設定
 DEST_DIR="/var/www/html/errors"
 
