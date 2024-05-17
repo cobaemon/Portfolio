@@ -1,4 +1,10 @@
 services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+
   web:
     container_name: portfolio-web
     build:
@@ -11,6 +17,8 @@ services:
     volumes:
       - static_volume:/app/Portfolio/static
       - log_volume:/app/Portfolio/logs
+    depends_on:
+      - redis
 
   nginx:
     container_name: portfolio-nginx
