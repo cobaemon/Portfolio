@@ -23,7 +23,7 @@ RUN if [ -d "$REPO_DIR/.git" ]; then \
 WORKDIR	/app/Portfolio
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
-RUN python manage.py collectstatic
+RUN python manage.py collectstatic --settings config.settings.production
 RUN django-admin compilemessages
 
 # アプリケーションの起動
