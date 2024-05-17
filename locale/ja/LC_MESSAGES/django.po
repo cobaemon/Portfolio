@@ -2,12 +2,11 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-15 09:53+0900\n"
+"POT-Creation-Date: 2024-05-17 17:08+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,33 +16,73 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\portfolio\templates\index.html:130
+#: .\portfolio\forms.py:14
+msgid "Enter your name..."
+msgstr ""
+
+#: .\portfolio\forms.py:17 .\portfolio\forms.py:30 .\portfolio\forms.py:43
+#: .\portfolio\forms.py:55
+msgid "This field is required."
+msgstr ""
+
+#: .\portfolio\forms.py:18
+msgid "Name cannot exceed 100 characters."
+msgstr ""
+
+#: .\portfolio\forms.py:31
+msgid "Enter a valid email address."
+msgstr ""
+
+#: .\portfolio\forms.py:44
+msgid "Phone Number cannot exceed 20 characters."
+msgstr ""
+
+#: .\portfolio\forms.py:52
+msgid "Enter your message here..."
+msgstr ""
+
+#: .\portfolio\forms.py:62
+msgid "Phone number should only contain digits"
+msgstr ""
+
+#: .\portfolio\forms.py:84
+#, python-brace-format
+msgid "An error occurred while sending the email: {error}"
+msgstr ""
+
+#: .\portfolio\templates\index.html:163
 msgid ""
 "With 4 years of programming experience, I have acquired a wide range of "
 "languages and technologies. I have studied C++, C, and C#, and have also "
 "self-taught Python and Dart/Flutter. Utilizing these skills, I have tackled "
 "various projects."
 msgstr ""
-"4年間のプログラミング経験を通じて、さまざまな言語と技術を習得しました。C++、C、C#を学び、PythonとDart/Flutterは独学で習得しました。これらのスキルを活用して、さまざまなプロジェクトに取り組んできました。"
+"4年間のプログラミング経験を通じて、さまざまな言語と技術を習得しました。C++、"
+"C、C#を学び、PythonとDart/Flutterは独学で習得しました。これらのスキルを活用し"
+"て、さまざまなプロジェクトに取り組んできました。"
 
-#: .\portfolio\templates\index.html:131
+#: .\portfolio\templates\index.html:164
 msgid ""
 "In Python-based projects, I developed a household budget app, a password "
 "management app, and a web portfolio using the Django framework. "
 "Additionally, I created a handwritten character recognition app by "
 "leveraging machine learning technology."
 msgstr ""
-"Pythonを使用したプロジェクトでは、家計簿アプリ、パスワード管理アプリ、Djangoフレームワークを使用したWebポートフォリオを開発しました。さらに、機械学習技術を活用して手書き文字認識アプリを作成しました。"
+"Pythonを使用したプロジェクトでは、家計簿アプリ、パスワード管理アプリ、Django"
+"フレームワークを使用したWebポートフォリオを開発しました。さらに、機械学習技術"
+"を活用して手書き文字認識アプリを作成しました。"
 
-#: .\portfolio\templates\index.html:132
+#: .\portfolio\templates\index.html:165
 msgid ""
 "In Dart/Flutter development, I created a database access control app. "
 "Through this experience, I have been able to improve my development "
 "capabilities across different platforms and environments."
 msgstr ""
-"Dart/Flutterの開発では、データベースアクセス制御アプリを作成しました。この経験を通じて、さまざまなプラットフォームや環境での開発能力を向上させることができました。"
+"Dart/Flutterの開発では、データベースアクセス制御アプリを作成しました。この経"
+"験を通じて、さまざまなプラットフォームや環境での開発能力を向上させることがで"
+"きました。"
 
-#: .\portfolio\templates\index.html:133
+#: .\portfolio\templates\index.html:166
 msgid ""
 "I have actively participated in team projects, developing file-sharing apps "
 "and household budget apps. This has allowed me to hone my team development "
@@ -51,85 +90,91 @@ msgid ""
 "projects. My diverse technical expertise and teamwork will surely be put to "
 "good use in future projects."
 msgstr ""
-"ファイル共有アプリや家計簿アプリの開発など、チームプロジェクトに積極的に参加してきました。この経験により、チーム開発スキルを磨き、他のメンバーと協力してプロジェクトを進める能力を身につけました。今まで身に付けてきた技術や知識を今後のプロジェクトでも生かしていきたいと思います。"
+"ファイル共有アプリや家計簿アプリの開発など、チームプロジェクトに積極的に参加"
+"してきました。この経験により、チーム開発スキルを磨き、他のメンバーと協力して"
+"プロジェクトを進める能力を身につけました。今まで身に付けてきた技術や知識を今"
+"後のプロジェクトでも生かしていきたいと思います。"
 
-#: .\portfolio\templates\index.html:197
+#: .\portfolio\templates\index.html:231
 msgid "Your message has been sent successfully."
 msgstr "メッセージが正常に送信されました。"
 
-#: .\portfolio\templates\index.html:201
+#: .\portfolio\templates\index.html:235
 msgid "Your message could not be sent. Please try again."
 msgstr "メッセージを送信できませんでした。もう一度お試しください。"
 
-#: .\portfolio\templates\index.html:244
+#: .\portfolio\templates\index.html:281
 msgid ""
 "Password Box is a service that allows you to store passwords, account names, "
 "and email addresses."
 msgstr ""
-"Password Boxは、パスワード、アカウント名、メールアドレスを保存できるサービスです。"
+"Password Boxは、パスワード、アカウント名、メールアドレスを保存できるサービス"
+"です。"
 
-#: .\portfolio\templates\index.html:246
+#: .\portfolio\templates\index.html:283
 msgid ""
 "I created this service because it became cumbersome to remember passwords "
 "and account names while using various web services."
 msgstr ""
-"さまざまなウェブサービスを利用する中で、パスワードやアカウント名を覚えるのが煩雑になったため、このサービスを作成しました。"
+"さまざまなウェブサービスを利用する中で、パスワードやアカウント名を覚えるのが"
+"煩雑になったため、このサービスを作成しました。"
 
-#: .\portfolio\templates\index.html:279
+#: .\portfolio\templates\index.html:316
 msgid "This is an implementation of a vocabulary notebook on the web."
 msgstr "これは、Web上で単語帳を再現したものです。"
 
-#: .\portfolio\templates\index.html:281
+#: .\portfolio\templates\index.html:318
 msgid ""
 "Having a vocabulary notebook is convenient for remembering words and phrases "
 "when studying for national exams and the like. I created this because I "
 "thought it would be even more convenient if such a notebook could be used on "
 "the web."
 msgstr ""
-"単語帳があれば、国家試験などの勉強で単語やフレーズを覚えるのに便利です。このような単語帳がウェブ上で利用できれば、さらに便利になると考えて、このサービスを作成しました。"
+"単語帳があれば、国家試験などの勉強で単語やフレーズを覚えるのに便利です。この"
+"ような単語帳がウェブ上で利用できれば、さらに便利になると考えて、このサービス"
+"を作成しました。"
 
-#: .\portfolio\templates\index.html:314
+#: .\portfolio\templates\index.html:351
 msgid ""
 "This is an app that allows you to manage database permissions in bulk using "
 "a GUI."
-msgstr ""
-"これは、GUIを使用してデータベース権限を一括管理できるアプリです。"
+msgstr "これは、GUIを使用してデータベース権限を一括管理できるアプリです。"
 
-#: .\portfolio\templates\index.html:316
+#: .\portfolio\templates\index.html:353
 msgid ""
 "I created this app because I thought it would be convenient to manage "
 "database permissions in bulk, and it would reduce careless mistakes."
 msgstr ""
-"データベースの権限を一括管理できれば便利であり、不注意なミスを減らせると考えて、このアプリを作成しました。"
+"データベースの権限を一括管理できれば便利であり、不注意なミスを減らせると考え"
+"て、このアプリを作成しました。"
 
-#: .\portfolio\templates\index.html:349
+#: .\portfolio\templates\index.html:386
 msgid "This is a household accounting app."
 msgstr "これは、家計簿アプリです。"
 
-#: .\portfolio\templates\index.html:351
+#: .\portfolio\templates\index.html:388
 msgid ""
 "I created this app as part of my graduation research at a vocational school."
-msgstr ""
-"このアプリは、専門学校での卒業研究の一環として作成しました。"
+msgstr "このアプリは、専門学校での卒業研究の一環として作成しました。"
 
-#: .\portfolio\templates\index.html:352
+#: .\portfolio\templates\index.html:389
 msgid "Each member used their preferred language to create it."
 msgstr "各メンバーの、自分の得意な言語や学びたい言語を使って作成しました。"
 
-#: .\portfolio\templates\index.html:353
+#: .\portfolio\templates\index.html:390
 msgid ""
 "I was responsible for the feature that automatically generates a household "
 "accounting book from receipt images."
-msgstr ""
-"私は、レシートの画像から家計簿を自動生成する機能を担当しました。"
+msgstr "私は、レシートの画像から家計簿を自動生成する機能を担当しました。"
 
-#: .\portfolio\templates\index.html:386
+#: .\portfolio\templates\index.html:423
 msgid "This is an app that recognizes handwritten characters."
 msgstr "これは、手書き文字を認識するアプリです。"
 
-#: .\portfolio\templates\index.html:388
+#: .\portfolio\templates\index.html:425
 msgid ""
 "I created this app to explore computer vision in machine learning, which I "
 "was interested in at the time."
 msgstr ""
-"機械学習におけるコンピュータビジョンに興味があったため、このアプリを作成しました。"
+"機械学習におけるコンピュータビジョンに興味があったため、このアプリを作成しま"
+"した。"

@@ -1,5 +1,6 @@
 from django import forms
 from django.core.mail import EmailMessage
+from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
 
@@ -10,8 +11,12 @@ class ContactForm(forms.Form):
         widget=forms.TextInput(attrs={
             'name': 'full_name',
             'class': 'form-control',
-            'placeholder': 'Enter your name...'
-        })
+            'placeholder': _('Enter your name...')
+        }),
+        error_messages={
+            'required': _('This field is required.'),
+            'max_length': _('Name cannot exceed 100 characters.')
+        }
     )
     email = forms.EmailField(
         label='Email Address',
@@ -20,7 +25,11 @@ class ContactForm(forms.Form):
             'class': 'form-control',
             'placeholder': 'name@example.com',
             'data-sb-validations': 'required,email'
-        })
+        }),
+        error_messages={
+            'required': _('This field is required.'),
+            'invalid': _('Enter a valid email address.')
+        }
     )
     phone_number = forms.CharField(
         label='Phone Number',
@@ -29,21 +38,28 @@ class ContactForm(forms.Form):
             'name': 'phone_number',
             'class': 'form-control',
             'placeholder': '(123) 456-7890'
-        })
+        }),
+        error_messages={
+            'required': _('This field is required.'),
+            'max_length': _('Phone Number cannot exceed 20 characters.')
+        }
     )
     message = forms.CharField(
         label='Message',
         widget=forms.Textarea(attrs={
             'name': 'message',
             'class': 'form-control',
-            'placeholder': 'Enter your message here...'
-        })
+            'placeholder': _('Enter your message here...')
+        }),
+        error_messages={
+            'required': _('This field is required.')
+        }
     )
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number')
         if not phone_number.isdigit():
-            raise forms.ValidationError('Phone number should only contain digits')
+            raise forms.ValidationError(_('Phone number should only contain digits'))
         return phone_number
     
     def send_email(self):
@@ -61,7 +77,11 @@ class ContactForm(forms.Form):
             from_email=settings.DEFAULT_FROM_EMAIL,
             to=[settings.DEFAULT_TO_EMAIL]
         )
-        email.send()
+        try:
+            email.send()
+        except Exception as e:
+            # エラーハンドリング
+            raise forms.ValidationError(_('An error occurred while sending the email: {error}').format(error=str(e)))
 
 
 class LanguageForm(forms.Form):
