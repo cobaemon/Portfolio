@@ -3,7 +3,7 @@ from config.settings.base import *
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['portfolio.cobaemon.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['portfolio.cobaemon.com']
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
@@ -25,16 +25,37 @@ DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 # デフォルトの送信先
 DEFAULT_TO_EMAIL = os.environ.get('DEFAULT_TO_EMAIL')
 
-# Security settings
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_HTTPONLY = True
 # CSRF設定
 CSRF_TRUSTED_ORIGINS = [
     'https://portfolio.cobaemon.com',
     'http://portfolio.cobaemon.com'
 ]
+
+# CORS設定
+CORS_ALLOWED_ORIGINS = [
+    'https://portfolio.cobaemon.com',
+    'http://portfolio.cobaemon.com',
+]
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
+
+# セキュリティ設定
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
 SECURE_BROWSER_XSS_FILTER = True
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
 X_FRAME_OPTIONS = 'DENY'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
