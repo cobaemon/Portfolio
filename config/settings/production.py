@@ -1,5 +1,7 @@
 from config.settings.base import *
 
+SITE_ID = 1
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
@@ -51,13 +53,19 @@ CORS_ALLOW_HEADERS = (
 
 # セキュリティ設定
 SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_DOMAIN = 'portfolio.cobaemon.com'
 CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_DOMAIN = 'portfolio.cobaemon.com'
 CSRF_COOKIE_HTTPONLY = True
 SECURE_BROWSER_XSS_FILTER = True
 USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True
 X_FRAME_OPTIONS = 'DENY'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+LANGUAGE_COOKIE_DOMAIN = 'portfolio.cobaemon.com'
+LANGUAGE_COOKIE_HTTPONLY = True
+LANGUAGE_COOKIE_SECURE = True
 
 LOGGING = {
     'version': 1,
