@@ -5,4 +5,4 @@ django-storages
 boto3
 gunicorn
 django-redis
-django-csppip
+django-csp
