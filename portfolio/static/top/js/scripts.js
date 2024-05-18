@@ -124,3 +124,15 @@ window.addEventListener('DOMContentLoaded', event => {
         errorMessage.style.display = 'none';
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    var toggler = document.getElementById('navbar-toggler');
+    if (toggler) {
+        toggler.addEventListener('click', function() {
+            var navbarResponsive = document.getElementById('navbarResponsive');
+            if (navbarResponsive) {
+                navbarResponsive.classList.toggle('show');
+            }
+        });
+    }
+});
