@@ -168,4 +168,4 @@ CSP_IMG_SRC = ("'self'", 'data:',)
 CSP_FRAME_ANCESTORS = ("'none'",)
 
 # nonceを自動生成
-CSP_INCLUDE_NONCE_IN = ['script-src']
+CSP_INCLUDE_NONCE_IN = ['script-src', 'script-src-elem']
