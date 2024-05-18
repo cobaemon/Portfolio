@@ -15,7 +15,5 @@ class Top(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        nonce = base64.b64encode(os.urandom(16)).decode('utf-8')
-        context['nonce'] = nonce
         context['form'] = self.form_class()
         return context
