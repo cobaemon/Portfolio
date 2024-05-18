@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -157,3 +158,14 @@ CACHES = {
 # セッションキャッシュをRedisに設定
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
+
+# CSP設定
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", 'https://use.fontawesome.com', 'https://cdn.jsdelivr.net',)
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", 'https://fonts.googleapis.com',)
+CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com',)
+CSP_IMG_SRC = ("'self'", 'data:',)
+CSP_FRAME_ANCESTORS = ("'none'",)
+
+# nonceを自動生成
+CSP_INCLUDE_NONCE_IN = ['script-src']
