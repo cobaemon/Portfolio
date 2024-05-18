@@ -25,10 +25,6 @@ iptables -A FORWARD -o docker0 -j DOCKER
 iptables -A FORWARD -i docker0 -j ACCEPT
 iptables -A FORWARD -o br-918b2a66b087 -j DOCKER
 
-# ホストのNginxからコンテナのNginxへの通信を許可
-iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
-iptables -A INPUT -p tcp --dport 4433 -j ACCEPT
-
 # ループバックインターフェースのトラフィックを許可
 iptables -A INPUT -i lo -j ACCEPT
 
