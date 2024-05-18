@@ -7,7 +7,7 @@ RUN apt-get update && apt-get upgrade -y
 COPY ./start-nginx.sh /start-nginx.sh
 
 # 設定ファイルのコピー
-COPY ./container_nginx.conf /etc/nginx/nginx.conf
+COPY ./host_nginx.conf /etc/nginx/nginx.conf
 COPY ./container_portfolio.conf /etc/nginx/conf.d/
 
 # 実行権限の付与
