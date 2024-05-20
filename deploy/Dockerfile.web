@@ -21,6 +21,7 @@ RUN if [ -d "$REPO_DIR/.git" ]; then \
     
 # 依存関係のインストール
 WORKDIR	/app/Portfolio
+RUN mkdir -p /app/Portfolio/logs/
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 RUN python manage.py makemigrations --settings config.settings.production
