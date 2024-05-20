@@ -4,7 +4,7 @@ from .forms import ContactForm
 from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import redirect
 from django.utils.translation import activate
-from django.utils.translation import activate, LANGUAGE_SESSION_KEY
+from django.conf import settings
 
 
 class Top(FormView):
@@ -26,5 +26,5 @@ def set_language(request):
         language = request.POST.get('language')
         if language:
             activate(language)
-            request.session[LANGUAGE_SESSION_KEY] = language
+            request.session[settings.LANGUAGE_SESSION_KEY] = language
     return redirect(request.POST.get('next', '/'))

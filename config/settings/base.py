@@ -122,6 +122,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+
+LANGUAGE_SESSION_KEY = 'django_language'
 # 使用する言語のリストを定義
 LANGUAGES = [
     ('en', 'English'),
