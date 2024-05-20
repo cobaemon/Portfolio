@@ -36,44 +36,44 @@ CSRF_TRUSTED_ORIGINS = [
 CORS_ALLOWED_ORIGINS = [
     'https://portfolio.cobaemon.com'
 ]
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = (
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-)
+# CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_HEADERS = (
+#     'accept',
+#     'accept-encoding',
+#     'authorization',
+#     'content-type',
+#     'dnt',
+#     'origin',
+#     'user-agent',
+#     'x-csrftoken',
+#     'x-requested-with',
+# )
 
-# セキュリティ設定
-SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_DOMAIN = 'portfolio.cobaemon.com'
-SESSION_COOKIE_HTTPONLY = True
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-CSRF_COOKIE_NAME = 'csrftoken'
-CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = 'Lax'
-CSRF_USE_SESSIONS = False
-CSRF_COOKIE_DOMAIN = '.cobaemon.com'
-CSRF_COOKIE_HTTPONLY = True
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-USE_X_FORWARDED_HOST = True
-USE_X_FORWARDED_PORT = True
-X_FRAME_OPTIONS = 'DENY'
-SECURE_HSTS_SECONDS = 31536000  # 1年間
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+# # セキュリティ設定
+# SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_DOMAIN = 'portfolio.cobaemon.com'
+# SESSION_COOKIE_HTTPONLY = True
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# CSRF_COOKIE_NAME = 'csrftoken'
+# CSRF_COOKIE_SECURE = True
+# CSRF_COOKIE_SAMESITE = 'Lax'
+# CSRF_USE_SESSIONS = False
+# CSRF_COOKIE_DOMAIN = '.cobaemon.com'
+# CSRF_COOKIE_HTTPONLY = True
+# SECURE_BROWSER_XSS_FILTER = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# USE_X_FORWARDED_HOST = True
+# USE_X_FORWARDED_PORT = True
+# X_FRAME_OPTIONS = 'DENY'
+# SECURE_HSTS_SECONDS = 31536000  # 1年間
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 
-LANGUAGE_COOKIE_DOMAIN = 'portfolio.cobaemon.com'
-LANGUAGE_COOKIE_HTTPONLY = True
-LANGUAGE_COOKIE_SECURE = True
+# LANGUAGE_COOKIE_DOMAIN = 'portfolio.cobaemon.com'
+# LANGUAGE_COOKIE_HTTPONLY = True
+# LANGUAGE_COOKIE_SECURE = True
 
 LOGGING = {
     'version': 1,
