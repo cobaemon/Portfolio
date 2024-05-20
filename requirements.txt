@@ -3,3 +3,5 @@ django-environ
 django-storages
 boto3
 gunicorn
+pillow
+pillow-avif-plugin
