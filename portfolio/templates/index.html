@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
 {% load i18n %}
-<html lang="en">
+<html lang="ja">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -22,16 +22,41 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
             <div class="container">
-                <a class="navbar-brand" href="#page-top">Portfolio</a>
-                <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand fs-1" href="#page-top">Portfolio</a>
+                <button class="navbar-toggler text-uppercase fw-bold bg-primary text-white rounded fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#portfolio">Portfolio</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about">About</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Contact</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded fs-4" href="#portfolio">Portfolio</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded fs-4" href="#about">About</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded fs-4" href="#contact">Contact</a></li>
+                        <li class="nav-item dropdown mx-0 mx-lg-1 pt-3">
+                            <a class="nav-item dropdown-toggle text-uppercase text-white fw-bold py-3 px-0 px-lg-3 rounded fs-4" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">Languages</a>
+                            <ul class="dropdown-menu bg-dark rounded p-3" aria-labelledby="navbarDropdown">
+                                {% get_current_language as LANGUAGE_CODE %}
+                                {% get_language_info_list for LANGUAGES as languages %}
+                                {% for language in languages %}
+                                    {% if language.code == LANGUAGE_CODE %}
+                                        {{ language.name_local }}
+                                    {% endif %}
+                                {% endfor %}
+                                {% get_available_languages as LANGUAGES %}
+                                {% get_language_info_list for LANGUAGES as languages %}
+                                {% for language in languages %}
+                                    <li>
+                                        <form action="{% url 'set_language' %}" method="post" style="margin: 0;">
+                                            {% csrf_token %}
+                                            <input name="next" type="hidden" value="{{ request.path }}">
+                                            <button type="submit" name="language" value="{{ language.code }}" class="dropdown-item py-3 px-0 px-lg-3 rounded {% if language.code == LANGUAGE_CODE %} disabled {% endif %}">
+                                                <div class="nav-link ps-3 fw-bold fs-5 text-primary {% if language.code == LANGUAGE_CODE %} text-info {% endif %}">{{ language.name_local }}</div>
+                                            </button>
+                                        </form>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
