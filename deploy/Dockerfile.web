@@ -2,7 +2,7 @@
 FROM python:3.10-slim
 
 # 必要なパッケージのインストール
-RUN apt-get update && apt-get upgrade -y && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get upgrade -y && apt-get install -y git gettext && rm -rf /var/lib/apt/lists/*
 
 # 作業ディレクトリの設定
 WORKDIR /app
