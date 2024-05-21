@@ -33,7 +33,9 @@ fi
 echo -e "${LIGHT_CYAN}Sending test request to check Referrer-Policy...${RESET}"
 
 # 同一オリジンからのリクエスト
-SAME_ORIGIN_REFERRER=$(curl -s -o /dev/null -w '%{redirect_url}' -e $TEST_URL $TEST_URL)
+echo -e "${LIGHT_CYAN}Sending same-origin request...${RESET}" | tee -a $LOG_FILE
+SAME_ORIGIN_REFERRER=$(curl -s -o /dev/null -w '%{redirect_url}\n' -e $TEST_URL $TEST_URL 2>> $LOG_FILE)
+echo "Same-origin referrer: $SAME_ORIGIN_REFERRER" | tee -a $LOG_FILE
 if [ -z "$SAME_ORIGIN_REFERRER" ]; then
     echo -e "${LIGHT_CYAN}Same-origin referrer policy is working correctly.${RESET}" | tee -a $LOG_FILE
 else
@@ -42,7 +44,9 @@ else
 fi
 
 # クロスオリジンからのリクエスト
-CROSS_ORIGIN_REFERRER=$(curl -s -o /dev/null -w '%{redirect_url}' -e "http://another-domain.com" $TEST_URL)
+echo -e "${LIGHT_CYAN}Sending cross-origin request...${RESET}" | tee -a $LOG_FILE
+CROSS_ORIGIN_REFERRER=$(curl -s -o /dev/null -w '%{redirect_url}\n' -e "http://another-domain.com" $TEST_URL 2>> $LOG_FILE)
+echo "Cross-origin referrer: $CROSS_ORIGIN_REFERRER" | tee -a $LOG_FILE
 if [ -n "$CROSS_ORIGIN_REFERRER" ] && [[ $CROSS_ORIGIN_REFERRER == "http://portfolio.cobaemon.com" ]]; then
     echo -e "${LIGHT_CYAN}Cross-origin referrer policy is working correctly.${RESET}" | tee -a $LOG_FILE
 else
