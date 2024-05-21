@@ -23,8 +23,8 @@ echo "$SSL_CERTIFICATE" | base64 -d > /etc/ssl/certs/fullchain.pem
 echo "$SSL_CERTIFICATE_KEY" | base64 -d > /etc/ssl/private/privkey.pem
 
 # ファイルのパーミッションを設定
-sudo chmod 644 /etc/ssl/certs/fullchain.pem
-sudo chmod 600 /etc/ssl/private/privkey.pem
+chmod 644 /etc/ssl/certs/fullchain.pem
+chmod 600 /etc/ssl/private/privkey.pem
 
 # Nginxをデーモンとして起動
 echo -e "${CYAN}Starting Nginx...${RESET}"
