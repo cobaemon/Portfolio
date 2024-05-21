@@ -102,19 +102,6 @@ sudo cp -f "$SCRIPT_DIR/host_portfolio.conf" /etc/nginx/conf.d/portfolio.conf
 echo -e "${BLUE}Reloading Nginx...${RESET}"
 sudo systemctl reload nginx
 
-# # Gettextのインストール
-# if ! command -v msgfmt &> /dev/null || [ "$(msgfmt --version | head -n1 | awk '{print $4}')" \< "0.15" ]; then
-#     echo "Installing or upgrading Gettext..."
-#     if [ "$PKG_MANAGER" = "yum" ]; then
-#         sudo $PKG_MANAGER install -y gettext
-#     elif [ "$PKG_MANAGER" = "apt" ]; then
-#         sudo $PKG_MANAGER install -y gettext
-#     fi
-#     echo "Gettext installation completed."
-# else
-#     echo "Gettext is already installed and up-to-date."
-# fi
-
 # 証明書の存在を確認
 echo -e "${BLUE}Checking for existing certificates...${RESET}"
 if sudo certbot certificates --cert-name portfolio.cobaemon.com > /dev/null 2>&1; then
