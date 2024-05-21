@@ -15,7 +15,7 @@ LOG_FILE="referrer_policy_test.log"
 > $LOG_FILE
 
 # テストページのURLを設定
-TEST_URL="http://portfolio.cobaemon.com/test-page"
+TEST_URL="http://portfolio.cobaemon.com/portfolio/top"
 
 # Nginxの設定ファイルをチェック
 echo -e "${LIGHT_CYAN}Checking Nginx configuration for Referrer-Policy...${RESET}"
