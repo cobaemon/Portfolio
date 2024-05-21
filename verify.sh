@@ -12,6 +12,11 @@ RESET="\e[0m"
 # スクリプトのディレクトリを基準にパスを設定
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
+# 実行権限の設定
+echo -e "${GREEN}Setting execute permissions for validation directory scripts...${RESET}"
+chmod +x "$SCRIPT_DIR/validation/verify_referrer_policy.sh"
+
+
 # 検証結果の集計変数
 total_tests=0
 success_count=0
