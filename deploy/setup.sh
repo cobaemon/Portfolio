@@ -1,15 +1,23 @@
 #!/bin/bash
 
+# エラー時にスクリプトを終了する
+set -e
+
+# 色の定義
+BLUE="\e[34m"
+RED="\e[31m"
+RESET="\e[0m"
+
 # スクリプトのディレクトリを基準にパスを設定
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
 # .envファイルの読み込み
 set -a
 if [ -f "$SCRIPT_DIR/.env" ]; then
-    echo "Loading environment variables from .env file..."
+    echo -e "${BLUE}Loading environment variables from .env file...${RESET}"
     source "$SCRIPT_DIR/.env"
 else
-    echo ".env file not found. Please ensure it exists in the script directory."
+    echo -e "${RED}.env file not found. Please ensure it exists in the script directory.${RESET}"
     exit 1
 fi
 set +a
@@ -17,13 +25,8 @@ set +a
 # メールアドレスの取得
 EMAIL=${DEFAULT_TO_EMAIL:-}
 if [ -z "$EMAIL" ]; then
-  echo "Email address not set in .env file. Please set DEFAULT_TO_EMAIL in .env."
-  exit 1
-fi
-
-if [ -z "$EMAIL" ]; then
-  echo "Email address not set in .env file. Please set DEFAULT_TO_EMAIL in .env."
-  exit 1
+    echo -e "${RED}Email address not set in .env file. Please set DEFAULT_TO_EMAIL in .env.${RESET}"
+    exit 1
 fi
 
 # OSを検出
@@ -36,17 +39,17 @@ elif [ -f /etc/redhat-release ]; then
     PKG_MANAGER="yum"
     OS="centos"
 else
-    echo "Unsupported OS"
+    echo -e "${RED}Unsupported OS${RESET}"
     exit 1
 fi
 
 # 必要なパッケージの更新
-echo "Updating package list..."
+echo -e "${BLUE}Updating package list...${RESET}"
 sudo $PKG_MANAGER update -y
 
 # Dockerのインストール
 if ! command -v docker &> /dev/null; then
-    echo "Docker not found. Installing Docker..."
+    echo -e "${BLUE}Docker not found. Installing Docker...${RESET}"
     if [ "$PKG_MANAGER" = "yum" ]; then
         sudo $PKG_MANAGER install -y yum-utils
         sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
@@ -60,43 +63,43 @@ if ! command -v docker &> /dev/null; then
     fi
     sudo systemctl start docker
     sudo systemctl enable docker
-    echo "Docker installation completed."
+    echo -e "${BLUE}Docker installation completed.${RESET}"
 else
-    echo "Docker is already installed."
+    echo -e "${BLUE}Docker is already installed.${RESET}"
 fi
 
 # Certbotのインストール
 if ! command -v certbot &> /dev/null; then
-    echo "Certbot not found. Installing Certbot..."
+    echo -e "${BLUE}Certbot not found. Installing Certbot...${RESET}"
     if [ "$PKG_MANAGER" = "yum" ]; then
         sudo $PKG_MANAGER install -y epel-release
         sudo $PKG_MANAGER install -y certbot python2-certbot-nginx
     elif [ "$PKG_MANAGER" = "apt" ]; then
         sudo $PKG_MANAGER install -y certbot python3-certbot-nginx
     fi
-    echo "Certbot installation completed."
+    echo -e "${BLUE}Certbot installation completed.${RESET}"
 else
-    echo "Certbot is already installed."
+    echo -e "${BLUE}Certbot is already installed.${RESET}"
 fi
 
 # Nginxのインストール
 if ! command -v nginx &> /dev/null; then
-    echo "Nginx not found. Installing Nginx..."
+    echo -e "${BLUE}Nginx not found. Installing Nginx...${RESET}"
     sudo $PKG_MANAGER install -y nginx
     sudo systemctl start nginx
     sudo systemctl enable nginx
-    echo "Nginx installation completed."
+    echo -e "${BLUE}Nginx installation completed.${RESET}"
 else
-    echo "Nginx is already installed."
+    echo -e "${BLUE}Nginx is already installed.${RESET}"
 fi
 
 # Nginxの設定ファイルをコピー
-echo "Copying Nginx configuration files..."
+echo -e "${BLUE}Copying Nginx configuration files...${RESET}"
 sudo cp -f "$SCRIPT_DIR/host_nginx.conf" /etc/nginx/nginx.conf
 sudo cp -f "$SCRIPT_DIR/host_portfolio.conf" /etc/nginx/conf.d/portfolio.conf
 
 # Nginxのリロード
-echo "Reloading Nginx..."
+echo -e "${BLUE}Reloading Nginx...${RESET}"
 sudo systemctl reload nginx
 
 # # Gettextのインストール
@@ -113,13 +116,13 @@ sudo systemctl reload nginx
 # fi
 
 # 証明書の存在を確認
-echo "Checking for existing certificates..."
+echo -e "${BLUE}Checking for existing certificates...${RESET}"
 if sudo certbot certificates --cert-name portfolio.cobaemon.com > /dev/null 2>&1; then
-    echo "Updating existing certificate for portfolio.cobaemon.com..."
+    echo -e "${BLUE}Updating existing certificate for portfolio.cobaemon.com...${RESET}"
     sudo certbot renew --cert-name portfolio.cobaemon.com
 else
-    echo "Obtaining new certificate for portfolio.cobaemon.com..."
+    echo -e "${BLUE}Obtaining new certificate for portfolio.cobaemon.com...${RESET}"
     sudo certbot --nginx -d portfolio.cobaemon.com --non-interactive --agree-tos -m "$EMAIL"
 fi
 
-echo "Setup script completed successfully."
+echo -e "${BLUE}Setup script completed successfully.${RESET}"
