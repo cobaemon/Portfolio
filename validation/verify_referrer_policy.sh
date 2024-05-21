@@ -8,8 +8,11 @@ LIGHT_CYAN="\e[96m"
 LIGHT_RED="\e[91m"
 RESET="\e[0m"
 
+# スクリプトのディレクトリを基準にパスを設定
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+
 # テスト用のログファイルを設定
-LOG_FILE="referrer_policy_test.log"
+LOG_FILE="${SCRIPT_DIR}/referrer_policy_test.log"
 
 # ログファイルをクリア
 > $LOG_FILE
