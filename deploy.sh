@@ -3,37 +3,45 @@
 # エラー時にスクリプトを終了する
 set -e
 
-# deployディレクトリ内のシェルスクリプトに実行権限を設定
-echo "Setting execute permissions for deploy directory scripts..."
+# 色の定義
+GREEN="\e[32m"
+RED="\e[31m"
+RESET="\e[0m"
+
+# スクリプトのディレクトリを基準にパスを設定
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+
+# 実行権限の設定
+echo -e "${GREEN}Setting execute permissions for deploy directory scripts...${RESET}"
 chmod +x deploy/encode-certs.sh
 chmod +x deploy/setup.sh
 chmod +x deploy/start-nginx.sh
 chmod +x deploy/update-certs-and-restart-container.sh
 
 # setup.shスクリプトの実行
-echo "Running setup script..."
+echo -e "${GREEN}Running setup script...${RESET}"
 bash deploy/setup.sh
 
 # 設定ファイルのコピー
-echo "Copying Nginx configuration files..."
+echo -e "${GREEN}Copying Nginx configuration files...${RESET}"
 sudo cp deploy/host_portfolio.conf /etc/nginx/conf.d/portfolio.conf
 
 # 証明書のエンコードと配置
-echo "Encoding and placing certificates..."
+echo -e "${GREEN}Encoding and placing certificates...${RESET}"
 bash deploy/encode-certs.sh
 
 # Dockerイメージのビルドとコンテナの起動
-echo "Building Docker images and starting containers..."
+echo -e "${GREEN}Building Docker images and starting containers...${RESET}"
 bash deploy/update-certs-and-restart-container.sh
 
 # Certbotのフックスクリプトにupdate-certs-and-restart-container.shを追加
-echo "Adding Certbot deployment hook..."
+echo -e "${GREEN}Adding Certbot deployment hook...${RESET}"
 sudo mkdir -p /etc/letsencrypt/renewal-hooks/deploy
 sudo cp deploy/update-certs-and-restart-container.sh /etc/letsencrypt/renewal-hooks/deploy/
 sudo chmod +x /etc/letsencrypt/renewal-hooks/deploy/update-certs-and-restart-container.sh
 
 # Nginxの再起動
-echo "Restarting Nginx..."
+echo -e "${GREEN}Restarting Nginx...${RESET}"
 sudo systemctl restart nginx
 
-echo "Deployment completed successfully."
+echo -e "${GREEN}Deployment completed successfully.${RESET}"
