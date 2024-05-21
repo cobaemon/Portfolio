@@ -53,17 +53,17 @@ sudo systemctl enable docker
 echo "Docker installation and setup completed."
 
 # Certbotのインストール
-if [ "$OS" = "centos" ]; then
+if [ "$PKG_MANAGER" = "yum" ]; then
     sudo $PKG_MANAGER install -y epel-release
     sudo $PKG_MANAGER install -y certbot python2-certbot-nginx
-elif [ "$OS" = "ubuntu" ]; then
+elif [ "$PKG_MANAGER" = "apt" ]; then
     sudo $PKG_MANAGER install -y certbot python3-certbot-nginx
 fi
 
 # Nginxのインストール
-if [ "$OS" = "centos" ]; then
+if [ "$PKG_MANAGER" = "yum" ]; then
     sudo $PKG_MANAGER install -y nginx
-elif [ "$OS" = "ubuntu" ]; then
+elif [ "$PKG_MANAGER" = "apt" ]; then
     sudo $PKG_MANAGER install -y nginx
 fi
 
@@ -78,6 +78,13 @@ sudo cp $SCRIPT_DIR/host_portfolio.conf /etc/nginx/conf.d/portfolio.conf
 # Nginxのリロード
 sudo systemctl reload nginx
 
+# Gettextのインストール
+if [ "$PKG_MANAGER" = "yum" ]; then
+    sudo $PKG_MANAGER install -y gettext
+elif [ "$PKG_MANAGER" = "apt" ]; then
+    sudo $PKG_MANAGER install -y gettext
+fi
+
 # 証明書の存在を確認
 if sudo certbot certificates --cert-name portfolio.cobaemon.com > /dev/null 2>&1; then
     # 証明書が存在する場合は更新
@@ -88,4 +95,5 @@ else
     echo "Obtaining new certificate for portfolio.cobaemon.com..."
     sudo certbot --nginx -d portfolio.cobaemon.com --non-interactive --agree-tos -m "$EMAIL"
 fi
-echo "Docker, Nginx, and Certbot installation and setup completed."
+
+echo "Docker, Nginx, Certbot, and Gettext installation and setup completed."
