@@ -17,6 +17,12 @@ chmod +x deploy/encode-certs.sh
 chmod +x deploy/setup.sh
 chmod +x deploy/start-nginx.sh
 chmod +x deploy/update-certs-and-restart-container.sh
+chmod +x deploy/initialization.sh
+chmod +x deploy/finalize.sh
+
+# 初期化スクリプトの実行
+echo -e "${GREEN}Running initialization script...${RESET}"
+bash deploy/initialization.sh
 
 # setup.shスクリプトの実行
 echo -e "${GREEN}Running setup script...${RESET}"
@@ -34,14 +40,8 @@ bash deploy/encode-certs.sh
 echo -e "${GREEN}Building Docker images and starting containers...${RESET}"
 bash deploy/update-certs-and-restart-container.sh
 
-# Certbotのフックスクリプトにupdate-certs-and-restart-container.shを追加
-echo -e "${GREEN}Adding Certbot deployment hook...${RESET}"
-sudo mkdir -p /etc/letsencrypt/renewal-hooks/deploy
-sudo cp deploy/update-certs-and-restart-container.sh /etc/letsencrypt/renewal-hooks/deploy/
-sudo chmod +x /etc/letsencrypt/renewal-hooks/deploy/update-certs-and-restart-container.sh
-
-# Nginxの再起動
-echo -e "${GREEN}Restarting Nginx...${RESET}"
-sudo systemctl restart nginx
+# ファイナライズスクリプトの実行
+echo -e "${GREEN}Running finalize script...${RESET}"
+bash deploy/finalize.sh
 
 echo -e "${GREEN}Deployment completed successfully.${RESET}"
