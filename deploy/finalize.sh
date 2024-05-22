@@ -23,6 +23,6 @@ sudo systemctl restart nginx
 
 # Cronjobでパブリックアドレスの変更を自動でドメインに反映
 echo -e "${GREEN}Setting up cron job for updating Route 53 record...${RESET}"
-(crontab -l ; echo "*/10 * * * * /home/cobalt/Portfolio/deploy/update_route53_record.sh >> /home/cobalt/Portfolio/log/update_route53_record.log 2>&1") | crontab -
+(crontab -l 2>/dev/null; echo "*/10 * * * * /home/cobalt/Portfolio/deploy/update_route53_record.sh >> /home/cobalt/Portfolio/log/update_route53_record.log 2>&1") | crontab -
 
 echo -e "${LIGHT_MAGENTA}Finalize completed successfully.${RESET}"
