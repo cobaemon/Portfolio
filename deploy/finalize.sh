@@ -22,3 +22,6 @@ echo -e "${LIGHT_MAGENTA}Restarting Nginx...${RESET}"
 sudo systemctl restart nginx
 
 echo -e "${LIGHT_MAGENTA}Finalize completed successfully.${RESET}"
+
+# Cronjobでパブリックアドレスの変更を自動でドメインに反映
+sudo ./update_route53_record.sh

@@ -112,4 +112,17 @@ else
     sudo certbot --nginx -d portfolio.cobaemon.com --non-interactive --agree-tos -m "$EMAIL"
 fi
 
+# AWS CLIのインストール
+if ! command -v aws &> /dev/null; then
+    echo -e "${BLUE}AWS CLI not found. Installing AWS CLI...${RESET}"
+    if [ "$PKG_MANAGER" = "yum" ]; then
+        sudo $PKG_MANAGER install -y awscli
+    elif [ "$PKG_MANAGER" = "apt" ]; then
+        sudo $PKG_MANAGER install -y awscli
+    fi
+    echo -e "${BLUE}AWS CLI installation completed.${RESET}"
+else
+    echo -e "${BLUE}AWS CLI is already installed.${RESET}"
+fi
+
 echo -e "${BLUE}Setup script completed successfully.${RESET}"

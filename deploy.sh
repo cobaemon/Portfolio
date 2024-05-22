@@ -20,6 +20,7 @@ chmod +x deploy/update-certs-and-restart-container.sh
 chmod +x deploy/initialization.sh
 chmod +x deploy/finalize.sh
 chmod +x deploy/setup_iptables.sh
+cdmod +x deploy/update_route53_record.sh
 
 # 初期化スクリプトの実行
 echo -e "${GREEN}Running initialization script...${RESET}"
