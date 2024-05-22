@@ -46,10 +46,6 @@ bash deploy/encode-certs.sh
 echo -e "${GREEN}Building Docker images and starting containers...${RESET}"
 bash deploy/update-certs-and-restart-container.sh
 
-# Cronjobでパブリックアドレスの変更を自動でドメインに反映
-echo -e "${GREEN}Running update route53 record script...${RESET}"
-bash deploy/update_route53_record.sh
-
 # ファイナライズスクリプトの実行
 echo -e "${GREEN}Running finalize script...${RESET}"
 bash deploy/finalize.sh
