@@ -19,10 +19,15 @@ chmod +x deploy/start-nginx.sh
 chmod +x deploy/update-certs-and-restart-container.sh
 chmod +x deploy/initialization.sh
 chmod +x deploy/finalize.sh
+chmod +x deploy/setup_iptables.sh
 
 # 初期化スクリプトの実行
 echo -e "${GREEN}Running initialization script...${RESET}"
 bash deploy/initialization.sh
+
+# iptablesの設定を実行
+echo -e "${GREEN}Running setup iptables script...${RESET}"
+bash deploy/setup_iptables.sh
 
 # setup.shスクリプトの実行
 echo -e "${GREEN}Running setup script...${RESET}"
