@@ -38,10 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'portfolio',
+    'csp',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'csp.middleware.CSPMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -143,3 +145,19 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CSPポリシーの設定
+CSP_DEFAULT_SRC = ("'self'", 'https:')
+CSP_SCRIPT_SRC = ("'self'", 'https://use.fontawesome.com', 'https://cdn.jsdelivr.net', 'https://cdn.startbootstrap.com')
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", 'https://fonts.googleapis.com')
+CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com')
+CSP_IMG_SRC = ("'self'", 'data:')
+CSP_OBJECT_SRC = ("'none'")
+CSP_BASE_URI = ("'self'")
+CSP_FRAME_SRC = ("'none'")
+CSP_FRAME_ANCESTORS = ("'none'")
+CSP_REPORT_URI = ('/csp-report-endpoint',)
+
+# nonceを自動で含める設定
+CSP_EXCLUDE_URL_PREFIXES = ()
+CSP_INCLUDE_NONCE_IN = ['script-src']
