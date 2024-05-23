@@ -5,4 +5,4 @@ boto3
 gunicorn
 pillow
 pillow-avif-plugin
-djnago-csp
+django-csp
