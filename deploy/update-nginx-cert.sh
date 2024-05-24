@@ -21,14 +21,14 @@ SCRIPT_DIR="/home/cobalt/deploy/Portfolio/deploy"
 
 # 証明書と鍵のエンコードと.envファイルの更新
 log "${GREEN}Encoding certificates and updating .env file...${RESET}"
-bash $SCRIPT_DIR/encode-cert.sh 2>&1 | tee -a "$LOGFILE"
+bash $SCRIPT_DIR/encode-certs.sh 2>&1 | tee -a "$LOGFILE"
 
 # 環境変数の読み込み（ホスト側で実行）
 SSL_CERTIFICATE=$(grep ^SSL_CERTIFICATE= $SCRIPT_DIR/.env | cut -d '=' -f2)
 SSL_CERTIFICATE_KEY=$(grep ^SSL_CERTIFICATE_KEY= $SCRIPT_DIR/.env | cut -d '=' -f2)
 
 # Nginxコンテナの再起動
-NGINX_CONTAINER_NAME="nginx_container"  # ここにNginxコンテナの名前を設定
+NGINX_CONTAINER_NAME="portfolio-nginx"  # ここにNginxコンテナの名前を設定
 log "${GREEN}Reloading Nginx container with new certificates...${RESET}"
 
 # コンテナ内で環境変数を設定し、証明書をデコードして配置
