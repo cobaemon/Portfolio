@@ -21,6 +21,7 @@ chmod +x deploy/initialization.sh
 chmod +x deploy/finalize.sh
 chmod +x deploy/setup_iptables.sh
 chmod +x deploy/update_route53_record.sh
+chmod +x deploy/update-nginx-cert.sh
 
 # 初期化スクリプトの実行
 echo -e "${GREEN}Running initialization script...${RESET}"
@@ -45,6 +46,11 @@ bash deploy/encode-certs.sh
 # Dockerイメージのビルドとコンテナの起動
 echo -e "${GREEN}Building Docker images and starting containers...${RESET}"
 bash deploy/update-certs-and-restart-container.sh
+
+# Certbotフックの設定
+echo -e "${GREEN}Setting up Certbot deploy hook...${RESET}"
+sudo ln -sf /home/cobalt/deploy/Portfolio/deploy/update-nginx-cert.sh /etc/letsencrypt/renewal-hooks/deploy/update-nginx-cert.sh
+sudo chmod +x /etc/letsencrypt/renewal-hooks/deploy/update-nginx-cert.sh
 
 # ファイナライズスクリプトの実行
 echo -e "${GREEN}Running finalize script...${RESET}"
