@@ -13,7 +13,7 @@ SCRIPT_DIR="/home/cobalt/deploy/Portfolio/deploy"
 
 # 証明書と鍵のエンコードと.envファイルの更新
 echo -e "${LIGHT_GREEN}Encoding certificates and updating .env file...${RESET}"
-$SCRIPT_DIR/encode-cert.sh
+$SCRIPT_DIR/encode-certs.sh
 
 # Nginxコンテナの名前を設定
 NGINX_CONTAINER_NAME="portfolio-nginx"  # ここにNginxコンテナの名前を設定
