@@ -63,6 +63,7 @@ CURRENT_IP=$(aws route53 list-resource-record-sets \
     --profile $AWS_PROFILE)
 
 # IPアドレスが異なる場合のみ更新
+echo -e "${LIGHT_BLUE}$(date '+%Y/%m/%d/%H/%M/%S')${RESET}"
 if [ "$PUBLIC_IP" != "$CURRENT_IP" ]; then
     echo -e "${LIGHT_BLUE}Public IP has changed. Updating Route 53 A record...${RESET}"
     CHANGE_BATCH=$(cat <<EOF
