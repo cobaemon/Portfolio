@@ -16,6 +16,7 @@ echo -e "${YELLOW}Restarting Nginx...${RESET}"
 sudo systemctl restart nginx
 
 # docker composeの実行
+echo -e "${YELLOW}docker compose build and up...${RESET}"
 docker compose -f deploy/docker-compose.yaml build --no-cache
 docker compose -f deploy/docker-compose.yaml up -d
 
