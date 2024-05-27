@@ -14,7 +14,11 @@ SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 echo -e "${YELLOW}Initialization Start.${RESET}"
 
 # Portfolio用のログディレクトリの作成
-sudo mkdir /var/log/portfolio
+PORTFOLIO_LOG_DIR="/var/log/portfolio"
+if [ ! -d "$PORTFOLIO_LOG_DIR" ]; then
+    echo -e "${YELLOW}Creating portfolio log directory...${RESET}"
+    sudo mkdir -p "$PORTFOLIO_LOG_DIR"
+fi
 
 # Dockerのインストール確認
 if ! command -v docker &> /dev/null; then
