@@ -20,7 +20,7 @@ else
     # Docker composeファイルの存在確認
     if [ -f "$SCRIPT_DIR/docker-compose.yaml" ]; then
         echo -e "${YELLOW}Stopping Docker containers and pruning the system...${RESET}"
-        sudo docker compose -f "$SCRIPT_DIR/deploy/docker-compose.yaml" stop
+        sudo docker compose -f "$SCRIPT_DIR/docker-compose.yaml" stop
 
         echo -e "${YELLOW}Pruning Docker system...${RESET}"
         sudo docker system prune -af
