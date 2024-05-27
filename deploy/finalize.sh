@@ -15,6 +15,10 @@ SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 echo -e "${YELLOW}Restarting Nginx...${RESET}"
 sudo systemctl restart nginx
 
+# docker composeの実行
+docker compose -f deploy/docker-compose.yaml build --no-cache
+docker compose -f deploy/docker-compose.yaml up -d
+
 # Cronjobでパブリックアドレスの変更を自動でドメインに反映
 # Cronジョブの設定
 CRON_JOB="0 * * * * /home/cobalt/deploy/Portfolio/deploy/update-route53-record.sh >> /home/cobalt/deploy/Portfolio/logs/update-route53-record.log 2>&1"
