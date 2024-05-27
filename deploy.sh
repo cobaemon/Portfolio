@@ -27,6 +27,7 @@ chmod +x deploy/docker-setup.sh
 chmod +x deploy/certbot-setup.sh
 chmod +x deploy/nginx-setup.sh
 chmod +x deploy/aws-cli-setup.sh
+chmod +x deploy/fail2ban-setup.sh
 chmod +x deploy/finalize.sh
 
 # 初期化
@@ -46,6 +47,9 @@ bash deploy/nginx-setup.sh
 
 # AWS CLIのセットアップ
 bash deploy/aws-cli-setup.sh
+
+# fail2banのセットアップ
+bash deploy/fail2ban-setup.sh
 
 # 最終処理
 bash deploy/finalize.sh
