@@ -52,62 +52,50 @@ if [ -f "$CUSTOM_JAIL_CONF" ]; then
     sudo cp "$CUSTOM_JAIL_CONF" /etc/fail2ban/jail.local
 fi
 
-# nginx-404フィルタの設定を追加
-NGINX_404_FILTER="/etc/fail2ban/filter.d/nginx-404.conf"
-if [ ! -f "$NGINX_404_FILTER" ]; then
-    echo -e "${YELLOW}Creating nginx-404 filter...${RESET}"
-    sudo bash -c 'cat <<EOT > /etc/fail2ban/filter.d/nginx-404.conf
-[Definition]
-failregex = ^<HOST> - .* "(GET|POST|HEAD) .* HTTP.*" 404
-ignoreregex =
-EOT'
-fi
+# フィルタの設定を追加
+create_filter() {
+    local filter_path=$1
+    local filter_content=$2
+    if [ ! -f "$filter_path" ]; then
+        echo -e "${YELLOW}Creating $(basename "$filter_path") filter...${RESET}"
+        sudo bash -c "cat <<EOT > $filter_path
+$filter_content
+EOT"
+    fi
+}
 
-# nginx-400フィルタの設定を追加
-NGINX_400_FILTER="/etc/fail2ban/filter.d/nginx-400.conf"
-if [ ! -f "$NGINX_400_FILTER" ]; then
-    echo -e "${YELLOW}Creating nginx-400 filter...${RESET}"
-    sudo bash -c 'cat <<EOT > /etc/fail2ban/filter.d/nginx-400.conf
+# フィルタ設定
+create_filter "/etc/fail2ban/filter.d/nginx-404.conf" "
 [Definition]
-failregex = ^<HOST> - .* "(GET|POST|HEAD|PUT|DELETE|PATCH|OPTIONS) .* HTTP.*" 400
+failregex = ^<HOST> - .* \"(GET|POST|HEAD) .* HTTP.*\" 404
 ignoreregex =
-EOT'
-fi
+"
 
-# nginx-noscriptフィルタの設定を追加
-NGINX_NOSCRIPT_FILTER="/etc/fail2ban/filter.d/nginx-noscript.conf"
-if [ ! -f "$NGINX_NOSCRIPT_FILTER" ]; then
-    echo -e "${YELLOW}Creating nginx-noscript filter...${RESET}"
-    sudo bash -c 'cat <<EOT > /etc/fail2ban/filter.d/nginx-noscript.conf
+create_filter "/etc/fail2ban/filter.d/nginx-400.conf" "
 [Definition]
-failregex = ^<HOST> - .* "(GET|POST) .*\.php.* HTTP.*" 404
-            ^<HOST> - .* "(GET|POST) .*\.exe.* HTTP.*" 404
-            ^<HOST> - .* "(GET|POST) .*\.pl.* HTTP.*" 404
+failregex = ^<HOST> - .* \"(GET|POST|HEAD|PUT|DELETE|PATCH|OPTIONS) .* HTTP.*\" 400
 ignoreregex =
-EOT'
-fi
+"
 
-# nginx-proxyフィルタの設定を追加
-NGINX_PROXY_FILTER="/etc/fail2ban/filter.d/nginx-proxy.conf"
-if [ ! -f "$NGINX_PROXY_FILTER" ]; then
-    echo -e "${YELLOW}Creating nginx-proxy filter...${RESET}"
-    sudo bash -c 'cat <<EOT > /etc/fail2ban/filter.d/nginx-proxy.conf
+create_filter "/etc/fail2ban/filter.d/nginx-noscript.conf" "
 [Definition]
-failregex = ^<HOST> - .* "(GET|POST) .* HTTP.*" 403
+failregex = ^<HOST> - .* \"(GET|POST) .*\\.php.* HTTP.*\" 404
+            ^<HOST> - .* \"(GET|POST) .*\\.exe.* HTTP.*\" 404
+            ^<HOST> - .* \"(GET|POST) .*\\.pl.* HTTP.*\" 404
 ignoreregex =
-EOT'
-fi
+"
 
-# nginx-limit-reqフィルタの設定を追加
-NGINX_LIMIT_REQ_FILTER="/etc/fail2ban/filter.d/nginx-limit-req.conf"
-if [ ! -f "$NGINX_LIMIT_REQ_FILTER" ]; then
-    echo -e "${YELLOW}Creating nginx-limit-req filter...${RESET}"
-    sudo bash -c 'cat <<EOT > /etc/fail2ban/filter.d/nginx-limit-req.conf
+create_filter "/etc/fail2ban/filter.d/nginx-proxy.conf" "
 [Definition]
-failregex = ^<HOST> - .* "(GET|POST) .* HTTP.*" 503
+failregex = ^<HOST> - .* \"(GET|POST) .* HTTP.*\" 403
 ignoreregex =
-EOT'
-fi
+"
+
+create_filter "/etc/fail2ban/filter.d/nginx-limit-req.conf" "
+[Definition]
+failregex = ^<HOST> - .* \"(GET|POST) .* HTTP.*\" 503
+ignoreregex =
+"
 
 # fail2banの再起動
 echo -e "${YELLOW}Restarting Fail2ban...${RESET}"
