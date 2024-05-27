@@ -4,23 +4,37 @@
 set -e
 
 # 色の定義
-LIGHT_CYAN="\e[96m"
+YELLOW="\e[33m"
 RED="\e[31m"
 RESET="\e[0m"
 
 # スクリプトのディレクトリを基準にパスを設定
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
-# Dockerコンテナの停止とシステムクリーンアップ
-echo -e "${LIGHT_CYAN}Stopping Docker containers and pruning the system...${RESET}"
-sudo docker compose -f deploy/docker-compose.yaml stop
+echo -e "${YELLOW}Initialization Start.${RESET}"
 
-# Dockerシステム全体のクリーンアップ
-echo -e "${LIGHT_CYAN}Pruning Docker system...${RESET}"
-sudo docker system prune -af
+# Dockerのインストール確認
+if ! command -v docker &> /dev/null; then
+    echo -e "${RED}Docker is not installed. Skipping Docker-related steps.${RESET}"
+else
+    # Docker composeファイルの存在確認
+    if [ -f "$SCRIPT_DIR/deploy/docker-compose.yaml" ]; then
+        echo -e "${YELLOW}Stopping Docker containers and pruning the system...${RESET}"
+        sudo docker compose -f "$SCRIPT_DIR/deploy/docker-compose.yaml" stop
 
-# Nginxキャッシュのクリア
-echo -e "${LIGHT_CYAN}Clearing Nginx cache...${RESET}"
-sudo rm -rf /var/cache/nginx/*
+        echo -e "${YELLOW}Pruning Docker system...${RESET}"
+        sudo docker system prune -af
+    else
+        echo -e "${RED}Docker compose file not found. Skipping Docker-related steps.${RESET}"
+    fi
+fi
 
-echo -e "${LIGHT_CYAN}Initialization completed successfully.${RESET}"
+# Nginxのキャッシュディレクトリの存在確認
+if [ -d /var/cache/nginx ]; then
+    echo -e "${YELLOW}Clearing Nginx cache...${RESET}"
+    sudo rm -rf /var/cache/nginx/*
+else
+    echo -e "${RED}Nginx cache directory not found. Skipping Nginx cache clearing.${RESET}"
+fi
+
+echo -e "${YELLOW}Initialization Successfully.${RESET}"

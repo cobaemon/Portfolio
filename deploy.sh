@@ -11,49 +11,91 @@ RESET="\e[0m"
 # スクリプトのディレクトリを基準にパスを設定
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
+echo -e "${GREEN}Deploy Start.${RESET}"
+
 # 実行権限の設定
 echo -e "${GREEN}Setting execute permissions for deploy directory scripts...${RESET}"
-chmod +x deploy/encode-certs.sh
-chmod +x deploy/setup.sh
-chmod +x deploy/start-nginx.sh
 chmod +x deploy/update-certs-and-restart-container.sh
-chmod +x deploy/initialization.sh
-chmod +x deploy/finalize.sh
-chmod +x deploy/setup_iptables.sh
-chmod +x deploy/update_route53_record.sh
-chmod +x deploy/update-nginx-cert.sh
+chmod +x deploy/encode-certs.sh
+chmod +x deploy/update-container-nginx-cert.sh
+chmod +x deploy/update-route53-record.sh
+chmod +x deploy/start-container-nginx.sh
 
-# 初期化スクリプトの実行
-echo -e "${GREEN}Running initialization script...${RESET}"
+chmod +x deploy/initialization.sh
+chmod +x deploy/iptables-setup.sh
+chmod +x deploy/docker-setup.sh
+chmod +x deploy/certbot-setup.sh
+chmod +x deploy/nginx-setup.sh
+chmod +x deploy/aws-cli-setup.sh
+chmod +x deploy/finalize.sh
+
+# 初期化
 bash deploy/initialization.sh
 
-# iptablesの設定を実行
-echo -e "${GREEN}Running setup iptables script...${RESET}"
-bash deploy/setup_iptables.sh
+# iptablesのセットアップ
+bash deploy/iptables-setup.sh
 
-# setup.shスクリプトの実行
-echo -e "${GREEN}Running setup script...${RESET}"
-bash deploy/setup.sh
+# dockerのセットアップ
+bash deploy/docker-setup.sh
 
-# 設定ファイルのコピー
-echo -e "${GREEN}Copying Nginx configuration files...${RESET}"
-sudo cp deploy/host_portfolio.conf /etc/nginx/conf.d/portfolio.conf
+# certbotのセットアップ
+bash deploy/certbot-setup.sh
 
-# 証明書のエンコードと配置
-echo -e "${GREEN}Encoding and placing certificates...${RESET}"
-bash deploy/encode-certs.sh
+# nginxのセットアップ
+bash deploy/nginx-setup.sh
 
-# Dockerイメージのビルドとコンテナの起動
-echo -e "${GREEN}Building Docker images and starting containers...${RESET}"
-bash deploy/update-certs-and-restart-container.sh
+# AWS CLIのセットアップ
+bash deploy/aws-cli-setup.sh
 
-# Certbotフックの設定
-echo -e "${GREEN}Setting up Certbot deploy hook...${RESET}"
-sudo ln -sf /home/cobalt/deploy/Portfolio/deploy/update-nginx-cert.sh /etc/letsencrypt/renewal-hooks/deploy/update-nginx-cert.sh
-sudo chmod +x /etc/letsencrypt/renewal-hooks/deploy/update-nginx-cert.sh
-
-# ファイナライズスクリプトの実行
-echo -e "${GREEN}Running finalize script...${RESET}"
+# 最終処理
 bash deploy/finalize.sh
 
 echo -e "${GREEN}Deployment completed successfully.${RESET}"
+
+
+# # 実行権限の設定
+# echo -e "${GREEN}Setting execute permissions for deploy directory scripts...${RESET}"
+# chmod +x deploy/encode-certs.sh
+# chmod +x deploy/setup.sh
+# chmod +x deploy/start-nginx.sh
+# chmod +x deploy/update-certs-and-restart-container.sh
+# chmod +x deploy/initialization.sh
+# chmod +x deploy/finalize.sh
+# chmod +x deploy/setup_iptables.sh
+# chmod +x deploy/update_route53_record.sh
+# chmod +x deploy/update-nginx-cert.sh
+
+# # 初期化スクリプトの実行
+# echo -e "${GREEN}Running initialization script...${RESET}"
+# bash deploy/initialization.sh
+
+# # iptablesの設定を実行
+# echo -e "${GREEN}Running setup iptables script...${RESET}"
+# bash deploy/setup_iptables.sh
+
+# # setup.shスクリプトの実行
+# echo -e "${GREEN}Running setup script...${RESET}"
+# bash deploy/setup.sh
+
+# # 設定ファイルのコピー
+# echo -e "${GREEN}Copying Nginx configuration files...${RESET}"
+# sudo cp deploy/host_portfolio.conf /etc/nginx/conf.d/portfolio.conf
+
+# # 証明書のエンコードと配置
+# echo -e "${GREEN}Encoding and placing certificates...${RESET}"
+# bash deploy/encode-certs.sh
+
+# # Dockerイメージのビルドとコンテナの起動
+# echo -e "${GREEN}Building Docker images and starting containers...${RESET}"
+# bash deploy/update-certs-and-restart-container.sh
+
+# # Certbotフックの設定
+# echo -e "${GREEN}Setting up Certbot deploy hook...${RESET}"
+# sudo ln -sf /home/cobalt/deploy/Portfolio/deploy/update-nginx-cert.sh /etc/letsencrypt/renewal-hooks/deploy/update-nginx-cert.sh
+# sudo chmod +x /etc/letsencrypt/renewal-hooks/deploy/update-nginx-cert.sh
+
+# # ファイナライズスクリプトの実行
+# echo -e "${GREEN}Running finalize script...${RESET}"
+# bash deploy/finalize.sh
+
+# echo -e "${GREEN}Deployment completed successfully.${RESET}"
