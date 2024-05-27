@@ -26,6 +26,6 @@ sudo /home/cobalt/deploy/Portfolio/deploy/update-container-nginx-cert.sh
 
 # ログの記録
 echo -e "${GREEN}Logging the update...${RESET}"
-sudo sh -c 'echo "$(date): SSL certificates updated and containers restarted." >> /var/log/cert_update.log'
+sudo sh -c 'echo "$(date): SSL certificates updated and containers restarted." >> /var/log/portfolio/cert_update.log'
 
 echo -e "${GREEN}Script execution completed successfully.${RESET}"

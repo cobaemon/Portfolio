@@ -9,7 +9,7 @@ RED="\e[31m"
 RESET="\e[0m"
 
 # ログファイルの定義
-LOGFILE="/home/cobalt/deploy/Portfolio/logs/update-container-nginx-cert.log"
+LOGFILE="/var/log/portfolio/update-container-nginx-cert.log"
 
 # ログ出力関数の定義
 log() {
@@ -18,10 +18,6 @@ log() {
 
 # スクリプトのディレクトリを基準にパスを設定（絶対パスで設定）
 SCRIPT_DIR="/home/cobalt/deploy/Portfolio/deploy"
-
-# # 証明書と鍵のエンコードと.envファイルの更新
-# log "${YELLOW}Encoding certificates and updating .env file...${RESET}"
-# bash $SCRIPT_DIR/encode-certs.sh 2>&1 | tee -a "$LOGFILE"
 
 # 環境変数の読み込み（ホスト側で実行）
 SSL_CERTIFICATE=$(grep ^SSL_CERTIFICATE= $SCRIPT_DIR/.env | cut -d '=' -f2- | tr -d '\r\n')

@@ -13,6 +13,9 @@ SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
 echo -e "${YELLOW}Initialization Start.${RESET}"
 
+# Portfolio用のログディレクトリの作成
+sudo mkdir /var/log/portfolio
+
 # Dockerのインストール確認
 if ! command -v docker &> /dev/null; then
     echo -e "${RED}Docker is not installed. Skipping Docker-related steps.${RESET}"
