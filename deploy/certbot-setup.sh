@@ -74,7 +74,7 @@ else
 fi
 
 # 証明書を暗号化し.envを更新
-sudo ./encode-certs.sh
+sudo /home/cobalt/deploy/Portfolio/deploy/encode-certs.sh
 
 # Certbotのフックスクリプトにupdate-certs-and-restart-container.shを追加
 echo -e "${YELLOW}Adding Certbot deployment hook...${RESET}"
