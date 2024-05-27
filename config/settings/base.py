@@ -66,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'csp.context_processors.nonce',
             ],
         },
     },
@@ -146,10 +147,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CSPポリシーの設定
 CSP_DEFAULT_SRC = ("'self'", 'https:')
 CSP_SCRIPT_SRC = ("'self'", 'https://use.fontawesome.com', 'https://cdn.jsdelivr.net', 'https://cdn.startbootstrap.com')
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", 'https://fonts.googleapis.com')
+CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com')
 CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com')
 CSP_IMG_SRC = ("'self'", 'data:')
 CSP_OBJECT_SRC = ("'none'")
@@ -158,6 +158,4 @@ CSP_FRAME_SRC = ("'none'")
 CSP_FRAME_ANCESTORS = ("'none'")
 CSP_REPORT_URI = ('/csp-report-endpoint',)
 
-# nonceを自動で含める設定
-CSP_EXCLUDE_URL_PREFIXES = ()
-CSP_INCLUDE_NONCE_IN = ['script-src']
+CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src']
