@@ -159,3 +159,4 @@ CSP_FRAME_ANCESTORS = ("'none'")
 CSP_REPORT_URI = ('/csp-report-endpoint',)
 
 CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src']
+CSP_STYLE_SRC_NONCE = True
