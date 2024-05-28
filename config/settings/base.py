@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'portfolio',
-    'csp',
 ]
 
 MIDDLEWARE = [
@@ -66,7 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'csp.context_processors.nonce',
+                # 'csp.context_processors.nonce',
             ],
         },
     },
@@ -148,8 +147,19 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSP_DEFAULT_SRC = ("'self'", 'https:')
-CSP_SCRIPT_SRC = ("'self'", 'https://use.fontawesome.com', 'https://cdn.jsdelivr.net', 'https://cdn.startbootstrap.com')
-CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com')
+CSP_SCRIPT_SRC = (
+    "'self'",
+    'https://use.fontawesome.com',
+    'https://cdn.jsdelivr.net',
+    'https://cdn.startbootstrap.com'
+)
+CSP_STYLE_SRC = (
+    "'self'",
+    'https://fonts.googleapis.com',
+    'https://use.fontawesome.com',
+    'https://cdn.jsdelivr.net',
+    'https://cdn.startbootstrap.com'
+)
 CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com')
 CSP_IMG_SRC = ("'self'", 'data:')
 CSP_OBJECT_SRC = ("'none'")
@@ -160,3 +170,4 @@ CSP_REPORT_URI = ('/csp-report-endpoint',)
 
 CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src']
 CSP_STYLE_SRC_NONCE = True
+CSP_SCRIPT_SRC_NONCE = True
