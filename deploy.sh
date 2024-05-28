@@ -22,6 +22,7 @@ chmod +x deploy/update-route53-record.sh
 chmod +x deploy/start-container-nginx.sh
 
 chmod +x deploy/initialization.sh
+chmod +x deploy/systemclock-setup.sh
 chmod +x deploy/iptables-setup.sh
 chmod +x deploy/docker-setup.sh
 chmod +x deploy/certbot-setup.sh
@@ -32,6 +33,9 @@ chmod +x deploy/finalize.sh
 
 # 初期化
 bash deploy/initialization.sh
+
+# システムクロックの設定
+bash deploy/systemclock-setup.sh
 
 # iptablesのセットアップ
 bash deploy/iptables-setup.sh
