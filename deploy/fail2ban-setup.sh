@@ -97,21 +97,6 @@ failregex = ^<HOST> - .* \"(GET|POST) .* HTTP.*\" 503
 ignoreregex =
 "
 
-# iptables-multiport.confファイルの作成
-cat <<EOL | sudo tee /etc/fail2ban/action.d/iptables-multiport.conf
-[Definition]
-actionstart = iptables -N fail2ban-<name>
-              iptables -A fail2ban-<name> -j RETURN
-              iptables -I INPUT -p <protocol> -m multiport --dports <port> -j fail2ban-<name>
-actionstop = iptables -D INPUT -p <protocol> -m multiport --dports <port> -j fail2ban-<name>
-             iptables -F fail2ban-<name>
-             iptables -X fail2ban-<name>
-
-actioncheck = iptables -n -L INPUT | grep -q 'fail2ban-<name>[[:space:]]'
-actionban = iptables -I fail2ban-<name> 1 -s <ip> -j REJECT --reject-with icmp-port-unreachable
-actionunban = iptables -D fail2ban-<name> -s <ip> -j REJECT --reject-with icmp-port-unreachable
-EOL
-
 # fail2banの再起動
 echo -e "${YELLOW}Restarting Fail2ban...${RESET}"
 sudo systemctl restart fail2ban

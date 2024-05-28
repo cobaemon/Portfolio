@@ -88,14 +88,6 @@ iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 # ping (ICMP echo requests) を許可
 iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
 
-# fail2banチェーンの作成（既に存在する場合はスキップ）
-iptables -N fail2ban-recidive 2>/dev/null
-iptables -A INPUT -p tcp -m multiport --dports 22,80,443 -j fail2ban-recidive
-iptables -A fail2ban-recidive -j RETURN
-
-# 永久バンのための特定のルール
-iptables -A fail2ban-recidive -j REJECT --reject-with icmp-port-unreachable
-
 # その他のトラフィックを拒否
 iptables -A INPUT -j DROP
 
@@ -103,18 +95,10 @@ iptables -A INPUT -j DROP
 ip link set docker0 up
 
 # iptablesルールの保存
-if [ "$OS" = "ubuntu" ]; then
-    iptables-save | sudo tee /etc/iptables/rules.v4
-elif [ "$OS" = "centos" ]; then
-    service iptables save
-fi
+service iptables save
 
 # iptablesサービスの再起動
-if [ "$OS" = "centos" ]; then
-    service iptables restart
-else
-    sudo systemctl restart netfilter-persistent
-fi
+service iptables restart
 
 systemctl restart docker
 
