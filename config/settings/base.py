@@ -168,3 +168,8 @@ CSP_BASE_URI = ("'self'")
 CSP_FRAME_SRC = ("'none'")
 CSP_FRAME_ANCESTORS = ("'none'")
 CSP_REPORT_URI = ('/csp-report-endpoint',)
+
+# nonceを有効化
+CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src']
+CSP_STYLE_SRC_NONCE = True
+CSP_SCRIPT_SRC_NONCE = True
