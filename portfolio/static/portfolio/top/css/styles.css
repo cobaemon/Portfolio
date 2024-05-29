@@ -11044,3 +11044,10 @@ html {
 .copyright {
   background-color: #1a252f;
 }
+
+.text-no-decoration {
+  text-decoration: none;
+}
+.hide {
+  display: none;
+}
