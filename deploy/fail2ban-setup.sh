@@ -41,6 +41,10 @@ elif [ "$OS" = "centos" ]; then
 fi
 
 # fail2banの設定ファイルを作成または確認
+echo -e "${YELLOW}Fail2ban Databasefile initialization...${RESET}"
+sudo systemctl stop fail2ban
+sudo rm -f /var/lib/fail2ban/fail2ban.sqlite3
+
 echo -e "${YELLOW}Setting up Fail2ban configuration...${RESET}"
 sudo systemctl enable fail2ban
 sudo systemctl start fail2ban
