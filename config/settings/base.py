@@ -162,7 +162,8 @@ CSP_STYLE_SRC = (
     'https://fonts.googleapis.com',
     'https://use.fontawesome.com',
     'https://cdn.jsdelivr.net',
-    'https://cdn.startbootstrap.com'
+    'https://cdn.startbootstrap.com',
+    "'sha256-tIs8OfjWm8MHgPJrHv7mM4wvA/FDFcra3Pd5icRMX+k='"
 )
 CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com')
 CSP_IMG_SRC = ("'self'", 'data:')
