@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
 {% load i18n %}
+{% load csp %}
 <html lang="ja">
     <head>
         <meta charset="utf-8" />
@@ -242,11 +243,11 @@
                                 {% endif %}
                             </div>
                             <!-- Submit Button-->
-                            <div id="successMessage" class="alert alert-success " role="alert" style="display: none;">
+                            <div id="successMessage" class="alert alert-success " role="alert" style="display: none;" nonce="{{ request.csp_nonce }}">
                                 {% trans "Your message has been sent successfully." %}"
                                 <button type="button" class="btn-close float-end" aria-label="Close"></button>
                             </div>
-                            <div id="errorMessage" class="alert alert-danger" role="alert" style="display: none;">
+                            <div id="errorMessage" class="alert alert-danger" role="alert" style="display: none;" nonce="{{ request.csp_nonce }}">
                                 {% trans "Your message could not be sent. Please try again." %}
                                 <button type="button" class="btn-close float-end" aria-label="Close"></button>
                             </div>
