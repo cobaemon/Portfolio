@@ -66,11 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'csp.context_processors.nonce',
             ],
-            'libraries':          {
-                'csp': 'csp.templatetags.csp',
-            }
         },
     },
 ]
@@ -172,7 +168,3 @@ CSP_BASE_URI = ("'self'")
 CSP_FRAME_SRC = ("'none'")
 CSP_FRAME_ANCESTORS = ("'none'")
 CSP_REPORT_URI = ('/csp-report-endpoint',)
-
-CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src']
-CSP_STYLE_SRC_NONCE = True
-CSP_SCRIPT_SRC_NONCE = True
