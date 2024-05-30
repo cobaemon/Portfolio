@@ -47,8 +47,7 @@
                                 {% get_language_info_list for LANGUAGES as languages %}
                                 {% for language in languages %}
                                     <li>
-                                        <form action="{% url 'set_language' %}" method="post" style="margin: 0;">
-                                            {% csrf_token %}
+                                        <form action="{% url 'set_language' %}" method="post" class="form-no-margin">                                            {% csrf_token %}
                                             <input name="next" type="hidden" value="{{ request.path }}">
                                             <button type="submit" name="language" value="{{ language.code }}" class="dropdown-item py-3 px-0 px-lg-3 rounded {% if language.code == LANGUAGE_CODE %} disabled {% endif %}">
                                                 <div class="nav-link ps-3 fw-bold fs-5 text-primary {% if language.code == LANGUAGE_CODE %} text-info {% endif %}">{{ language.name_local }}</div>
