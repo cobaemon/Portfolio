@@ -14,12 +14,12 @@ ENV BRANCH_NAME=dev2-deploy-nginx
 
 # リポジトリのクローンまたは更新
 RUN if [ -d "$REPO_DIR/.git" ]; then \
-        cd $REPO_DIR && git pull origin $BRANCH_NAME; \
+        cd $REPO_DIR && git reset --hard && git pull origin $BRANCH_NAME; \
     else \
         git clone -b $BRANCH_NAME $REPO_URL $REPO_DIR; \
     fi
-    
-# 依存関係のインストール
+
+    # 依存関係のインストール
 WORKDIR	/app/Portfolio
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
