@@ -11044,3 +11044,15 @@ html {
 .copyright {
   background-color: #1a252f;
 }
+
+.custom-link {
+  text-decoration: none;
+}
+
+.custom-success {
+  display: none;
+}
+
+.custom-error {
+  display: none;
+}
