@@ -197,7 +197,7 @@
                 <!-- Contact Section Form-->
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-xl-7">
-                        <form id="contactForm" data-sb-form-api-token="API_TOKEN" method="post" action="{% url 'portfolio:top' %}">
+                        <form id="contactForm" method="post" action="{% url 'portfolio:top' %}">
                             {% csrf_token %}
                             <!-- Name input-->
                             <div class="form-floating mb-3">
@@ -474,6 +474,5 @@
         <!-- * *                               SB Forms JS                               * *-->
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js" nonce="{{ request.csp_nonce }}"></script>
     </body>
 </html>
