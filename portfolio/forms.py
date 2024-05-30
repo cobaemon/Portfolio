@@ -2,7 +2,6 @@ from django import forms
 from django.core.mail import EmailMessage
 from django.conf import settings
 
-
 class ContactForm(forms.Form):
     full_name = forms.CharField(
         label='Full Name', 
@@ -10,7 +9,8 @@ class ContactForm(forms.Form):
         widget=forms.TextInput(attrs={
             'name': 'full_name',
             'class': 'form-control',
-            'placeholder': 'Enter your name...'
+            'placeholder': 'Enter your name...',
+            'autocomplete': 'name'  # autocomplete属性を追加
         })
     )
     email = forms.EmailField(
@@ -19,7 +19,8 @@ class ContactForm(forms.Form):
             'name': 'email',
             'class': 'form-control',
             'placeholder': 'name@example.com',
-            'data-sb-validations': 'required,email'
+            'data-sb-validations': 'required,email',
+            'autocomplete': 'email'  # autocomplete属性を追加
         })
     )
     phone_number = forms.CharField(
@@ -28,7 +29,8 @@ class ContactForm(forms.Form):
         widget=forms.TextInput(attrs={
             'name': 'phone_number',
             'class': 'form-control',
-            'placeholder': '(123) 456-7890'
+            'placeholder': '(123) 456-7890',
+            'autocomplete': 'tel'  # autocomplete属性を追加
         })
     )
     message = forms.CharField(
@@ -36,7 +38,8 @@ class ContactForm(forms.Form):
         widget=forms.Textarea(attrs={
             'name': 'message',
             'class': 'form-control',
-            'placeholder': 'Enter your message here...'
+            'placeholder': 'Enter your message here...',
+            'autocomplete': 'off'  # メッセージフィールドにはautocompleteをオフに設定
         })
     )
 
