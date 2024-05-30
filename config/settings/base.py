@@ -155,7 +155,8 @@ CSP_SCRIPT_SRC = (
     "'self'",
     'https://use.fontawesome.com',
     'https://cdn.jsdelivr.net',
-    'https://cdn.startbootstrap.com'
+    'https://cdn.startbootstrap.com',
+    "'strict-dynamic'",
 )
 CSP_STYLE_SRC = (
     "'self'",
@@ -163,6 +164,7 @@ CSP_STYLE_SRC = (
     'https://use.fontawesome.com',
     'https://cdn.jsdelivr.net',
     'https://cdn.startbootstrap.com',
+    "'strict-dynamic'",
 )
 CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com')
 CSP_IMG_SRC = ("'self'", 'data:')
