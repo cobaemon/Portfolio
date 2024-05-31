@@ -124,3 +124,21 @@ window.addEventListener('DOMContentLoaded', event => {
         errorMessage.style.display = 'none';
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    var dropdownMenu = document.getElementById('dropdown-menu');
+    var navbar = document.querySelector('.navbar');
+
+    function adjustDropdownHeight() {
+        var windowHeight = window.innerHeight;
+        var navbarHeight = navbar.offsetHeight;
+        var availableHeight = windowHeight - navbarHeight - 20; // 20px for padding/margin
+
+        dropdownMenu.style.maxHeight = availableHeight + 'px';
+        dropdownMenu.style.overflowY = 'auto';
+    }
+
+    adjustDropdownHeight();
+
+    window.addEventListener('resize', adjustDropdownHeight);
+});
