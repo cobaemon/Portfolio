@@ -261,8 +261,13 @@
                     <!-- Footer Social Icons-->
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Around the Web</h4>
-                        <!-- <a class="btn btn-outline-light btn-social mx-1" href="https://github.com/cobaemon" target="_blank"><i class="fab fa-fw fa-github"></i></a> -->
-                        <a class="btn btn-outline-light btn-social mx-1" href="https://github.com/cobaemon" target="_blank"><i class="bi bi-github" style="font-size: 2rem;"></i></i></a>
+                        <a class="btn btn-outline-light btn-social mx-1" href="https://github.com/cobaemon" target="_blank">
+                            <picture>
+                                <source srcset="{% static '/top/assets/img/github-mark-white.avif' %}" type="image/avif">
+                                <source srcset="{% static '/top/assets/img/github-mark-white.webp' %}" type="image/webp">
+                                <img class="img-fluid" src="{% static '/top/assets/img/github-mark-white.png' %}" alt="..." loading="lazy">
+                            </picture>
+                        </a>
                     </div>
                 </div>
             </div>
