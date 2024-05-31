@@ -8,6 +8,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y git gettext && rm
 WORKDIR /app
 
 # リポジトリのURLを環境変数として設定
+ENV DJANGO_SETTINGS_MODULE=config.settings.production
 ENV REPO_URL=https://github.com/cobaemon/Portfolio.git
 ENV REPO_DIR=/app/Portfolio
 ENV BRANCH_NAME=dev2-deploy-nginx
@@ -24,7 +25,7 @@ WORKDIR	/app/Portfolio
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 RUN django-admin compilemessages
-RUN python /app/Portfolio/manage.py collectstatic
+RUN python ./manage.py collectstatic
 RUN python ./deploy/convert_images.py ../static
 
 # アプリケーションの起動
