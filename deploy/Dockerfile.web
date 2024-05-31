@@ -8,6 +8,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y git gettext && rm
 WORKDIR /app
 
 # リポジトリのURLを環境変数として設定
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app/Portfolio
 ENV DJANGO_SETTINGS_MODULE=config.settings.production
 ENV REPO_URL=https://github.com/cobaemon/Portfolio.git
 ENV REPO_DIR=/app/Portfolio
@@ -22,11 +24,12 @@ RUN if [ -d "$REPO_DIR/.git" ]; then \
 
 # 依存関係のインストール
 WORKDIR	/app/Portfolio
+RUN mkdir logs
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 RUN django-admin compilemessages
 RUN python ./manage.py collectstatic --noinput
-RUN python ./deploy/convert_images.py ../static
+RUN python ./deploy/convert_images.py static
 
 # アプリケーションの起動
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "config.wsgi:application", \
