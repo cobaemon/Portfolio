@@ -128,13 +128,20 @@ window.addEventListener('DOMContentLoaded', event => {
 document.addEventListener('DOMContentLoaded', function() {
     var dropdownMenu = document.getElementById('dropdown-menu');
     var dropdownItems = dropdownMenu.querySelectorAll('li');
+    var navbar = document.getElementById('mainNav');
+    var collapseElement = document.getElementById('navbarResponsive');
 
     function adjustDropdownHeight() {
+        var navbarHeight = navbar.offsetHeight;
+        var collapseHeight = collapseElement.offsetHeight;
+        var windowHeight = window.innerHeight;
+
+        var availableHeight = windowHeight - navbarHeight - collapseHeight - 20; // 20px for padding/margin
         if (dropdownItems.length > 3) {
             var itemHeight = dropdownItems[0].offsetHeight;
             dropdownMenu.style.maxHeight = (itemHeight * 3) + 'px';
         } else {
-            dropdownMenu.style.maxHeight = 'none';
+            dropdownMenu.style.maxHeight = availableHeight + 'px';
         }
     }
 
