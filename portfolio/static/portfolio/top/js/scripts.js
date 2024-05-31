@@ -130,6 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var dropdownItems = dropdownMenu.querySelectorAll('li');
     var navbar = document.getElementById('mainNav');
     var collapseElement = document.getElementById('navbarResponsive');
+    var menuButton = document.querySelector('.navbar-toggler');
 
     function adjustDropdownHeight() {
         var navbarHeight = navbar.offsetHeight;
@@ -137,18 +138,34 @@ document.addEventListener('DOMContentLoaded', function() {
         var windowHeight = window.innerHeight;
 
         var availableHeight = windowHeight - navbarHeight - collapseHeight - 20; // 20px for padding/margin
+        dropdownMenu.style.maxHeight = availableHeight + 'px';
+    }
+
+    function initializeDropdownHeight() {
         if (dropdownItems.length > 3) {
             var itemHeight = dropdownItems[0].offsetHeight;
             dropdownMenu.style.maxHeight = (itemHeight * 3) + 'px';
         } else {
-            dropdownMenu.style.maxHeight = availableHeight + 'px';
+            adjustDropdownHeight();
         }
     }
 
-    adjustDropdownHeight();
+    initializeDropdownHeight();
 
+    // ウィンドウのリサイズイベント
     window.addEventListener('resize', adjustDropdownHeight);
-    document.getElementById('navbarDropdown').addEventListener('click', function() {
-        setTimeout(adjustDropdownHeight, 10);
+
+    // メニューのクリックイベント
+    menuButton.addEventListener('click', function() {
+        setTimeout(adjustDropdownHeight, 300); // アニメーション完了後に高さを調整
     });
+
+    // ドロップダウンのクリックイベント
+    document.getElementById('navbarDropdown').addEventListener('click', function() {
+        setTimeout(adjustDropdownHeight, 300); // アニメーション完了後に高さを調整
+    });
+
+    // collapseの展開イベント
+    $('#navbarResponsive').on('shown.bs.collapse', adjustDropdownHeight);
+    $('#navbarResponsive').on('hidden.bs.collapse', adjustDropdownHeight);
 });
