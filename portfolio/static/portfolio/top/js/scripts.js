@@ -133,10 +133,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (dropdownItems.length > 3) {
             var itemHeight = dropdownItems[0].offsetHeight;
             dropdownMenu.style.maxHeight = (itemHeight * 3) + 'px';
-            dropdownMenu.classList.add('dropdown-menu-scrollable');
         } else {
             dropdownMenu.style.maxHeight = 'none';
-            dropdownMenu.classList.remove('dropdown-menu-scrollable');
         }
     }
 

@@ -33,7 +33,7 @@
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded fs-4" href="#contact">Contact</a></li>
                         <li class="nav-item dropdown mx-0 mx-lg-1 pt-3">
                             <a class="nav-item dropdown-toggle text-uppercase text-white fw-bold py-3 px-0 px-lg-3 rounded fs-4 custom-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="custom-link" nonce="{{ request.csp_nonce }}">Languages</a>
-                            <ul class="dropdown-menu bg-dark rounded p-3" aria-labelledby="navbarDropdown" id="dropdown-menu">
+                            <ul class="dropdown-menu bg-dark rounded p-3 dropdown-menu-scrollable" aria-labelledby="navbarDropdown" id="dropdown-menu">
                                 {% get_current_language as LANGUAGE_CODE %}
                                 {% get_language_info_list for LANGUAGES as languages %}
                                 {% for language in languages %}
