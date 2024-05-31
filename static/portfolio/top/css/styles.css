@@ -11060,3 +11060,8 @@ html {
 .form-no-margin {
   margin: 0 !important;
 }
+
+.dropdown-menu-scrollable {
+  max-height: 0; /* 初期値を0に設定 */
+  overflow-y: auto;
+}

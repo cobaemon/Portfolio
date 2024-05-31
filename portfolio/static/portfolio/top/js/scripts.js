@@ -127,18 +127,23 @@ window.addEventListener('DOMContentLoaded', event => {
 
 document.addEventListener('DOMContentLoaded', function() {
     var dropdownMenu = document.getElementById('dropdown-menu');
-    var navbar = document.querySelector('.navbar');
+    var dropdownItems = dropdownMenu.querySelectorAll('li');
 
     function adjustDropdownHeight() {
-        var windowHeight = window.innerHeight;
-        var navbarHeight = navbar.offsetHeight;
-        var availableHeight = windowHeight - navbarHeight - 20; // 20px for padding/margin
-
-        dropdownMenu.style.maxHeight = availableHeight + 'px';
-        dropdownMenu.style.overflowY = 'auto';
+        if (dropdownItems.length > 3) {
+            var itemHeight = dropdownItems[0].offsetHeight;
+            dropdownMenu.style.maxHeight = (itemHeight * 3) + 'px';
+            dropdownMenu.classList.add('dropdown-menu-scrollable');
+        } else {
+            dropdownMenu.style.maxHeight = 'none';
+            dropdownMenu.classList.remove('dropdown-menu-scrollable');
+        }
     }
 
     adjustDropdownHeight();
 
     window.addEventListener('resize', adjustDropdownHeight);
+    document.getElementById('navbarDropdown').addEventListener('click', function() {
+        setTimeout(adjustDropdownHeight, 10);
+    });
 });
