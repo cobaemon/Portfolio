@@ -19,12 +19,12 @@ RUN if [ -d "$REPO_DIR/.git" ]; then \
         git clone -b $BRANCH_NAME $REPO_URL $REPO_DIR; \
     fi
 
-    # 依存関係のインストール
+# 依存関係のインストール
 WORKDIR	/app/Portfolio
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 RUN django-admin compilemessages
-RUN python manage.py collectstatic
+RUN python /app/Portfolio/manage.py collectstatic
 RUN python ./deploy/convert_images.py ../static
 
 # アプリケーションの起動
