@@ -156,14 +156,12 @@ CSP_SCRIPT_SRC = (
     'https://use.fontawesome.com',
     'https://cdn.jsdelivr.net',
     'https://cdn.startbootstrap.com',
-    "'nonce'",
 )
 CSP_SCRIPT_SRC_ELEM = (
     "'self'",
     'https://use.fontawesome.com',
     'https://cdn.jsdelivr.net',
     'https://cdn.startbootstrap.com',
-    "'nonce'",
 )
 CSP_STYLE_SRC = (
     "'self'",
@@ -171,7 +169,6 @@ CSP_STYLE_SRC = (
     'https://use.fontawesome.com',
     'https://cdn.jsdelivr.net',
     'https://cdn.startbootstrap.com',
-    "'nonce'",
 )
 CSP_STYLE_SRC_ELEM = (
     "'self'",
@@ -179,7 +176,6 @@ CSP_STYLE_SRC_ELEM = (
     'https://use.fontawesome.com',
     'https://cdn.jsdelivr.net',
     'https://cdn.startbootstrap.com',
-    "'nonce'",
 )
 CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com')
 CSP_IMG_SRC = ("'self'", 'data:')
