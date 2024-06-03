@@ -26,6 +26,7 @@ chmod +x deploy/systemclock-setup.sh
 chmod +x deploy/iptables-setup.sh
 chmod +x deploy/docker-setup.sh
 chmod +x deploy/certbot-setup.sh
+chmod +x deploy/openssl-setup.sh
 chmod +x deploy/nginx-setup.sh
 chmod +x deploy/aws-cli-setup.sh
 chmod +x deploy/fail2ban-setup.sh
@@ -45,6 +46,9 @@ bash deploy/docker-setup.sh
 
 # certbotのセットアップ
 bash deploy/certbot-setup.sh
+
+# opensslのセットアップ
+bash deploy/openssl-setup.sh
 
 # nginxのセットアップ
 bash deploy/nginx-setup.sh
