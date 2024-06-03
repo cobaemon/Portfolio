@@ -46,6 +46,15 @@ elif [ "$OS" = "centos" ]; then
     sudo $PKG_MANAGER install -y pcre pcre-devel zlib zlib-devel make
 fi
 
+# Diffie-Hellmanパラメータの生成
+DH_PARAM="/etc/nginx/dhparam.pem"
+if [ ! -f "$DH_PARAM" ]; then
+    echo -e "${YELLOW}Generating Diffie-Hellman parameters...${RESET}"
+    sudo openssl dhparam -out $DH_PARAM 2048
+else
+    echo -e "${YELLOW}Diffie-Hellman parameters already exist.${RESET}"
+fi
+
 # Nginxのソースコードとインストール
 NGINX_VERSION="1.20.1"
 NGINX_DIR="/usr/local/src/nginx-$NGINX_VERSION"
