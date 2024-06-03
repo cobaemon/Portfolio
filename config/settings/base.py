@@ -156,7 +156,14 @@ CSP_SCRIPT_SRC = (
     'https://use.fontawesome.com',
     'https://cdn.jsdelivr.net',
     'https://cdn.startbootstrap.com',
-    "'strict-dynamic'",
+    "'nonce'",
+)
+CSP_SCRIPT_SRC_ELEM = (
+    "'self'",
+    'https://use.fontawesome.com',
+    'https://cdn.jsdelivr.net',
+    'https://cdn.startbootstrap.com',
+    "'nonce'",
 )
 CSP_STYLE_SRC = (
     "'self'",
@@ -164,7 +171,15 @@ CSP_STYLE_SRC = (
     'https://use.fontawesome.com',
     'https://cdn.jsdelivr.net',
     'https://cdn.startbootstrap.com',
-    "'strict-dynamic'",
+    "'nonce'",
+)
+CSP_STYLE_SRC_ELEM = (
+    "'self'",
+    'https://fonts.googleapis.com',
+    'https://use.fontawesome.com',
+    'https://cdn.jsdelivr.net',
+    'https://cdn.startbootstrap.com',
+    "'nonce'",
 )
 CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com')
 CSP_IMG_SRC = ("'self'", 'data:')
@@ -175,6 +190,6 @@ CSP_FRAME_ANCESTORS = ("'none'")
 CSP_REPORT_URI = ('/csp-report-endpoint',)
 
 # nonceを有効化
-CSP_INCLUDE_NONCE_IN = ['script-src', 'script-src-elem', 'style-src']
+CSP_INCLUDE_NONCE_IN = ['script-src', 'script-src-elem', 'style-src', 'style-src-elem']
 CSP_STYLE_SRC_NONCE = True
 CSP_SCRIPT_SRC_NONCE = True
