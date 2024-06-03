@@ -66,7 +66,7 @@ if [ ! -d "$NGINX_DIR" ]; then
 
     echo -e "${YELLOW}Installing Nginx $NGINX_VERSION...${RESET}"
     cd nginx-$NGINX_VERSION
-    sudo ./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/lock/nginx.lock --with-http_ssl_module --with-openssl=/usr/local/src/openssl-$OPENSSL_VERSION
+    sudo ./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/lock/nginx.lock --with-http_ssl_module --with-http_v2_module --with-openssl=/usr/local/src/openssl-1.1.1k
     sudo make
     sudo make install
 else
