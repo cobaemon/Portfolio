@@ -55,7 +55,7 @@ if [ ! -d "$NGINX_DIR" ]; then
     sudo wget http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz
     sudo tar -zxvf nginx-$NGINX_VERSION.tar.gz
 
-    echo -e "${YELLOW}Installing Nginx $NGINX_VERSION...${RESET}"
+    echo -e "${YELLOW}Installing Nginx $NGINXVERSION...${RESET}"
     cd nginx-$NGINX_VERSION
     sudo ./configure --with-http_ssl_module --with-openssl=/usr/local/src/openssl-$OPENSSL_VERSION
     sudo make
@@ -63,6 +63,11 @@ if [ ! -d "$NGINX_DIR" ]; then
 else
     echo -e "${YELLOW}Nginx $NGINX_VERSION is already installed.${RESET}"
 fi
+
+# 必要なディレクトリとファイルの作成
+echo -e "${YELLOW}Setting up necessary directories and files...${RESET}"
+sudo mkdir -p /etc/nginx
+sudo cp /usr/local/nginx/conf/mime.types /etc/nginx/mime.types
 
 # シンボリックリンクの更新
 echo 'export PATH=$PATH:/usr/local/nginx/sbin' >> ~/.bashrc
@@ -103,8 +108,8 @@ echo -e "${YELLOW}Copying Nginx configuration files...${RESET}"
 sudo cp -f "$SCRIPT_DIR/host_nginx.conf" /usr/local/nginx/conf/nginx.conf
 sudo cp -f "$SCRIPT_DIR/host_portfolio.conf" /usr/local/nginx/conf/portfolio.conf
 
-# Nginxのリロード
-echo -e "${YELLOW}Reloading Nginx...${RESET}"
-sudo systemctl reload nginx
+# Nginxの設定テストとリロード
+echo -e "${YELLOW}Testing and reloading Nginx...${RESET}"
+sudo nginx -t && sudo systemctl reload nginx
 
 echo -e "${YELLOW}Nginx Setup Successfully.${RESET}"
