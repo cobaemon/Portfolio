@@ -55,9 +55,9 @@ if [ ! -d "$NGINX_DIR" ]; then
     sudo wget http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz
     sudo tar -zxvf nginx-$NGINX_VERSION.tar.gz
 
-    echo -e "${YELLOW}Installing Nginx $NGINXVERSION...${RESET}"
+    echo -e "${YELLOW}Installing Nginx $NGINX_VERSION...${RESET}"
     cd nginx-$NGINX_VERSION
-    sudo ./configure --with-http_ssl_module --with-openssl=/usr/local/src/openssl-$OPENSSL_VERSION
+    sudo ./configure --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/lock/nginx.lock --with-http_ssl_module --with-openssl=/usr/local/src/openssl-$OPENSSL_VERSION
     sudo make
     sudo make install
 else
@@ -66,11 +66,13 @@ fi
 
 # 必要なディレクトリとファイルの作成
 echo -e "${YELLOW}Setting up necessary directories and files...${RESET}"
-sudo mkdir -p /etc/nginx
-sudo cp /usr/local/nginx/conf/mime.types /etc/nginx/mime.types
+sudo mkdir -p /etc/nginx/conf.d
+sudo mkdir -p /etc/nginx/default.d
+sudo mkdir -p /var/log/nginx
+sudo mkdir -p /usr/share/nginx/html
 
 # シンボリックリンクの更新
-echo 'export PATH=$PATH:/usr/local/nginx/sbin' >> ~/.bashrc
+echo 'export PATH=$PATH:/usr/sbin' >> ~/.bashrc
 source ~/.bashrc
 
 # systemdユニットファイルの作成
@@ -84,10 +86,10 @@ After=network.target
 
 [Service]
 Type=forking
-PIDFile=/usr/local/nginx/logs/nginx.pid
-ExecStartPre=/usr/local/nginx/sbin/nginx -t
-ExecStart=/usr/local/nginx/sbin/nginx
-ExecReload=/usr/local/nginx/sbin/nginx -s reload
+PIDFile=/var/run/nginx.pid
+ExecStartPre=/usr/sbin/nginx -t
+ExecStart=/usr/sbin/nginx
+ExecReload=/usr/sbin/nginx -s reload
 ExecStop=/bin/kill -s QUIT $MAINPID
 PrivateTmp=true
 
@@ -105,11 +107,10 @@ sudo systemctl enable nginx
 
 # Nginxの設定ファイルをコピー
 echo -e "${YELLOW}Copying Nginx configuration files...${RESET}"
-sudo cp -f "$SCRIPT_DIR/host_nginx.conf" /usr/local/nginx/conf/nginx.conf
-sudo cp -f "$SCRIPT_DIR/host_portfolio.conf" /usr/local/nginx/conf/portfolio.conf
+sudo cp -f "$SCRIPT_DIR/nginx.conf" /etc/nginx/nginx.conf
+sudo cp -f "$SCRIPT_DIR/host_portfolio.conf" /etc/nginx/conf.d/host_portfolio.conf
 
 # Nginxの設定テストとリロード
 echo -e "${YELLOW}Testing and reloading Nginx...${RESET}"
 sudo nginx -t && sudo systemctl reload nginx
-
 echo -e "${YELLOW}Nginx Setup Successfully.${RESET}"
