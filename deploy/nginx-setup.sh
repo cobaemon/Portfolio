@@ -107,7 +107,7 @@ sudo systemctl enable nginx
 
 # Nginxの設定ファイルをコピー
 echo -e "${YELLOW}Copying Nginx configuration files...${RESET}"
-sudo cp -f "$SCRIPT_DIR/nginx.conf" /etc/nginx/nginx.conf
+sudo cp -f "$SCRIPT_DIR/host_nginx.conf" /etc/nginx/nginx.conf
 sudo cp -f "$SCRIPT_DIR/host_portfolio.conf" /etc/nginx/conf.d/host_portfolio.conf
 
 # Nginxの設定テストとリロード
