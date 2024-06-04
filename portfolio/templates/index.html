@@ -1,74 +1,42 @@
 <!DOCTYPE html>
 {% load static %}
 {% load i18n %}
-{% load cache %}
-{% get_current_language as LANGUAGE_CODE %}
+{% load csp %}
 <html lang="ja">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <meta name="referrer" content="strict-origin-when-cross-origin">
         <title>Portfolio</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="{% static '/top/assets/favicon.ico' %}" />
-        <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous" nonce="{{ request.csp_nonce }}" async></script>
         <!-- Google fonts-->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Lato:wght@400;700;400italic;700italic&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-        <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Lato:wght@400;700;400italic;700italic&display=swap" rel="stylesheet"></noscript>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{% static 'top/css/styles.css' %}" rel="stylesheet">
-        <!-- <noscript><link href="{% static '/top/css/styles.css' %}" rel="stylesheet"></noscript> -->
-    </head>    
+        <link href="{% static '/top/css/styles.css' %}" rel="stylesheet" />
+    </head>
     <body id="page-top">
-        <!-- Navigation -->
-        <!-- {% cache 3600 navbar LANGUAGE_CODE %} -->
+        <!-- Navigation-->
         <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
             <div class="container">
-                <a class="navbar-brand text-primary" href="#page-top"><h2>Portfolio</h2></a>
-                <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" id="navbar-toggler" type="button" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand text-primary fs-1" href="#page-top">Portfolio</a>
+                <button class="navbar-toggler text-uppercase fw-bold bg-primary text-white rounded fs-5" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
-                    <i class="fas fa-bars"></i>
+                    <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#portfolio"><h5>Portfolio</h5></a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about"><h5>About</h5></a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact"><h5>Contact</h5></a></li>
-                        <li class="nav-item dropdown mx-0 mx-lg-1 pt-3">
-                            <a class="nav-item dropdown-toggle text-uppercase text-white font-weight-bold py-3 px-0 px-lg-3 rounded h5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">Languages</a>
-                            <ul class="dropdown-menu bg-dark rounded p-3" aria-labelledby="navbarDropdown">
-                                <li>
-                                    <form action="{% url 'set_language' %}" method="post" style="margin: 0;">
-                                        {% csrf_token %}
-                                        <input name="next" type="hidden" value="{{ request.path }}">
-                                        <button type="submit" name="language" value="ja" class="dropdown-item py-3 px-0 px-lg-3 rounded">
-                                            <div class="nav-link ps-3 text-primary">日本語</div>
-                                        </button>
-                                    </form>
-                                </li>
-                                <li class="pt-3">
-                                    <form action="{% url 'set_language' %}" method="post" style="margin: 0;">
-                                        {% csrf_token %}
-                                        <input name="next" type="hidden" value="{{ request.path }}">
-                                        <button type="submit" name="language" value="en" class="dropdown-item py-3 px-0 px-lg-3 rounded">
-                                            <div class="nav-link ps-3 text-primary">English</div>
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded fs-4" href="#portfolio">Portfolio</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded fs-4" href="#about">About</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded fs-4" href="#contact">Contact</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded fs-4" href="#" data-bs-toggle="modal" data-bs-target="#languagesModal">Languages</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
-        <!-- {% endcache %} -->
         <!-- Masthead-->
-        {% cache 3600 masthead %}
         <header class="masthead bg-primary text-white text-center">
             <div class="container d-flex align-items-center flex-column">
                 <!-- Masthead Avatar Image-->
@@ -82,14 +50,13 @@
                 <!-- Icon Divider-->
                 <div class="divider-custom divider-light">
                     <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-icon"><img src="{% static '/top/assets/img/star-fill.svg' %}" alt="Star Icon" class="img-fluid"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
                 <!-- Masthead Subheading-->
                 <p class="masthead-subheading font-weight-light mb-0">Programmer</p>
             </div>
         </header>
-        {% endcache %}
         <!-- Portfolio Section-->
         <section class="page-section portfolio" id="portfolio">
             <div class="container">
@@ -98,7 +65,7 @@
                 <!-- Icon Divider-->
                 <div class="divider-custom">
                     <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-icon"><i class="bi bi-star-fill"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
                 <!-- Portfolio Grid Items-->
@@ -106,7 +73,7 @@
                     <!-- Portfolio Item 1-->
                     <div class="col-md-6 col-lg-4 mb-5">
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal1">
-                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100" style="height: 200px;">
+                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
                             <picture>
@@ -119,7 +86,7 @@
                     <!-- Portfolio Item 2-->
                     <div class="col-md-6 col-lg-4 mb-5">
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal2">
-                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100" style="height: 200px;">
+                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
                             <picture>
@@ -132,7 +99,7 @@
                     <!-- Portfolio Item 3-->
                     <div class="col-md-6 col-lg-4 mb-5">
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal3">
-                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100" style="height: 200px;">
+                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
                             <picture>
@@ -145,7 +112,7 @@
                     <!-- Portfolio Item 4-->
                     <div class="col-md-6 col-lg-4 mb-5 mb-lg-0">
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal4">
-                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100" style="height: 200px;">
+                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
                             <picture>
@@ -158,7 +125,7 @@
                     <!-- Portfolio Item 5-->
                     <div class="col-md-6 col-lg-4 mb-5 mb-md-0">
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal5">
-                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100" style="height: 200px;">
+                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
                             <picture>
@@ -172,7 +139,6 @@
             </div>
         </section>
         <!-- About Section-->
-        {% cache 86400 about_page LANGUAGE_CODE %}
         <section class="page-section bg-primary text-white mb-0" id="about">
             <div class="container">
                 <!-- About Section Heading-->
@@ -192,7 +158,6 @@
                 </div>
             </div>
         </section>
-        {% endcache %}
         <!-- Contact Section-->
         <section class="page-section" id="contact">
             <div class="container">
@@ -204,10 +169,10 @@
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
-                <!-- Contact Section Form -->
+                <!-- Contact Section Form-->
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-xl-7">
-                        <form id="contactForm" data-sb-form-api-token="API_TOKEN" method="post" action="{% url 'portfolio:top' %}">
+                        <form id="contactForm" method="post" action="{% url 'portfolio:top' %}">
                             {% csrf_token %}
                             <!-- Name input-->
                             <div class="form-floating mb-3">
@@ -252,11 +217,11 @@
                                 {% endif %}
                             </div>
                             <!-- Submit Button-->
-                            <div id="successMessage" class="alert alert-success" role="alert" style="display: none;">
-                                {% trans "Your message has been sent successfully." %}
+                            <div id="successMessage" class="alert alert-success custom-success" role="alert" nonce="{{ request.csp_nonce }}">
+                                {% trans "Your message has been sent successfully." %}"
                                 <button type="button" class="btn-close float-end" aria-label="Close"></button>
                             </div>
-                            <div id="errorMessage" class="alert alert-danger" role="alert" style="display: none;">
+                            <div id="errorMessage" class="alert alert-danger custom-error" role="alert" nonce="{{ request.csp_nonce }}">
                                 {% trans "Your message could not be sent. Please try again." %}
                                 <button type="button" class="btn-close float-end" aria-label="Close"></button>
                             </div>
@@ -267,21 +232,49 @@
             </div>
         </section>
         <!-- Footer-->
-        {% cache 3600 footer %}
         <footer class="footer text-center">
             <div class="container">
-                <div class="row">
+                <div class="row justify-content-center">
                     <!-- Footer Social Icons-->
                     <div class="col-lg-4 mb-5 mb-lg-0">
                         <h4 class="text-uppercase mb-4">Around the Web</h4>
-                        <a class="btn btn-outline-light btn-social mx-1" href="https://github.com/cobaemon" target="_blank"><i class="fab fa-fw fa-github"></i></a>
+                        <a class="btn btn-social p-0" href="https://github.com/cobaemon" target="_blank">
+                            <picture>
+                                <source srcset="{% static '/top/assets/img/github-mark-white.avif' %}" type="image/avif">
+                                <source srcset="{% static '/top/assets/img/github-mark-white.webp' %}" type="image/webp">
+                                <img class="img-fluid" src="{% static '/top/assets/img/github-mark-white.png' %}" alt="..." loading="lazy">
+                            </picture>
+                        </a>
                     </div>
                 </div>
             </div>
         </footer>
-        {% endcache %}
+        <!-- Languages Modal -->
+        <div class="modal fade" id="languagesModal" tabindex="-1" aria-labelledby="languagesModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content bg-secondary">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-3 text-uppercase text-primary" id="languagesModalLabel">Languages</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for language in languages %}
+                            <form action="{% url 'set_language' %}" method="post" class="pb-4">
+                                {% csrf_token %}
+                                <input name="next" type="hidden" value="{{ request.path }}">
+                                <button type="submit" name="language" value="{{ language.code }}" class="navbar-toggler rounded {% if language.code == LANGUAGE_CODE %} disabled {% endif %}">
+                                    <div class="fw-bold fs-4 text-white p-3 bg-primary rounded {% if language.code == LANGUAGE_CODE %} text-info {% endif %}">{{ language.name_local }}</div>
+                                </button>
+                            </form>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Portfolio Modals-->
-        {% cache 3600 portfolio-modal LANGUAGE_CODE %}
         <!-- Portfolio Modal 1-->
         <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" aria-labelledby="portfolioModal1" aria-hidden="true">
             <div class="modal-dialog modal-xl">
@@ -303,7 +296,7 @@
                                     <picture>
                                         <source srcset="{% static '/top/assets/img/portfolio/password-box.avif' %}" type="image/avif">
                                         <source srcset="{% static '/top/assets/img/portfolio/password-box.webp' %}" type="image/webp">
-                                        <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/password-box.png' %}" alt="..."  loading="lazy">
+                                        <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/password-box.png' %}" alt="..." loading="lazy">
                                     </picture>
                                     <!-- Portfolio Modal - Text-->
                                     <h5>Summary</h5>
@@ -342,11 +335,11 @@
                                     <picture>
                                         <source srcset="{% static '/top/assets/img/portfolio/vocabulary-notebook.avif' %}" type="image/avif">
                                         <source srcset="{% static '/top/assets/img/portfolio/vocabulary-notebook.webp' %}" type="image/webp">
-                                        <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/vocabulary-notebook.png' %}" alt="..."  loading="lazy">
+                                        <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/vocabulary-notebook.png' %}" alt="..." loading="lazy">
                                     </picture>
                                     <!-- Portfolio Modal - Text-->
                                     <h5>Summary</h5>
-                                    <p class="mb-4">{% trans "This is an implementation of a vocabulary notebook on the web." %}</p>
+                                    <p class="mb-4"></p>{% trans "This is an implementation of a vocabulary notebook on the web." %}</p>
                                     <h5>Purpose</h5>
                                     <p class="mb-4">{% trans "Having a vocabulary notebook is convenient for remembering words and phrases when studying for national exams and the like. I created this because I thought it would be even more convenient if such a notebook could be used on the web." %}</p>
                                     <button class="btn btn-primary" data-bs-dismiss="modal">
@@ -381,7 +374,7 @@
                                     <picture>
                                         <source srcset="{% static '/top/assets/img/portfolio/dbpepro.avif' %}" type="image/avif">
                                         <source srcset="{% static '/top/assets/img/portfolio/dbpepro.webp' %}" type="image/webp">
-                                        <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/dbpepro.png' %}" alt="..."  loading="lazy">
+                                        <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/dbpepro.png' %}" alt="..." loading="lazy">
                                     </picture>
                                     <!-- Portfolio Modal - Text-->
                                     <h5>Summary</h5>
@@ -420,7 +413,7 @@
                                     <picture>
                                         <source srcset="{% static '/top/assets/img/portfolio/kakeboo.avif' %}" type="image/avif">
                                         <source srcset="{% static '/top/assets/img/portfolio/kakeboo.webp' %}" type="image/webp">
-                                        <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/kakeboo.png' %}" alt="..."  loading="lazy">
+                                        <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/kakeboo.png' %}" alt="..." loading="lazy">
                                     </picture>
                                     <!-- Portfolio Modal - Text-->
                                     <h5>Summary</h5>
@@ -461,7 +454,7 @@
                                     <picture>
                                         <source srcset="{% static '/top/assets/img/portfolio/tegaki.avif' %}" type="image/avif">
                                         <source srcset="{% static '/top/assets/img/portfolio/tegaki.webp' %}" type="image/webp">
-                                        <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/tegaki.png' %}" alt="..."  loading="lazy">
+                                        <img class="img-fluid rounded mb-5" src="{% static '/top/assets/img/portfolio/tegaki.png' %}" alt="..." loading="lazy">
                                     </picture>
                                     <!-- Portfolio Modal - Text-->
                                     <h5>Summary</h5>
@@ -479,12 +472,13 @@
                 </div>
             </div>
         </div>
-        {% endcache %}
         <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" nonce="{{ request.csp_nonce }}" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" nonce="{{ request.csp_nonce }}"></script>
         <!-- Core theme JS-->
-        <script src="{% static '/top/js/scripts.js' %}" nonce="{{ request.csp_nonce }}" defer></script>
-        <!-- SB Forms JS-->
-        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js" nonce="{{ request.csp_nonce }}" defer></script>
+        <script src="{% static '/top/js/scripts.js' %}" nonce="{{ request.csp_nonce }}"></script>
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <!-- * *                               SB Forms JS                               * *-->
+        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
     </body>
 </html>

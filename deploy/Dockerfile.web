@@ -8,9 +8,12 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y git gettext && rm
 WORKDIR /app
 
 # リポジトリのURLを環境変数として設定
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app/Portfolio
+ENV DJANGO_SETTINGS_MODULE=config.settings.production
 ENV REPO_URL=https://github.com/cobaemon/Portfolio.git
 ENV REPO_DIR=/app/Portfolio
-ENV BRANCH_NAME=dev-deploy-nginx
+ENV BRANCH_NAME=deploy-nginx
 
 # リポジトリのクローンまたは更新
 RUN if [ -d "$REPO_DIR/.git" ]; then \
@@ -18,15 +21,15 @@ RUN if [ -d "$REPO_DIR/.git" ]; then \
     else \
         git clone -b $BRANCH_NAME $REPO_URL $REPO_DIR; \
     fi
-    
+
 # 依存関係のインストール
 WORKDIR	/app/Portfolio
-RUN mkdir -p /app/Portfolio/logs/
+RUN mkdir logs
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
-RUN python manage.py makemigrations --settings config.settings.production
-RUN python manage.py migrate --settings config.settings.production
 RUN django-admin compilemessages
+RUN python ./manage.py collectstatic --noinput
+RUN python ./deploy/convert_images.py static
 
 # アプリケーションの起動
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "config.wsgi:application", \

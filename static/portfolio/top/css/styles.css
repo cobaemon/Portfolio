@@ -11044,3 +11044,24 @@ html {
 .copyright {
   background-color: #1a252f;
 }
+
+.custom-link {
+  text-decoration: none;
+}
+
+.custom-success {
+  display: none;
+}
+
+.custom-error {
+  display: none;
+}
+
+.form-no-margin {
+  margin: 0 !important;
+}
+
+.dropdown-menu-scrollable {
+  max-height: none; /* 初期値を0に設定 */
+  overflow-y: auto;
+}

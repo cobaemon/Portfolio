@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -38,23 +38,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'portfolio',
-    'corsheaders',
     'csp',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'csp.middleware.CSPMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'csp.middleware.CSPMiddleware',
-    'django.middleware.cache.UpdateCacheMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -70,7 +66,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'csp.context_processors.nonce',
             ],
+            'libraries':          {
+                'csp': 'csp.templatetags.csp',
+            }
         },
     },
 ]
@@ -98,9 +98,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {
-            'min_length': 12,
-        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -114,34 +111,38 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ja'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
+
+USE_L10N = True
 
 USE_TZ = True
 
 
-LANGUAGE_SESSION_KEY = 'django_language'
-# 使用する言語のリストを定義
+# 対応する言語を指定
 LANGUAGES = [
-    ('en', 'English'),
     ('ja', 'Japanese'),
-    # 他の言語も追加できます
+    ('en', 'English'),
+    ('fr', 'French'),
+    ('es', 'Spanish'),
+    ('ru', 'Russian'),
+    ('zh-hans', 'Simplified Chinese'),
+    ('ar', 'Arabic'),
 ]
-# ロケールフォルダのパスを指定
+
+# 必要に応じてロケールのディレクトリを指定します。
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),
 ]
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static'),
-# ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
@@ -149,26 +150,42 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://redis:6379/1',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
-    }
-}
-# セッションキャッシュをRedisに設定
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-SESSION_CACHE_ALIAS = 'default'
+CSP_DEFAULT_SRC = ("'self'", 'https:')
+CSP_SCRIPT_SRC = (
+    "'self'",
+    'https://use.fontawesome.com',
+    'https://cdn.jsdelivr.net',
+    'https://cdn.startbootstrap.com',
+)
+CSP_SCRIPT_SRC_ELEM = (
+    "'self'",
+    'https://use.fontawesome.com',
+    'https://cdn.jsdelivr.net',
+    'https://cdn.startbootstrap.com',
+)
+CSP_STYLE_SRC = (
+    "'self'",
+    'https://fonts.googleapis.com',
+    'https://use.fontawesome.com',
+    'https://cdn.jsdelivr.net',
+    'https://cdn.startbootstrap.com',
+)
+CSP_STYLE_SRC_ELEM = (
+    "'self'",
+    'https://fonts.googleapis.com',
+    'https://use.fontawesome.com',
+    'https://cdn.jsdelivr.net',
+    'https://cdn.startbootstrap.com',
+)
+CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com')
+CSP_IMG_SRC = ("'self'", 'data:')
+CSP_OBJECT_SRC = ("'none'")
+CSP_BASE_URI = ("'self'")
+CSP_FRAME_SRC = ("'none'")
+CSP_FRAME_ANCESTORS = ("'none'")
+CSP_REPORT_URI = ('/csp-report-endpoint',)
 
-# CSP設定
-CSP_DEFAULT_SRC = ("'self'",)
-CSP_SCRIPT_SRC = ("'self'", "https://use.fontawesome.com", "https://cdn.jsdelivr.net", "https://cdn.startbootstrap.com",)
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "https://fonts.googleapis.com",)
-CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com",)
-CSP_IMG_SRC = ("'self'", "data:",)
-CSP_FRAME_ANCESTORS = ("'none'",)
-
-# nonceを自動生成
-CSP_INCLUDE_NONCE_IN = ['script-src', 'script-src-elem']
+# nonceを有効化
+CSP_INCLUDE_NONCE_IN = ['script-src', 'script-src-elem', 'style-src', 'style-src-elem']
+CSP_STYLE_SRC_NONCE = True
+CSP_SCRIPT_SRC_NONCE = True

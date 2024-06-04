@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# エラー時にスクリプトを終了する
+set -e
+
+# 色の定義
+YELLOW="\e[33m"
+RED="\e[31m"
+RESET="\e[0m"
+
+# ログファイルの定義
+LOGFILE="/var/log/portfolio/update-container-nginx-cert.log"
+
+# ログ出力関数の定義
+log() {
+    echo -e "$1" | tee -a "$LOGFILE"
+}
+
+# スクリプトのディレクトリを基準にパスを設定（絶対パスで設定）
+SCRIPT_DIR="/home/cobalt/deploy/Portfolio/deploy"
+
+# 環境変数の読み込み（ホスト側で実行）
+SSL_CERTIFICATE=$(grep ^SSL_CERTIFICATE= $SCRIPT_DIR/.env | cut -d '=' -f2- | tr -d '\r\n')
+SSL_CERTIFICATE_KEY=$(grep ^SSL_CERTIFICATE_KEY= $SCRIPT_DIR/.env | cut -d '=' -f2- | tr -d '\r\n')
+
+# Nginxコンテナの再起動
+NGINX_CONTAINER_NAME="portfolio-nginx"  # ここにNginxコンテナの名前を設定
+log "${YELLOW}Reloading Nginx container with new certificates...${RESET}"
+
+# コンテナ内で環境変数を設定し、証明書をデコードして配置
+docker exec $NGINX_CONTAINER_NAME bash -c "
+    echo '$SSL_CERTIFICATE' | base64 -d > /etc/ssl/certs/fullchain.pem &&
+    echo '$SSL_CERTIFICATE_KEY' | base64 -d > /etc/ssl/private/privkey.pem &&
+    nginx -s reload
+" 2>&1 | tee -a "$LOGFILE"
+
+log "${YELLOW}Nginx container has been reloaded with the new certificates.${RESET}"

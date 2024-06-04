@@ -1,8 +1,8 @@
 django
-django-cors-headers
 django-environ
 django-storages
 boto3
 gunicorn
-django-redis
+pillow
+pillow-avif-plugin
 django-csp
