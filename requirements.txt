@@ -6,4 +6,4 @@ gunicorn
 pillow
 pillow-avif-plugin
 django-csp
-psycopg2
+psycopg2-binary
