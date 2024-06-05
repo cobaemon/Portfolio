@@ -1,4 +1,18 @@
 services:
+  db:
+    container_name: portfolio-db
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:5432"
+    networks:
+      - portfolio_network
+  
   web:
     container_name: portfolio-web
     build:
@@ -11,6 +25,10 @@ services:
     volumes:
       - static_volume:/app/Portfolio/static
       - log_volume:/app/Portfolio/logs
+    depends_on:
+      - db
+    networks:
+      - portfolio_network
 
   nginx:
     container_name: portfolio-nginx
@@ -27,7 +45,16 @@ services:
       - log_volume:/var/log/nginx
     depends_on:
       - web
+    networks:
+      - portfolio_network
+      - host_network
 
 volumes:
   static_volume:
   log_volume:
+  postgres_data:
+
+networks:
+  portfolio_network:
+  host_network:
+    external: true
