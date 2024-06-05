@@ -52,4 +52,6 @@ else
     echo -e "${YELLOW}Docker is already installed.${RESET}"
 fi
 
+sudo docker network create portfolio_network
+
 echo -e "${YELLOW}Docker Setup Successfully.${RESET}"
