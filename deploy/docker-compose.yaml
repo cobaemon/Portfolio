@@ -56,5 +56,6 @@ volumes:
 
 networks:
   portfolio_network:
-  host_network:
-    external: true
+  external_net:
+    external:
+      name: docker0
