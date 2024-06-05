@@ -24,4 +24,5 @@ urlpatterns = [
 
 urlpatterns += i18n_patterns(
     path('portfolio/', include('portfolio.urls')),
+    path('passwordbox/', include('passwordbox.urls')),
 )
