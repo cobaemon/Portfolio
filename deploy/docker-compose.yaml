@@ -10,8 +10,6 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "${DB_PORT}:5432"
-    networks:
-      - portfolio_network
   
   web:
     container_name: portfolio-web
@@ -27,8 +25,6 @@ services:
       - log_volume:/app/Portfolio/logs
     depends_on:
       - db
-    networks:
-      - portfolio_network
 
   nginx:
     container_name: portfolio-nginx
@@ -45,18 +41,8 @@ services:
       - log_volume:/var/log/nginx
     depends_on:
       - web
-    networks:
-      - portfolio_network
-      - external_net
 
 volumes:
   static_volume:
   log_volume:
   postgres_data:
-
-networks:
-  portfolio_network:
-    driver: bridge
-  external_net:
-    external: true
-    name: bridge
