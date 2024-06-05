@@ -13,7 +13,7 @@ ENV PYTHONPATH=/app/Portfolio
 ENV DJANGO_SETTINGS_MODULE=config.settings.production
 ENV REPO_URL=https://github.com/cobaemon/Portfolio.git
 ENV REPO_DIR=/app/Portfolio
-ENV BRANCH_NAME=deploy-nginx
+ENV BRANCH_NAME=dev-add-passwordbox
 
 # リポジトリのクローンまたは更新
 RUN if [ -d "$REPO_DIR/.git" ]; then \
