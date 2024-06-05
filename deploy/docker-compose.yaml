@@ -58,5 +58,5 @@ networks:
   portfolio_network:
     driver: bridge
   external_net:
-    name: docker0
     external: true
+    name: bridge
