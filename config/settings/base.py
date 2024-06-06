@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'csp',
+    'accounts',
     'portfolio',
     'passwordbox',
 ]
@@ -195,3 +196,6 @@ CSP_REPORT_URI = ('/csp-report-endpoint',)
 CSP_INCLUDE_NONCE_IN = ['script-src', 'script-src-elem', 'style-src', 'style-src-elem']
 CSP_STYLE_SRC_NONCE = True
 CSP_SCRIPT_SRC_NONCE = True
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTHENTICATION_BACKENDS = ['accounts.auth_backends.CustomBackend']

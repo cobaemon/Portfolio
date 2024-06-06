@@ -7,3 +7,4 @@ pillow
 pillow-avif-plugin
 django-csp
 psycopg2-binary
+cryptography

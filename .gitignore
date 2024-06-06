@@ -153,4 +153,4 @@ cython_debug/
 
 local_env
 dev
-admin
+migrations
