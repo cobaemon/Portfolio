@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
-from .models import CustomUser, EncryptionKey
+from .models import CustomUser, EncryptionKey, LoginCode
 
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
@@ -9,6 +9,7 @@ class UserAdmin(BaseUserAdmin):
         (_('Personal info'), {'fields': ('date_joined', 'last_login')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         (_('Encryption'), {'fields': ('secret_key',)}),
+        (_('Login Options'), {'fields': ('use_login_by_code', 'login_code')}),  # 追加
     )
     add_fieldsets = (
         (None, {
@@ -16,7 +17,7 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('username', 'email', 'password1', 'password2'),
         }),
     )
-    list_display = ('username', 'email', 'is_staff', 'is_superuser')
+    list_display = ('username', 'email', 'is_staff', 'is_superuser', 'use_login_by_code', 'login_code')  # 追加
     search_fields = ('username', 'email')
     ordering = ('username',)
 
@@ -25,5 +26,11 @@ class EncryptionKeyAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'user__email')
     ordering = ('user',)
 
+class LoginCodeAdmin(admin.ModelAdmin):
+    list_display = ('user', 'code', 'expires_at')
+    search_fields = ('user__username', 'user__email', 'code')
+    ordering = ('user',)
+
 admin.site.register(CustomUser, UserAdmin)
 admin.site.register(EncryptionKey, EncryptionKeyAdmin)
+admin.site.register(LoginCode, LoginCodeAdmin)

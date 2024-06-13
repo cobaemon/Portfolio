@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -38,6 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'csp',
+
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
     'accounts',
     'portfolio',
     'passwordbox',
@@ -53,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -60,7 +68,10 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'accounts/templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -150,7 +161,10 @@ LOCALE_PATHS = [
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -197,5 +211,50 @@ CSP_INCLUDE_NONCE_IN = ['script-src', 'script-src-elem', 'style-src', 'style-src
 CSP_STYLE_SRC_NONCE = True
 CSP_SCRIPT_SRC_NONCE = True
 
+# カスタムユーザ
 AUTH_USER_MODEL = 'accounts.CustomUser'
-AUTHENTICATION_BACKENDS = ['accounts.auth_backends.CustomBackend']
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'accounts.auth_backends.CustomBackend',
+]
+
+# Django Allauth設定
+SITE_ID = 1
+
+# メール認証を必須にする設定
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+
+ACCOUNT_ADAPTER = 'accounts.adapter.CustomAccountAdapter'
+
+# リダイレクト設定
+# ユーザーがログインした後にリダイレクトされるURL
+LOGIN_REDIRECT_URL = '/'
+# ユーザーがログアウトした後にリダイレクトされるURL
+LOGOUT_REDIRECT_URL = '/'
+# メール確認が成功した後、ログインしていないユーザーがリダイレクトされるURL
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = LOGIN_REDIRECT_URL
+# メール確認が成功した後、ログインしているユーザーがリダイレクトされるURL
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
+# パスワードリセットが成功した後にリダイレクトされるURL
+ACCOUNT_PASSWORD_RESET_REDIRECT_URL = '/accounts/password/reset/done/'
+# パスワード変更が成功した後にリダイレクトされるURL
+ACCOUNT_PASSWORD_CHANGE_REDIRECT_URL = '/accounts/password/change/done/'
+# 新規登録が成功した後にリダイレクトされるURL
+ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/confirm-email/'
+
+# Custom
+SITE_NAME = 'Cobaemon Portfolio'
+APPEND_SLASH = True
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}

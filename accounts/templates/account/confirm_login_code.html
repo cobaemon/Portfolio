@@ -1,0 +1,32 @@
+{% extends "account/base_entrance.html" %}
+{% load static %}
+{% load i18n %}
+{% load csp %}
+{% load allauth account %}
+{% load form_tags %}
+
+{% block extra_body_head_title %}
+{% translate "Enter Sign-In Code" %}
+{% endblock extra_body_head_title %}
+
+{% block extra_body_form %}
+    <p class="lead text-center">
+        {% trans "We've sent a code to " %}<a href="mailto:{{ email }}">{{ email }}</a>{% trans ". The code expires shortly, so please enter it soon." %}
+    </p>
+    <br>
+    {% url 'account_confirm_login_code' as login_url %}
+    <form method="post" action="{{ login_url }}" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.code|add_attrs:"class:form-control,placeholder:Enter your login code" }}
+            {% if form.code.errors %}
+            <div class="invalid-feedback d-block">
+                {{ form.code.errors|join:" " }}
+            </div>
+            {% endif %}
+        </div>
+        {{ redirect_field }}
+        <br>
+        <button class="btn btn-primary btn-xl float-end" id="submitButton" type="submit">{% trans "Sign In" %}</button>
+    </form>
+{% endblock extra_body_form %}

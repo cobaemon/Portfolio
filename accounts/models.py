@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.db import models
 from django.utils import timezone
 
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
         if not email:
@@ -24,13 +25,15 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(username, email, password, **extra_fields)
 
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(unique=True)
-    email_verified = models.BooleanField(default=False)
     password = models.CharField(max_length=255)
-    secret_key = models.ForeignKey('EncryptionKey', null=True, blank=True, on_delete=models.SET_NULL, related_name='user_current_key')
+    use_login_by_code = models.BooleanField(default=False)
+    login_code = models.ForeignKey('LoginCode', null=True, blank=True, on_delete=models.SET_NULL)
+    secret_key = models.ForeignKey('EncryptionKey', null=True, blank=True, on_delete=models.SET_NULL)
     date_joined = models.DateTimeField(default=timezone.now)
     last_login = models.DateTimeField(null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -47,11 +50,23 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.username
 
+
 class EncryptionKey(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='encryption_keys')
     key = models.BinaryField()
     created_at = models.DateTimeField(auto_now_add=True)
-    expires_at = models.DateTimeField()
+    expires_at = models.DateTimeField(null=True, blank=True)
 
     def is_valid(self):
         return self.expires_at > timezone.now()
+
+
+class LoginCode(models.Model):
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    code = models.CharField(max_length=8)
+    expires_at = models.DateTimeField()
+    failed_attempts = models.PositiveIntegerField(default=0)
+
+    def is_valid(self):
+        return self.expires_at >= timezone.now()

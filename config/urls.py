@@ -16,13 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.i18n import i18n_patterns
+from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # path('accounts/', include('allauth.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
 ]
 
 urlpatterns += i18n_patterns(
+    path('', lambda request: redirect('portfolio/top/', permanent=True)),  # リダイレクト設定
+    path('accounts/', include('accounts.urls')),
     path('portfolio/', include('portfolio.urls')),
     path('passwordbox/', include('passwordbox.urls')),
 )
