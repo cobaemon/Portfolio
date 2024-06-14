@@ -45,4 +45,8 @@ echo -e "${YELLOW}Operational user created successfully.${RESET}"
 CRON_JOB="0 * * * * /home/cobalt/deploy/Portfolio/deploy/update-route53-record.sh >> /var/log/portfolio/update-route53-record.log 2>&1"
 (crontab -l 2>/dev/null | grep -F "$CRON_JOB" || (crontab -l 2>/dev/null; echo "$CRON_JOB")) | crontab -
 
+# ウェブコンテナ内でマイグレーションスクリプトの実行
+echo -e "${YELLOW}Running migrations inside the web container...${RESET}"
+docker exec portfolio-web /app/Dockerfile-web-entrypoint.sh
+
 echo -e "${YELLOW}Finalize completed successfully.${RESET}"

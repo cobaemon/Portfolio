@@ -31,9 +31,6 @@ RUN django-admin compilemessages
 RUN python ./manage.py collectstatic --noinput
 RUN python ./deploy/convert_images.py static
 
-# 環境変数をロード
-COPY .env /app/.env
-
 # エントリポイントスクリプトのコピー
 COPY Dockerfile-web-entrypoint.sh /app/Dockerfile-web-entrypoint.sh
 RUN chmod +x /app/Dockerfile-web-entrypoint.sh

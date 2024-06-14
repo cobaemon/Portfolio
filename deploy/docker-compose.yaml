@@ -21,7 +21,7 @@ services:
     env_file:
       - .env
     volumes:
-      - static_volume:/app/Portfolio/static
+      - static_volume:/app/Portfolio/staticfiles
       - log_volume:/app/Portfolio/logs
     depends_on:
       - db
