@@ -46,9 +46,3 @@ CRON_JOB="0 * * * * /home/cobalt/deploy/Portfolio/deploy/update-route53-record.s
 (crontab -l 2>/dev/null | grep -F "$CRON_JOB" || (crontab -l 2>/dev/null; echo "$CRON_JOB")) | crontab -
 
 echo -e "${YELLOW}Finalize completed successfully.${RESET}"
-
-# Django migration
-echo -e "${YELLOW}Running Django migrations...${RESET}"
-docker exec -i portfolio-db python manage.py makemigrations
-docker exec -i portfolio-db python manage.py migrate
-echo -e "${YELLOW}Django migrations completed successfully.${RESET}"
