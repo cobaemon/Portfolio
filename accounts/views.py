@@ -537,7 +537,10 @@ class ConfirmLoginCodeView(RedirectAuthenticatedUserMixin, NextRedirectMixin, Fo
     def form_valid(self, form):
         user = self.get_user()
         login_code = form.cleaned_data['code']
-        if LoginCode.objects.filter(user=user, code=login_code, expires_at__gte=timezone.now()).exists():
+        
+        latest_login_code = LoginCode.objects.latest_for_user(user)
+
+        if latest_login_code and latest_login_code.code == login_code:
             perform_login(self.request, user, email_verification=app_settings.EMAIL_VERIFICATION)
             del self.request.session['pending_login_user_id']  # セッションからユーザーIDを削除
             return redirect(self.get_success_url())

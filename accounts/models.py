@@ -59,8 +59,16 @@ class EncryptionKey(models.Model):
     expires_at = models.DateTimeField(null=True, blank=True)
 
     def is_valid(self):
+        if self.expires_at is None:
+            return False
         return self.expires_at > timezone.now()
 
+    is_valid.boolean = True  # 管理画面での表示を修正
+
+
+class LoginCodeManager(models.Manager):
+    def latest_for_user(self, user):
+        return self.filter(user=user, expires_at__gte=timezone.now()).order_by('-expires_at').first()
 
 class LoginCode(models.Model):
     user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
@@ -68,5 +76,5 @@ class LoginCode(models.Model):
     expires_at = models.DateTimeField()
     failed_attempts = models.PositiveIntegerField(default=0)
 
-    def is_valid(self):
-        return self.expires_at >= timezone.now()
+    objects = LoginCodeManager()
+    
