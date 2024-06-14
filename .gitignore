@@ -154,3 +154,5 @@ cython_debug/
 local_env
 dev
 migrations
+local_docker-compose.yaml
+local_Dockerfile

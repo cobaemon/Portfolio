@@ -28,6 +28,9 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
+# Django Allauth設定
+SITE_ID = 1
+
 
 # Application definition
 
@@ -219,9 +222,6 @@ AUTHENTICATION_BACKENDS = [
     'accounts.auth_backends.CustomBackend',
 ]
 
-# Django Allauth設定
-SITE_ID = 1
-
 # メール認証を必須にする設定
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
@@ -239,7 +239,7 @@ LOGOUT_REDIRECT_URL = '/'
 # メール確認が成功した後、ログインしていないユーザーがリダイレクトされるURL
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = LOGIN_REDIRECT_URL
 # メール確認が成功した後、ログインしているユーザーがリダイレクトされるURL
-ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = LOGIN_REDIRECT_URL
 # パスワードリセットが成功した後にリダイレクトされるURL
 ACCOUNT_PASSWORD_RESET_REDIRECT_URL = '/accounts/password/reset/done/'
 # パスワード変更が成功した後にリダイレクトされるURL
