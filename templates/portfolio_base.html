@@ -46,6 +46,7 @@
                         {% endblock body_nav_collapse_nav_item_contact %}
                         {% block extra_body_nav_collapse_nav_items %}
                         {% endblock extra_body_nav_collapse_nav_items %}
+                        <hr>
                         {% block body_nav_collapse_nav_item_account %}
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded fs-4" href="#" data-bs-toggle="modal" data-bs-target="#accountModal">Account</a></li>
                         {% endblock body_nav_collapse_nav_item_account %}
@@ -313,60 +314,60 @@
                     <h1 class="modal-title fs-3 text-uppercase text-primary" id="languagesModalLabel">Account</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body pt-4">
                         {% if user.is_authenticated %}
                             {% url 'account_email' as email_url %}
                             {% if email_url %}
-                                <a href="{{ email_url }}" class="navbar-toggler rounded text-center d-block mb-4 text-decoration-none">
+                                <a href="{{ email_url }}" class="navbar-toggler rounded text-center d-block py-3 px-5 text-decoration-none">
                                     <div class="fw-bold fs-4 text-white p-3 bg-primary rounded">{% trans "Change Email" %}</div>
                                 </a>
                             {% endif %}
                             {% url 'account_email' as settings_email %}
                             {% if settings_email %}
-                                <a href="{{ settings_email }}" class="navbar-toggler rounded text-center d-block mb-4 text-decoration-none">
+                                <a href="{{ settings_email }}" class="navbar-toggler rounded text-center d-block py-3 px-5 text-decoration-none">
                                     <div class="fw-bold fs-4 text-white p-3 bg-primary rounded">{% trans "Email" %}</div>
                                 </a>
                             {% endif %}
                             {% url 'account_change_password' as change_password_url %}
                             {% if change_password_url %}
-                                <a href="{{ change_password_url }}" class="navbar-toggler rounded text-center d-block mb-4 text-decoration-none">
+                                <a href="{{ change_password_url }}" class="navbar-toggler rounded text-center d-block py-3 px-5 text-decoration-none">
                                     <div class="fw-bold fs-4 text-white p-3 bg-primary rounded">{% trans "Change Password" %}</div>
                                 </a>
                             {% endif %}
                             {% url 'login_by_code_settings' as settings_login_code_url %}
                             {% if change_password_url %}
-                                <a href="{{ settings_login_code_url }}" class="navbar-toggler rounded text-center d-block mb-4 text-decoration-none">
+                                <a href="{{ settings_login_code_url }}" class="navbar-toggler rounded text-center d-block py-3 px-5 text-decoration-none">
                                     <div class="fw-bold fs-4 text-white p-3 bg-primary rounded">{% trans "Settings Login Code" %}</div>
                                 </a>
                             {% endif %}
                             {% url 'mfa_index' as mfa_url %}
                             {% if mfa_url %}
-                                <a href="{{ mfa_url }}" class="navbar-toggler rounded text-center d-block mb-4 text-decoration-none">
+                                <a href="{{ mfa_url }}" class="navbar-toggler rounded text-center d-block py-3 px-5 text-decoration-none">
                                     <div class="fw-bold fs-4 text-white p-3 bg-primary rounded">{% trans "Two-Factor Authentication" %}</div>
                                 </a>
                             {% endif %}
                             {% url 'usersessions_list' as usersessions_list_url %}
                             {% if usersessions_list_url %}
-                                <a href="{{ usersessions_list_url }}" class="navbar-toggler rounded text-center d-block mb-4 text-decoration-none">
+                                <a href="{{ usersessions_list_url }}" class="navbar-toggler rounded text-center d-block py-3 px-5 text-decoration-none">
                                     <div class="fw-bold fs-4 text-white p-3 bg-primary rounded">{% trans "Sessions" %}</div>
                                 </a>
                             {% endif %}
                             {% url 'account_logout' as logout_url %}
                             {% if logout_url %}
-                                <a href="{{ logout_url }}" class="navbar-toggler rounded text-center d-block mb-4 text-decoration-none">
+                                <a href="{{ logout_url }}" class="navbar-toggler rounded text-center d-block py-3 px-5 text-decoration-none">
                                     <div class="fw-bold fs-4 text-white p-3 bg-primary rounded">{% trans "Sign Out" %}</div>
                                 </a>
                             {% endif %}
                         {% else %}
                             {% url 'account_login' as login_url %}
                             {% if login_url %}
-                                <a href="{{ login_url }}" class="navbar-toggler rounded text-center d-block mb-4 text-decoration-none">
+                                <a href="{{ login_url }}" class="navbar-toggler rounded text-center d-block py-3 px-5 text-decoration-none">
                                     <div class="fw-bold fs-4 text-white p-3 bg-primary rounded">{% trans "Sign In" %}</div>
                                 </a>
                             {% endif %}
                             {% url 'account_signup' as signup_url %}
                             {% if signup_url %}
-                                <a href="{{ signup_url }}" class="navbar-toggler rounded text-center d-block mb-4 text-decoration-none">
+                                <a href="{{ signup_url }}" class="navbar-toggler rounded text-center d-block py-3 px-5 text-decoration-none">
                                     <div class="fw-bold fs-4 text-white p-3 bg-primary rounded">{% trans "Sign Up" %}</div>
                                 </a>
                             {% endif %}
@@ -385,16 +386,16 @@
                     <h1 class="modal-title fs-3 text-uppercase text-primary" id="languagesModalLabel">Languages</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body pt-4">
                         {% get_current_language as LANGUAGE_CODE %}
                         {% get_available_languages as LANGUAGES %}
                         {% get_language_info_list for LANGUAGES as languages %}
                         {% for language in languages %}
-                            <form action="{% url 'set_language' %}" method="post" class="pb-4">
+                            <form action="{% url 'set_language' %}" method="post" class="py-3">
                                 {% csrf_token %}
                                 <input name="next" type="hidden" value="{{ request.path }}">
-                                <button type="submit" name="language" value="{{ language.code }}" class="navbar-toggler rounded w-100 {% if language.code == LANGUAGE_CODE %} disabled {% endif %}">
-                                    <div class="fw-bold fs-4 text-white p-3 bg-primary rounded {% if language.code == LANGUAGE_CODE %} text-info {% endif %}">{{ language.name_local }}</div>
+                                <button type="submit" name="language" value="{{ language.code }}" class="navbar-toggler rounded w-100 px-5" {% if language.code == LANGUAGE_CODE %} disabled {% endif %}>
+                                    <div class="fw-bold fs-4 p-3 bg-primary rounded {% if language.code == LANGUAGE_CODE %} text-info {% else %} text-white {% endif %}">{{ language.name_local }}</div>
                                 </button>
                             </form>
                         {% endfor %}

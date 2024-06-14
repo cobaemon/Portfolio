@@ -410,7 +410,10 @@ class EmailView(AjaxCapableProcessFormViewMixin, FormView):
         if "action_add" in request.POST:
             res = super(EmailView, self).post(request, *args, **kwargs)
         elif request.POST.get("email"):
+            email_address = EmailAddress.objects.filter(email=request.POST["email"], user=request.user).first()
             if "action_send" in request.POST:
+                if email_address.verified:
+                    messages.info(request, 'This email address has already been verified.')
                 res = self._action_send(request)
             elif "action_remove" in request.POST:
                 res = self._action_remove(request)

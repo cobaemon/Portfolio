@@ -18,13 +18,15 @@
                 {% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an email address for user {{ user_display }}.{% endblocktrans %}
             {% endelement %}
             {% url 'account_confirm_email' confirmation.key as action_url %}
+            <div class="container pt-4">
             {% element form method="post" action=action_url %}
                 {% slot actions %}
                     {% csrf_token %}
                     {{ redirect_field }}
-                    <button class="btn btn-primary btn-xl float-end" id="submitButton" type="submit">{% trans "Confirm" %}</button>
+                    <button class="btn btn-primary btn-lg float-end" id="submitButton" type="submit">{% trans "Confirm" %}</button>
                 {% endslot %}
             {% endelement %}
+            </div>
         {% else %}
             {% element p %}
                 {% blocktrans %}Unable to confirm {{ email }} because it is already confirmed by a different account.{% endblocktrans %}

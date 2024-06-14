@@ -10,19 +10,19 @@
 {% endblock extra_body_head_title %}
 
 {% block extra_body_form %}
-<form method="post" class="needs-validation" novalidate>
-    {% csrf_token %}
-    <div class="form-check mb-3 h4">
-      {{ form.use_login_by_code }}
-      <label class="form-check-label" for="{{ form.use_login_by_code.id_for_label }}">
-        {{ form.use_login_by_code.label }}
-      </label>
-      {% if form.use_login_by_code.errors %}
-        <div class="invalid-feedback d-block">
-          {{ form.use_login_by_code.errors|join:" " }}
-        </div>
-      {% endif %}
-    </div>
-    <button class="btn btn-primary btn-xl float-end" id="submitButton" type="submit">{% trans "Save" %}</button>
-</form>
+	<form method="post" class="needs-validation" novalidate>
+		{% csrf_token %}
+		<div class="form-check mb-3 h4">
+			{{ form.use_login_by_code }}
+			<label class="form-check-label mt-1" for="{{ form.use_login_by_code.id_for_label }}">
+				{{ form.use_login_by_code.label }}
+			</label>
+			{% if form.use_login_by_code.errors %}
+			<div class="invalid-feedback d-block">
+				{{ form.use_login_by_code.errors|join:" " }}
+			</div>
+			{% endif %}
+		</div>
+		<button class="btn btn-primary btn-lg float-end" id="submitButton" type="submit">{% trans "Save" %}</button>
+	</form>
 {% endblock extra_body_form %}

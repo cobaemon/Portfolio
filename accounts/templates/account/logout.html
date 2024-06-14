@@ -10,7 +10,7 @@ Logout
 {% endblock extra_body_head_title %}
 
 {% block extra_body_form %}
-<form id="logoutForm" method="post" action="{{ attrs.action }}">
+<form id="logoutForm" method="post" action="{{ attrs.action }}" class="py-4">
     {% csrf_token %}
     <!-- Hidden input for next parameter -->
     <input type="hidden" name="next" value="{{ next }}">
@@ -18,6 +18,6 @@ Logout
         <h2 class="text-center">{% trans "Are you sure you want to sign out?" %}</h2>
     </div>
     <!-- Submit Button-->
-    <button class="btn btn-primary btn-xl float-end" id="submitButton" type="submit">{% trans "Sign Out" %}</button>
+    <button class="btn btn-primary btn-xl float-end mt-4" id="submitButton" type="submit">{% trans "Sign Out" %}</button>
 </form>
 {% endblock extra_body_form %}

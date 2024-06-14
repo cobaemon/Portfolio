@@ -11,44 +11,46 @@
 
 {% block extra_body_form %}
     {% if emailaddresses %}
-        <h2>{% trans "Registered email addresses" %}</h2>
-        <br>
-        {% url 'account_email' as email_url %}
-        <form action="{{ email_url }}" method="post" class="needs-validation" novalidate>
-            {% csrf_token %}
-            <div class="form-group">
-                {% for radio in emailaddress_radios %}
-                    {% with emailaddress=radio.emailaddress %}
-                        <div class="form-check mb-3 h4">
-                            <input class="form-check-input" type="radio" name="email" value="{{ emailaddress.email }}" id="{{ radio.id }}" {% if radio.checked %}checked{% endif %}>
-                            <label class="form-check-label" for="{{ radio.id }}">
-                                {{ emailaddress.email }}
-                                {% if emailaddress.verified %}
-                                    <span class="badge bg-success">{% translate "Verified" %}</span>
-                                {% else %}
-                                    <span class="badge bg-warning text-dark">{% translate "Unverified" %}</span>
-                                {% endif %}
-                                {% if emailaddress.primary %}
-                                    <span class="badge bg-primary">{% translate "Primary" %}</span>
-                                {% endif %}
-                            </label>
-                        </div>
-                    {% endwith %}
-                {% endfor %}
-            </div>
-            <br>
-            <div class="btn-group float-end" role="group" aria-label="Email actions">
-                <button type="submit" name="action_primary" class="btn btn-primary">{% trans 'Make Primary' %}</button>
-                <button type="submit" name="action_send" class="btn btn-secondary">{% trans 'Re-send Verification' %}</button>
-                <button type="submit" name="action_remove" class="btn btn-danger">{% trans 'Remove' %}</button>
-            </div>
-        </form>
+        <div class="container pb-5">
+            <h2 class="py-4 mb-2">{% trans "Registered email addresses" %}</h2>
+            {% url 'account_email' as email_url %}
+            <form action="{{ email_url }}" method="post" class="needs-validation pb-5" novalidate>
+                {% csrf_token %}
+                <div class="form-group">
+                    {% for radio in emailaddress_radios %}
+                        {% with emailaddress=radio.emailaddress %}
+                            <div class="form-check mb-3 h4 py-2">
+                                <input class="form-check-input" type="radio" name="email" value="{{ emailaddress.email }}" id="{{ radio.id }}" {% if radio.checked %}checked{% endif %}>
+                                <label class="form-check-label" for="{{ radio.id }}">
+                                    {{ emailaddress.email }}
+                                    {% if emailaddress.verified %}
+                                        <span class="badge bg-success">{% translate "Verified" %}</span>
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark">{% translate "Unverified" %}</span>
+                                    {% endif %}
+                                    {% if emailaddress.primary %}
+                                        <span class="badge bg-primary">{% translate "Primary" %}</span>
+                                    {% endif %}
+                                </label>
+                            </div>
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+                <div class="btn-group float-end py-4" role="group" aria-label="Email actions">
+                    <button type="submit" name="action_primary" class="btn btn-primary btn-lg">{% trans 'Make Primary' %}</button>
+                    <button type="submit" name="action_send" class="btn btn-secondary btn-lg">{% trans 'Re-send Verification' %}</button>
+                    <button type="submit" name="action_remove" class="btn btn-danger btn-lg">{% trans 'Remove' %}</button>
+                </div>
+            </form>
+        </div>
     {% else %}
         {% include "account/snippets/warn_no_email.html" %}
     {% endif %}
+    
     {% if can_add_email %}
-        <br><br><br><br><br><br>
-        <h2>{% trans "Add Email Address" %}</h2>
+    <div class="container pt-4">
+        <hr class="py-4">
+        <h2 class="pb-2">{% trans "Add Email Address" %}</h2>
         {% url 'account_email' as action_url %}
         <form action="{{ action_url }}" method="post" class="needs-validation" novalidate>
             {% csrf_token %}
@@ -61,8 +63,9 @@
                     </div>
                 {% endif %}
             </div>
-            <button type="submit" name="action_add" class="btn btn-primary float-end">{% trans "Add Email" %}</button>
+            <button class="btn btn-primary btn-lg float-end" id="submitButton" type="submit" name="action_add">{% trans "Add" %}</button>
         </form>
+    </div>
     {% endif %}
     <script type="text/javascript">
     (function() {
