@@ -31,8 +31,11 @@ RUN django-admin compilemessages
 RUN python ./manage.py collectstatic --noinput
 RUN python ./deploy/convert_images.py static
 
-RUN python manage.py makemigrations
-RUN python manage.py migrate
+# 環境変数をロード
+COPY .env /app/.env
+
+# マイグレーションの実行と.envファイルの削除
+RUN export $(cat /app/.env | xargs) && python manage.py makemigrations && python manage.py migrate && rm /app/.env
 
 # アプリケーションの起動
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "config.wsgi:application", \
