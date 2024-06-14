@@ -371,6 +371,12 @@
                                     <div class="fw-bold fs-4 text-white p-3 bg-primary rounded">{% trans "Sign Up" %}</div>
                                 </a>
                             {% endif %}
+                            {% url 'account_reset_password' as account_reset_password_url %}
+                            {% if account_reset_password_url %}
+                                <a href="{{ account_reset_password_url }}" class="navbar-toggler rounded text-center d-block py-3 px-5 text-decoration-none">
+                                    <div class="fw-bold fs-4 text-white p-3 bg-primary rounded">{% trans "Rset Password" %}</div>
+                                </a>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>
