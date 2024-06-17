@@ -515,8 +515,8 @@ class ConfirmLoginCodeView(RedirectAuthenticatedUserMixin, NextRedirectMixin, Fo
         self.user, self.pending_login = flows.login_by_code.get_pending_login(
             request, peek=True
         )
-        # if not self.pending_login:
-        #     return HttpResponseRedirect(reverse("account_request_login_code"))
+        if not self.pending_login:
+            return HttpResponseRedirect(reverse("account_login"))
         return super().dispatch(request, *args, **kwargs)
 
     def get_form_class(self):
