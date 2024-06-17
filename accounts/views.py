@@ -529,9 +529,10 @@ class ConfirmLoginCodeView(RedirectAuthenticatedUserMixin, NextRedirectMixin, Fo
 
     def form_valid(self, form):
         redirect_url = self.get_success_url()
-        return flows.login_by_code.perform_login_by_code(
+        response = flows.login_by_code.perform_login_by_code(
             self.request, self.user, redirect_url, self.pending_login
         )
+        return response
     
     def form_invalid(self, form):
         attempts_left = flows.login_by_code.record_invalid_attempt(
