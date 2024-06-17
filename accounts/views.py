@@ -18,10 +18,12 @@ from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from .forms import *
 from config.settings import base as setting
-from .models import LoginCode, CustomUser
+from .models import CustomUser
 from django.utils import timezone
 from django.contrib.auth import authenticate
 from allauth.account.utils import perform_login, get_login_redirect_url
+
+from config.settings import base as settings
 
 
 def add_error_messages(request, form):
@@ -66,10 +68,10 @@ class LoginView(
         user = authenticate(username=email, password=password)
         
         if user and user.use_login_by_code:
-            # ログインコードを送信してコード確認ページにリダイレクト
-            adapter = get_adapter(self.request)
-            adapter.send_login_code(user)
-            self.request.session['pending_login_user_id'] = str(user.id)  # ユーザーIDをセッションに保存
+            next_url = self.request.GET.get('next')
+            if next_url:
+                self.request.session['next'] = next_url
+            flows.login_by_code.request_login_code(self.request, email)
             return redirect('account_confirm_login_code')
         
         # 通常のログイン処理
@@ -510,72 +512,40 @@ class ConfirmLoginCodeView(RedirectAuthenticatedUserMixin, NextRedirectMixin, Fo
 
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
-        user = self.get_user()
-        if not user or not user.use_login_by_code:
-            return HttpResponseRedirect(reverse("account_login"))
-
-        self.pending_login = LoginCode.objects.filter(user=user, expires_at__gte=timezone.now()).first()
-        if not self.pending_login:
-            return HttpResponseRedirect(reverse("account_login"))
-        
+        self.user, self.pending_login = flows.login_by_code.get_pending_login(
+            request, peek=True
+        )
+        # if not self.pending_login:
+        #     return HttpResponseRedirect(reverse("account_request_login_code"))
         return super().dispatch(request, *args, **kwargs)
-    
+
     def get_form_class(self):
         return get_form_class(app_settings.FORMS, "confirm_login_code", self.form_class)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs["code"] = self.pending_login.code if self.pending_login else ""
+        kwargs["code"] = self.pending_login.get("code", "")
         return kwargs
 
-    def get_user(self):
-        user_id = self.request.session.get('pending_login_user_id')
-        if user_id:
-            return get_object_or_404(CustomUser, id=user_id)
-        return None
-
     def form_valid(self, form):
-        user = self.get_user()
-        login_code = form.cleaned_data['code']
-        
-        latest_login_code = LoginCode.objects.latest_for_user(user)
-
-        if latest_login_code and latest_login_code.code == login_code:
-            perform_login(self.request, user, email_verification=app_settings.EMAIL_VERIFICATION)
-            del self.request.session['pending_login_user_id']  # セッションからユーザーIDを削除
-            return redirect(self.get_success_url())
-        else:
-            form.add_error('code', 'Invalid code')
-            add_error_messages(self.request, form)
-            return self.form_invalid(form)
-
-    def get_success_url(self):
-        return get_login_redirect_url(self.request)
-
+        redirect_url = self.get_success_url()
+        return flows.login_by_code.perform_login_by_code(
+            self.request, self.user, redirect_url, self.pending_login
+        )
+    
     def form_invalid(self, form):
-        self.pending_login.failed_attempts += 1
-        self.pending_login.save()
-
-        pending_login_dict = {
-            "user": str(self.pending_login.user_id),  # UUIDを文字列に変換
-            "code": self.pending_login.code,
-            "expires_at": self.pending_login.expires_at.isoformat(),
-            "failed_attempts": self.pending_login.failed_attempts,
-        }
-
-        attempts_left = flows.login_by_code.record_invalid_attempt(self.request, pending_login_dict)
+        attempts_left = flows.login_by_code.record_invalid_attempt(
+            self.request, self.pending_login
+        )
         if attempts_left:
-            response = super().form_invalid(form)
-            add_error_messages(self.request, form)
-            return response
+            return super().form_invalid(form)
         adapter = get_adapter(self.request)
         adapter.add_message(
             self.request,
             messages.ERROR,
             message=adapter.error_messages["too_many_login_attempts"],
         )
-        add_error_messages(self.request, form)
-        return HttpResponseRedirect(reverse("account_login"))
+        return HttpResponseRedirect(reverse("account_request_login_code"))
 
     def get_context_data(self, **kwargs):
         ret = super().get_context_data(**kwargs)
@@ -583,10 +553,17 @@ class ConfirmLoginCodeView(RedirectAuthenticatedUserMixin, NextRedirectMixin, Fo
         ret.update(
             {
                 "site": site,
-                "email": self.pending_login.user.email if self.pending_login else "",
+                "email": self.pending_login["email"],
             }
         )
         return ret
+
+    def get_success_url(self):
+        next_url = self.request.session.get('next', '')
+        if next_url:
+            del self.request.session['next']
+            return next_url
+        return get_login_redirect_url(self.request)
 
 
 def verification_sent(request):

@@ -32,7 +32,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=255)
     use_login_by_code = models.BooleanField(default=False)
-    login_code = models.ForeignKey('LoginCode', null=True, blank=True, on_delete=models.SET_NULL)
     secret_key = models.ForeignKey('EncryptionKey', null=True, blank=True, on_delete=models.SET_NULL)
     date_joined = models.DateTimeField(default=timezone.now)
     last_login = models.DateTimeField(null=True, blank=True)
@@ -64,17 +63,3 @@ class EncryptionKey(models.Model):
         return self.expires_at > timezone.now()
 
     is_valid.boolean = True  # 管理画面での表示を修正
-
-
-class LoginCodeManager(models.Manager):
-    def latest_for_user(self, user):
-        return self.filter(user=user, expires_at__gte=timezone.now()).order_by('-expires_at').first()
-
-class LoginCode(models.Model):
-    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
-    code = models.CharField(max_length=8)
-    expires_at = models.DateTimeField()
-    failed_attempts = models.PositiveIntegerField(default=0)
-
-    objects = LoginCodeManager()
-    

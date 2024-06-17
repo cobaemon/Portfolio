@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
-from .models import CustomUser, EncryptionKey, LoginCode
+from .models import CustomUser, EncryptionKey
+from django.shortcuts import redirect
+from django.urls import reverse
 
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
@@ -9,7 +11,7 @@ class UserAdmin(BaseUserAdmin):
         (_('Personal info'), {'fields': ('date_joined', 'last_login')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         (_('Encryption'), {'fields': ('secret_key',)}),
-        (_('Login Options'), {'fields': ('use_login_by_code', 'login_code')}),  # 追加
+        (_('Login Options'), {'fields': ('use_login_by_code',)}),  # 修正: タプルに変更
     )
     add_fieldsets = (
         (None, {
@@ -17,7 +19,7 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('username', 'email', 'password1', 'password2'),
         }),
     )
-    list_display = ('username', 'email', 'is_staff', 'is_superuser', 'use_login_by_code', 'login_code')  # 追加
+    list_display = ('username', 'email', 'is_staff', 'is_superuser', 'use_login_by_code')  # 修正: 空の要素を削除
     search_fields = ('username', 'email')
     ordering = ('username',)
 
@@ -26,11 +28,13 @@ class EncryptionKeyAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'user__email')
     ordering = ('user',)
 
-class LoginCodeAdmin(admin.ModelAdmin):
-    list_display = ('user', 'code', 'expires_at')
-    search_fields = ('user__username', 'user__email', 'code')
-    ordering = ('user',)
-
 admin.site.register(CustomUser, UserAdmin)
 admin.site.register(EncryptionKey, EncryptionKeyAdmin)
-admin.site.register(LoginCode, LoginCodeAdmin)
+
+
+class CustomAdminSite(admin.AdminSite):
+    def login(self, request, extra_context=None):
+        # 管理画面へのアクセス時にallauthのログインページにリダイレクトし、ログイン後に元の管理画面に戻るようにする
+        return redirect(reverse('account_login') + '?next=' + request.get_full_path())
+
+admin_site = CustomAdminSite(name='custom_admin')

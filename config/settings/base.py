@@ -229,8 +229,6 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 
-ACCOUNT_ADAPTER = 'accounts.adapter.CustomAccountAdapter'
-
 # リダイレクト設定
 # ユーザーがログインした後にリダイレクトされるURL
 LOGIN_REDIRECT_URL = '/'
