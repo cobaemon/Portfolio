@@ -528,11 +528,15 @@ class ConfirmLoginCodeView(RedirectAuthenticatedUserMixin, NextRedirectMixin, Fo
         return kwargs
 
     def form_valid(self, form):
-        redirect_url = self.get_success_url()
-        response = flows.login_by_code.perform_login_by_code(
-            self.request, self.user, redirect_url, self.pending_login
-        )
-        return response
+        login_code = form.cleaned_data['code']
+        user = self.user
+
+        if login_code == self.pending_login.get("code") and not self.pending_login.get("is_expired"):
+            perform_login(self.request, user, email_verification=settings.ACCOUNT_EMAIL_VERIFICATION)
+            return redirect(self.get_success_url())
+        else:
+            form.add_error('code', 'Invalid code')
+            return self.form_invalid(form)
     
     def form_invalid(self, form):
         attempts_left = flows.login_by_code.record_invalid_attempt(
