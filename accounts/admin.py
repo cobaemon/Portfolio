@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from .models import CustomUser, EncryptionKey
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.contrib.sessions.models import Session
 
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
@@ -38,3 +39,9 @@ class CustomAdminSite(admin.AdminSite):
         return redirect(reverse('account_login') + '?next=' + request.get_full_path())
 
 admin_site = CustomAdminSite(name='custom_admin')
+
+
+class SessionAdmin(admin.ModelAdmin):
+    list_display = ['session_key', 'session_data', 'expire_date']
+
+admin.site.register(Session, SessionAdmin)

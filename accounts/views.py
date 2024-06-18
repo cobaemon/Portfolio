@@ -24,6 +24,7 @@ from django.contrib.auth import authenticate
 from allauth.account.utils import perform_login, get_login_redirect_url
 
 from config.settings import base as settings
+from django.utils.translation import gettext_lazy as _
 
 
 def add_error_messages(request, form):
@@ -543,14 +544,19 @@ class ConfirmLoginCodeView(RedirectAuthenticatedUserMixin, NextRedirectMixin, Fo
             self.request, self.pending_login
         )
         if attempts_left:
-            return super().form_invalid(form)
+            response = super().form_invalid(form)
+            add_error_messages(self.request, form)
+            return response
+
         adapter = get_adapter(self.request)
         adapter.add_message(
             self.request,
             messages.ERROR,
-            message=adapter.error_messages["too_many_login_attempts"],
+            message=adapter.error_messages.get("too_many_login_attempts", _("Too many login attempts")),
         )
-        return HttpResponseRedirect(reverse("account_request_login_code"))
+        add_error_messages(self.request, form)
+        return HttpResponseRedirect(reverse("account_login"))
+
 
     def get_context_data(self, **kwargs):
         ret = super().get_context_data(**kwargs)
