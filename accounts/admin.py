@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from .models import *
+from .models import CustomUser, EncryptionKey
 
 
 class UserAdmin(BaseUserAdmin):
@@ -34,7 +34,6 @@ class EncryptionKeyAdmin(admin.ModelAdmin):
 admin.site.register(CustomUser, UserAdmin)
 admin.site.register(EncryptionKey, EncryptionKeyAdmin)
 
-
 class CustomAdminSite(admin.AdminSite):
     def login(self, request, extra_context=None):
         # 管理画面へのアクセス時にallauthのログインページにリダイレクトし、ログイン後に元の管理画面に戻るようにする
@@ -42,9 +41,7 @@ class CustomAdminSite(admin.AdminSite):
 
 admin_site = CustomAdminSite(name='custom_admin')
 
-
 class SessionAdmin(admin.ModelAdmin):
     list_display = ['session_key', 'session_data', 'expire_date']
 
 admin.site.register(Session, SessionAdmin)
-admin.site.register(UserTOTPDevice)

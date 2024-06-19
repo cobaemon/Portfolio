@@ -75,10 +75,3 @@ class EncryptionKey(models.Model):
         return self.expires_at > timezone.now()
 
     is_valid.boolean = True  # 管理画面での表示を修正
-
-
-class UserTOTPDevice(TOTPDevice):
-    custom_user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.custom_user.username} TOTP Device"
