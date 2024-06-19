@@ -10,10 +10,7 @@ python manage.py makemigrations otp_totp
 python manage.py makemigrations
 
 # OTP TOTPのマイグレーションを先に行う
-python manage.py migrate otp_totp
-
-# accountsアプリケーションのマイグレーションを行う
-python manage.py migrate accounts
+python manage.py migrate otp_totp 0001_initial
 
 # 残りのマイグレーションを行う
 python manage.py migratepython manage.py collectstatic --noinput
