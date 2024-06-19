@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
-
 from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -53,7 +52,6 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_totp',
 
     'accounts',
-    'onetimepassword',
     'portfolio',
     'passwordbox',
 ]

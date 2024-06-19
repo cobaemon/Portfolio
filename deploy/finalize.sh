@@ -47,6 +47,6 @@ CRON_JOB="0 * * * * /home/cobalt/deploy/Portfolio/deploy/update-route53-record.s
 
 # ウェブコンテナ内でマイグレーションスクリプトの実行
 echo -e "${YELLOW}Running migrations inside the web container...${RESET}"
-docker exec portfolio-web /app/Dockerfile-web-entrypoint.sh
+# docker exec portfolio-web /app/Dockerfile-web-entrypoint.sh
 
 echo -e "${YELLOW}Finalize completed successfully.${RESET}"

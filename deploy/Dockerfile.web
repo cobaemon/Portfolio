@@ -36,7 +36,7 @@ COPY Dockerfile-web-entrypoint.sh /app/Dockerfile-web-entrypoint.sh
 RUN chmod +x /app/Dockerfile-web-entrypoint.sh
 
 # エントリポイントスクリプトの実行
-ENTRYPOINT ["/app/Dockerfile-web-entrypoint.sh"]
+# ENTRYPOINT ["/app/Dockerfile-web-entrypoint.sh"]
 
 # アプリケーションの起動
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "config.wsgi:application", \

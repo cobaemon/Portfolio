@@ -22,10 +22,10 @@ from django.views.decorators.cache import never_cache
 from django.views.generic.edit import FormView
 
 from config.settings import base as settings
-from onetimepassword.models import UserTOTPDevice
 
 from .forms import *
 from .models import *
+from .models import UserTOTPDevice
 
 
 def add_error_messages(request, form):
@@ -562,7 +562,7 @@ class ConfirmLoginCodeView(RedirectAuthenticatedUserMixin, NextRedirectMixin, Fo
                 form.add_error('code', 'Invalid code')
                 return self.form_invalid(form)
         elif user.use_one_time_password:
-            device = UserTOTPDevice.objects.get(user=user)
+            device = UserTOTPDevice.objects.get(custom_user=user)
             if device.verify_token(login_code):
                 perform_login(self.request, user, email_verification=settings.ACCOUNT_EMAIL_VERIFICATION)
                 return redirect(self.get_success_url())
@@ -649,11 +649,10 @@ def two_factor_authentication_settings(request):
         form = TwoFactorAuthenticationSettingsForm(instance=request.user)
     return render(request, 'account/two_factor_authentication_settings.html', {'form': form})
 
-@login_required
 def totp_setup(request):
     user = request.user
 
-    device, created = UserTOTPDevice.objects.get_or_create(user=user)
+    device, created = UserTOTPDevice.objects.get_or_create(custom_user=user, user=user)
 
     if request.method == 'POST':
         device.save()
