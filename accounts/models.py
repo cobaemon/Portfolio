@@ -1,5 +1,6 @@
 import uuid
 
+from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
 from django.core.exceptions import ValidationError
@@ -77,7 +78,7 @@ class EncryptionKey(models.Model):
 
 
 class UserTOTPDevice(TOTPDevice):
-    custom_user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    custom_user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.custom_user.username} TOTP Device"
