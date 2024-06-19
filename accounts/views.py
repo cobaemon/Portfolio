@@ -562,7 +562,7 @@ class ConfirmLoginCodeView(RedirectAuthenticatedUserMixin, NextRedirectMixin, Fo
                 form.add_error('code', 'Invalid code')
                 return self.form_invalid(form)
         elif user.use_one_time_password:
-            device = TOTPDevice.objects.get(custom_user=user)
+            device = TOTPDevice.objects.get(user=user)
             if device.verify_token(login_code):
                 perform_login(self.request, user, email_verification=settings.ACCOUNT_EMAIL_VERIFICATION)
                 return redirect(self.get_success_url())
@@ -652,7 +652,7 @@ def two_factor_authentication_settings(request):
 def totp_setup(request):
     user = request.user
 
-    device, created = TOTPDevice.objects.get_or_create(custom_user=user, user=user)
+    device, created = TOTPDevice.objects.get_or_create(user=user)
 
     if request.method == 'POST':
         device.save()
