@@ -5,6 +5,8 @@ set -e
 
 # Djangoのマイグレーションの実行
 echo "Running Django migrations..."
+python manage.py makemigrations accounts
+python manage.py makemigrations otp_totp
 python manage.py makemigrations
 python manage.py migrate
 python manage.py collectstatic --noinput
