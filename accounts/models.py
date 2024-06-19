@@ -1,7 +1,12 @@
 import uuid
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
+                                        PermissionsMixin)
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
+from django_otp.plugins.otp_totp.models import TOTPDevice
 
 
 class CustomUserManager(BaseUserManager):
@@ -32,6 +37,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=255)
     use_login_by_code = models.BooleanField(default=False)
+    use_one_time_password = models.BooleanField(default=False)
     secret_key = models.ForeignKey('EncryptionKey', null=True, blank=True, on_delete=models.SET_NULL)
     date_joined = models.DateTimeField(default=timezone.now)
     last_login = models.DateTimeField(null=True, blank=True)
@@ -49,6 +55,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.username
 
+    def clean(self):
+        super().clean()
+        if self.use_login_by_code and self.use_one_time_password:
+            raise ValidationError(_('Login by Code and One-Time Password cannot both be True at the same time.'))
+
 
 class EncryptionKey(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -63,3 +74,10 @@ class EncryptionKey(models.Model):
         return self.expires_at > timezone.now()
 
     is_valid.boolean = True  # 管理画面での表示を修正
+
+
+class UserTOTPDevice(TOTPDevice):
+    custom_user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.custom_user.username} TOTP Device"

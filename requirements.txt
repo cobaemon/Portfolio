@@ -9,3 +9,5 @@ django-csp
 psycopg2-binary
 cryptography
 django-allauth
+django-otp
+qrcode

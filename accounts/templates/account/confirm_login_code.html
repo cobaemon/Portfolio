@@ -10,10 +10,17 @@
 {% endblock extra_body_head_title %}
 
 {% block extra_body_form %}
-    <p class="lead text-center">
-        {% trans "We've sent a code to " %}<a href="mailto:{{ email }}">{{ email }}</a>{% trans ". The code expires shortly, so please enter it soon." %}
-    </p>
-    <br>
+    {% if use_one_time_password %}
+        <p class="lead text-center">
+            {% trans "Please open your Microsoft Authenticator app to get the verification code. If you haven't set it up yet, please " %}<a href="{% url 'account_totp_setup' %}">{% trans "set it up now" %}</a>{% trans "." %}
+        </p>
+        <br>
+    {% else %}
+        <p class="lead text-center">
+            {% trans "We've sent a code to " %}<a href="mailto:{{ email }}">{{ email }}</a>{% trans ". The code expires shortly, so please enter it soon." %}
+        </p>
+        <br>
+    {% endif %}
     {% url 'account_confirm_login_code' as login_url %}
     <form method="post" action="{{ login_url }}" class="needs-validation" novalidate>
         {% csrf_token %}

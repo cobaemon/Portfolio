@@ -1,34 +1,28 @@
 from importlib import import_module
 
+from allauth.account import app_settings
+from allauth.account.adapter import get_adapter
+from allauth.account.app_settings import AuthenticationMethod
+from allauth.account.internal import flows
+from allauth.account.models import EmailAddress, Login
+from allauth.account.stages import EmailVerificationStage
+from allauth.account.utils import (assess_unique_email, filter_users_by_email,
+                                   setup_user_email, sync_user_email_addresses,
+                                   url_str_to_user_pk, user_email,
+                                   user_pk_to_url_str, user_username)
+from allauth.core import context, ratelimit
+from allauth.utils import get_username_max_length, set_form_field_order
 from django import forms
 from django.contrib.auth import get_user_model, password_validation
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core import exceptions, validators
 from django.urls import NoReverseMatch, reverse
 from django.utils.safestring import mark_safe
-from django.utils.translation import gettext, gettext_lazy as _, pgettext
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext
 
-from allauth.account.internal import flows
-from allauth.account.stages import EmailVerificationStage
-from allauth.core import context, ratelimit
-from allauth.utils import get_username_max_length, set_form_field_order
-
-from allauth.account import app_settings
-from allauth.account.adapter import get_adapter
-from allauth.account.app_settings import AuthenticationMethod
-from allauth.account.models import EmailAddress, Login
-from allauth.account.utils import (
-    assess_unique_email,
-    filter_users_by_email,
-    setup_user_email,
-    sync_user_email_addresses,
-    url_str_to_user_pk,
-    user_email,
-    user_pk_to_url_str,
-    user_username,
-)
-
-from .models import CustomUser
+from .models import *
 
 
 class EmailAwarePasswordResetTokenGenerator(PasswordResetTokenGenerator):
@@ -77,7 +71,7 @@ class PasswordField(forms.CharField):
                 "data-sb-validations": data_sb_validations,
             }
         )
-        
+
         if autocomplete is not None:
             kwargs["widget"].attrs["autocomplete"] = autocomplete
 
@@ -90,7 +84,7 @@ class SetPasswordField(PasswordField):
         kwargs.setdefault(
             "help_text", password_validation.password_validators_help_text_html()
         )
-        
+
         placeholder = kwargs.pop("placeholder", None)
         css_class = kwargs.pop("css_class", "form-control")
         data_sb_validations = kwargs.pop("data_sb_validations", "required,password")
@@ -103,7 +97,7 @@ class SetPasswordField(PasswordField):
                 "autocomplete": kwargs["autocomplete"],
             }
         )
-        
+
         super().__init__(*args, **kwargs)
         self.user = None
 
@@ -125,7 +119,7 @@ class LoginForm(forms.Form):
         })
     )
     password = SetPasswordField(
-        label=_("Password"), 
+        label=_("Password"),
         autocomplete="current-password",
         placeholder=_('Enter your password...'),
         css_class='form-control',
@@ -607,7 +601,7 @@ class AddEmailForm(forms.Form):
 
 class ChangePasswordForm(PasswordVerificationMixin, UserForm):
     oldpassword = PasswordField(
-        label=_("Current Password"), 
+        label=_("Current Password"),
         placeholder=_('Enter your current password...'),
         css_class='form-control',
         data_sb_validations='required,password',
@@ -782,7 +776,7 @@ class UserTokenForm(forms.Form):
 
 class ReauthenticateForm(forms.Form):
     password = PasswordField(
-        label=_("Password"), 
+        label=_("Password"),
         placeholder=_('Enter your password...'),
         css_class='form-control',
         data_sb_validations='required,password',
@@ -827,6 +821,11 @@ class RequestLoginCodeForm(forms.Form):
         return email
 
 
+
+import logging
+
+logger = logging.getLogger(__name__)
+
 class ConfirmLoginCodeForm(forms.Form):
     code = forms.CharField(
         label=_("Code"),
@@ -849,19 +848,47 @@ class ConfirmLoginCodeForm(forms.Form):
         code = self.cleaned_data.get("code").replace(" ", "")
         expected_code = self.code.replace(" ", "")
 
-        if not self.code or code != expected_code:
+        if expected_code == 'use_one_time_password':
+            return code
+        elif not self.code or code != expected_code:
             raise forms.ValidationError(_("Invalid code"))
 
         return code
 
 
-class LoginByCodeSettingsForm(forms.ModelForm):
+class TwoFactorAuthenticationSettingsForm(forms.ModelForm):
+    LOGIN_CHOICES = [
+        (False, 'Disable Two-Factor Authentication'),
+        ('use_login_by_code', 'Enable Login by Code'),
+        ('use_one_time_password', 'Enable One-Time Password (Microsoft Authenticator)')
+    ]
+
+    login_method = forms.ChoiceField(
+        choices=LOGIN_CHOICES,
+        widget=forms.RadioSelect(attrs={'class': 'form-check-input'})
+    )
+
     class Meta:
         model = CustomUser
-        fields = ['use_login_by_code']
-        widgets = {
-            'use_login_by_code': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-        }
-        labels = {
-            'use_login_by_code': 'Enable Login by Code',
-        }
+        fields = []  # login_methodを独自に定義しているのでfieldsは空にする
+
+    def clean(self):
+        cleaned_data = super().clean()
+        login_method = cleaned_data.get('login_method')
+
+        if login_method == 'use_login_by_code':
+            cleaned_data['use_login_by_code'] = True
+            cleaned_data['use_one_time_password'] = False
+        elif login_method == 'use_one_time_password':
+            cleaned_data['use_login_by_code'] = False
+            cleaned_data['use_one_time_password'] = True
+        else:
+            cleaned_data['use_login_by_code'] = False
+            cleaned_data['use_one_time_password'] = False
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        self.instance.use_login_by_code = self.cleaned_data.get('use_login_by_code', False)
+        self.instance.use_one_time_password = self.cleaned_data.get('use_one_time_password', False)
+        return super().save(commit)

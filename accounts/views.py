@@ -1,30 +1,31 @@
+import base64
+import io
+import time
+
+import qrcode
+from allauth.account.mixins import _ajax_response
+from allauth.account.utils import get_login_redirect_url, perform_login
+from allauth.account.views import *
 from django.contrib import messages
+from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import PermissionDenied
 from django.core.validators import validate_email
 from django.forms import ValidationError
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.cache import never_cache
-from django.views.decorators.debug import sensitive_post_parameters
-from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
-from allauth.account.views import *
-from allauth.account.mixins import _ajax_response
-from django.contrib import messages
-from django.shortcuts import redirect, render, get_object_or_404
-from .forms import *
-from config.settings import base as setting
-from .models import CustomUser
-from django.utils import timezone
-from django.contrib.auth import authenticate
-from allauth.account.utils import perform_login, get_login_redirect_url
-
 from config.settings import base as settings
-from django.utils.translation import gettext_lazy as _
+
+from .forms import *
+from .models import *
+from .models import UserTOTPDevice
 
 
 def add_error_messages(request, form):
@@ -65,23 +66,36 @@ class LoginView(
         credentials = form.cleaned_data
         email = credentials.get('login')
         password = credentials.get('password')
-        
+
         user = authenticate(username=email, password=password)
-        
+
         if user and user.use_login_by_code:
             next_url = self.request.GET.get('next')
             if next_url:
                 self.request.session['next'] = next_url
             flows.login_by_code.request_login_code(self.request, email)
             return redirect('account_confirm_login_code')
-        
+        elif user and user.use_one_time_password:
+            next_url = self.request.GET.get('next')
+            if next_url:
+                self.request.session['next'] = next_url
+            pending_login = {
+                "at": time.time(),
+                "email": email,
+                "failed_attempts": 0,
+                "user_id": str(user.id),
+            }
+            self.request.session["account_login_code"] = pending_login
+            self.request.session['pending_login_user_id'] = str(user.id)
+            return redirect('account_confirm_login_code')
+
         # 通常のログイン処理
         redirect_url = self.get_success_url()
         try:
             return form.login(self.request, redirect_url=redirect_url)
         except ImmediateHttpResponse as e:
             return e.response
-        
+
     def form_invalid(self, form):
         response = super().form_invalid(form)
         add_error_messages(self.request, form)
@@ -402,7 +416,7 @@ class EmailView(AjaxCapableProcessFormViewMixin, FormView):
     def form_valid(self, form):
         flows.manage_email.add_email(self.request, form)
         return super().form_valid(form)
-    
+
     def form_invalid(self, form):
         response = super().form_invalid(form)
         add_error_messages(self.request, form)
@@ -517,6 +531,11 @@ class ConfirmLoginCodeView(RedirectAuthenticatedUserMixin, NextRedirectMixin, Fo
             request, peek=True
         )
         if not self.pending_login:
+            user_id = self.request.session.get('pending_login_user_id')
+            if user_id:
+                self.user = CustomUser.objects.filter(id=user_id).first()
+                if self.user.use_one_time_password:
+                    return super().dispatch(request, *args, **kwargs)
             return HttpResponseRedirect(reverse("account_login"))
         return super().dispatch(request, *args, **kwargs)
 
@@ -525,20 +544,35 @@ class ConfirmLoginCodeView(RedirectAuthenticatedUserMixin, NextRedirectMixin, Fo
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs["code"] = self.pending_login.get("code", "")
+        if self.user.use_login_by_code:
+            kwargs["code"] = self.pending_login.get("code", "")
+        elif self.user.use_one_time_password:
+            kwargs["code"] = 'use_one_time_password'
         return kwargs
 
     def form_valid(self, form):
         login_code = form.cleaned_data['code']
         user = self.user
 
-        if login_code == self.pending_login.get("code") and not self.pending_login.get("is_expired"):
-            perform_login(self.request, user, email_verification=settings.ACCOUNT_EMAIL_VERIFICATION)
-            return redirect(self.get_success_url())
+        if user.use_login_by_code:
+            if login_code == self.pending_login.get("code") and not self.pending_login.get("is_expired"):
+                perform_login(self.request, user, email_verification=settings.ACCOUNT_EMAIL_VERIFICATION)
+                return redirect(self.get_success_url())
+            else:
+                form.add_error('code', 'Invalid code')
+                return self.form_invalid(form)
+        elif user.use_one_time_password:
+            device = UserTOTPDevice.objects.get(custom_user=user)
+            if device.verify_token(login_code):
+                perform_login(self.request, user, email_verification=settings.ACCOUNT_EMAIL_VERIFICATION)
+                return redirect(self.get_success_url())
+            else:
+                form.add_error('code', 'Invalid token')
+                return self.form_invalid(form)
         else:
-            form.add_error('code', 'Invalid code')
+            form.add_error('code', 'Invalid authentication method')
             return self.form_invalid(form)
-    
+
     def form_invalid(self, form):
         attempts_left = flows.login_by_code.record_invalid_attempt(
             self.request, self.pending_login
@@ -561,10 +595,20 @@ class ConfirmLoginCodeView(RedirectAuthenticatedUserMixin, NextRedirectMixin, Fo
     def get_context_data(self, **kwargs):
         ret = super().get_context_data(**kwargs)
         site = get_current_site(self.request)
+        use_one_time_password = None
+        email = None
+        if 'pending_login_user_id' in self.request.session:
+            use_one_time_password = CustomUser.objects.filter(id=self.request.session['pending_login_user_id']).first().use_one_time_password
+        if self.pending_login is not None and 'email' in self.pending_login:
+            email = self.pending_login["email"]
+
+        if use_one_time_password is None and email is None:
+            return HttpResponseRedirect(reverse("account_login"))
         ret.update(
             {
                 "site": site,
-                "email": self.pending_login["email"],
+                "email": email,
+                "use_one_time_password": use_one_time_password,
             }
         )
         return ret
@@ -592,15 +636,38 @@ def password_reset_done(request):
     return render(request, 'account/password_reset_done.html', context)
 
 @login_required
-def login_by_code_settings(request):
+def two_factor_authentication_settings(request):
     if request.method == 'POST':
-        form = LoginByCodeSettingsForm(request.POST, instance=request.user)
+        form = TwoFactorAuthenticationSettingsForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Settings updated successfully.')
             return redirect('/')
         else:
-            messages.error(request, 'There was an error updating your settings.')
+            add_error_messages(request, form)
     else:
-        form = LoginByCodeSettingsForm(instance=request.user)
-    return render(request, 'account/login_by_code_settings.html', {'form': form})
+        form = TwoFactorAuthenticationSettingsForm(instance=request.user)
+    return render(request, 'account/two_factor_authentication_settings.html', {'form': form})
+
+def totp_setup(request):
+    user = request.user
+
+    device, created = UserTOTPDevice.objects.get_or_create(custom_user=user, user=user)
+
+    if request.method == 'POST':
+        device.save()
+        return redirect('account_confirm_login_code')
+
+    secret = base64.b32encode(device.bin_key).decode('utf-8')
+    uri = f'otpauth://totp/{user.username}?secret={secret}&issuer=Cobaemon Portfolio'
+    img = qrcode.make(uri)
+    buf = io.BytesIO()
+    img.save(buf)
+    image_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
+
+    context = {
+        'image_base64': image_base64,
+        'secret': secret
+    }
+
+    return render(request, 'account/totp_setup.html', context)

@@ -1,4 +1,5 @@
-from django.urls import path, include, re_path
+from django.urls import include, path, re_path
+
 from .views import *
 
 urlpatterns = [
@@ -15,8 +16,9 @@ urlpatterns = [
         name="account_reset_password_from_key",
     ),
     path('password/change/', PasswordChangeView.as_view(), name='account_password_change'),
-    path('settings/login_by_code/', login_by_code_settings, name='login_by_code_settings'),
+    path('settings/two_factor_authentication_settings/', two_factor_authentication_settings, name='two_factor_authentication_settings'),
     path('login/code/confirm/', ConfirmLoginCodeView.as_view(), name='account_confirm_login_code'),
+    path('totp/setup/', totp_setup, name='account_totp_setup'),
 ]
 
 # Allauthのパターンを追加

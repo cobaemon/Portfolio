@@ -1,10 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.utils.translation import gettext_lazy as _
-from .models import CustomUser, EncryptionKey
+from django.contrib.sessions.models import Session
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.contrib.sessions.models import Session
+from django.utils.translation import gettext_lazy as _
+
+from .models import *
+
 
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
@@ -12,7 +14,7 @@ class UserAdmin(BaseUserAdmin):
         (_('Personal info'), {'fields': ('date_joined', 'last_login')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         (_('Encryption'), {'fields': ('secret_key',)}),
-        (_('Login Options'), {'fields': ('use_login_by_code',)}),  # 修正: タプルに変更
+        (_('Login Options'), {'fields': ('use_login_by_code', 'use_one_time_password')}),  # 修正: タプルに変更
     )
     add_fieldsets = (
         (None, {
@@ -20,7 +22,7 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('username', 'email', 'password1', 'password2'),
         }),
     )
-    list_display = ('username', 'email', 'is_staff', 'is_superuser', 'use_login_by_code')  # 修正: 空の要素を削除
+    list_display = ('username', 'email', 'is_staff', 'is_superuser', 'use_login_by_code', 'use_one_time_password')  # 修正: 空の要素を削除
     search_fields = ('username', 'email')
     ordering = ('username',)
 
@@ -45,3 +47,4 @@ class SessionAdmin(admin.ModelAdmin):
     list_display = ['session_key', 'session_data', 'expire_date']
 
 admin.site.register(Session, SessionAdmin)
+admin.site.register(UserTOTPDevice)
