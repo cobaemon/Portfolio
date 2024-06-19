@@ -5,11 +5,18 @@ set -e
 
 # Djangoのマイグレーションの実行
 echo "Running Django migrations..."
-python manage.py makemigrations accounts
+python manage.py makemigrations accounts.CustomUser
 python manage.py makemigrations otp_totp
 python manage.py makemigrations
-python manage.py migrate
-python manage.py collectstatic --noinput
+
+# OTP TOTPのマイグレーションを先に行う
+python manage.py migrate otp_totp
+
+# accountsアプリケーションのマイグレーションを行う
+python manage.py migrate accounts
+
+# 残りのマイグレーションを行う
+python manage.py migratepython manage.py collectstatic --noinput
 
 # Gunicornを起動
 exec "$@"
