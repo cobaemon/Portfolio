@@ -237,9 +237,9 @@ ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 
 # リダイレクト設定
 # ユーザーがログインした後にリダイレクトされるURL
-LOGIN_REDIRECT_URL = reverse_lazy('top')
+LOGIN_REDIRECT_URL = reverse_lazy('portfolio:top')
 # ユーザーがログアウトした後にリダイレクトされるURL
-LOGOUT_REDIRECT_URL = reverse_lazy('top')
+LOGOUT_REDIRECT_URL = LOGIN_REDIRECT_URL
 # メール確認が成功した後、ログインしていないユーザーがリダイレクトされるURL
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = reverse_lazy('account_login')
 # メール確認が成功した後、ログインしているユーザーがリダイレクトされるURL
@@ -247,7 +247,7 @@ ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = reverse_lazy('account_em
 # パスワードリセットが成功した後にリダイレクトされるURL
 ACCOUNT_PASSWORD_RESET_REDIRECT_URL = reverse_lazy('account_password_reset_done')
 # パスワード変更が成功した後にリダイレクトされるURL
-ACCOUNT_PASSWORD_CHANGE_REDIRECT_URL = reverse_lazy('top')
+ACCOUNT_PASSWORD_CHANGE_REDIRECT_URL = LOGIN_REDIRECT_URL
 # 新規登録が成功した後にリダイレクトされるURL
 ACCOUNT_SIGNUP_REDIRECT_URL = reverse_lazy('account_verification_sent')
 
