@@ -31,6 +31,12 @@ echo -e "${YELLOW}docker compose build and up...${RESET}"
 docker compose -f deploy/docker-compose.yaml build --no-cache
 docker compose -f deploy/docker-compose.yaml up -d
 
+# PostgreSQLコンテナの起動待機
+echo -e "${YELLOW}Waiting for PostgreSQL to be ready...${RESET}"
+until docker exec portfolio-db pg_isready -U ${POSTGRES_USER}; do
+  sleep 1
+done
+
 # 運用ユーザーの作成
 echo -e "${YELLOW}Creating operational user in PostgreSQL...${RESET}"
 docker exec -i portfolio-db psql -U ${POSTGRES_USER} <<-EOSQL
