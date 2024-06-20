@@ -872,6 +872,15 @@ class TwoFactorAuthenticationSettingsForm(forms.ModelForm):
         model = CustomUser
         fields = []  # login_methodを独自に定義しているのでfieldsは空にする
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.use_login_by_code:
+            self.fields['login_method'].initial = 'use_login_by_code'
+        elif self.instance.use_one_time_password:
+            self.fields['login_method'].initial = 'use_one_time_password'
+        else:
+            self.fields['login_method'].initial = False
+
     def clean(self):
         cleaned_data = super().clean()
         login_method = cleaned_data.get('login_method')

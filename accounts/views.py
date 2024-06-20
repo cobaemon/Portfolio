@@ -87,7 +87,10 @@ class LoginView(
             }
             self.request.session["account_login_code"] = pending_login
             self.request.session['pending_login_user_id'] = str(user.id)
-            return redirect('account_confirm_login_code')
+            if TOTPDevice.objects.filter(user=user.id).exists():
+                return redirect('account_confirm_login_code')
+            else:
+                return redirect('account_totp_setup')
 
         # 通常のログイン処理
         redirect_url = self.get_success_url()
@@ -642,6 +645,8 @@ def two_factor_authentication_settings(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Settings updated successfully.')
+            if form.cleaned_data['use_one_time_password']:
+                return redirect('account_totp_setup')
             return redirect('/')
         else:
             add_error_messages(request, form)
@@ -652,6 +657,9 @@ def two_factor_authentication_settings(request):
 def totp_setup(request):
     user = request.user
 
+    if request.user.is_anonymous:
+        user_id = request.session['pending_login_user_id']
+        user = CustomUser.objects.get(id=user_id)
     device, created = TOTPDevice.objects.get_or_create(user=user)
 
     if request.method == 'POST':
@@ -667,7 +675,8 @@ def totp_setup(request):
 
     context = {
         'image_base64': image_base64,
-        'secret': secret
+        'secret': secret,
+        'user': user
     }
 
     return render(request, 'account/totp_setup.html', context)

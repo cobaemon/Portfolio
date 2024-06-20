@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
+
 from django.contrib.messages import constants as messages
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -235,19 +237,19 @@ ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 
 # リダイレクト設定
 # ユーザーがログインした後にリダイレクトされるURL
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = reverse_lazy('top')
 # ユーザーがログアウトした後にリダイレクトされるURL
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = reverse_lazy('top')
 # メール確認が成功した後、ログインしていないユーザーがリダイレクトされるURL
-ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = LOGIN_REDIRECT_URL
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = reverse_lazy('account_login')
 # メール確認が成功した後、ログインしているユーザーがリダイレクトされるURL
-ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = LOGIN_REDIRECT_URL
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = reverse_lazy('account_email')
 # パスワードリセットが成功した後にリダイレクトされるURL
-ACCOUNT_PASSWORD_RESET_REDIRECT_URL = '/accounts/password/reset/done/'
+ACCOUNT_PASSWORD_RESET_REDIRECT_URL = reverse_lazy('account_password_reset_done')
 # パスワード変更が成功した後にリダイレクトされるURL
-ACCOUNT_PASSWORD_CHANGE_REDIRECT_URL = '/accounts/password/change/done/'
+ACCOUNT_PASSWORD_CHANGE_REDIRECT_URL = reverse_lazy('top')
 # 新規登録が成功した後にリダイレクトされるURL
-ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/confirm-email/'
+ACCOUNT_SIGNUP_REDIRECT_URL = reverse_lazy('account_verification_sent')
 
 # Custom
 SITE_NAME = 'Cobaemon Portfolio'
