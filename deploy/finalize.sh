@@ -33,11 +33,11 @@ docker compose -f deploy/docker-compose.yaml up -d
 
 # 運用ユーザーの作成
 echo -e "${YELLOW}Creating operational user in PostgreSQL...${RESET}"
-# docker exec -i portfolio-db psql -U ${POSTGRES_USER} <<-EOSQL
-#   CREATE USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';
-#   CREATE DATABASE ${DB_NAME} OWNER ${DB_USER};
-#   GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${DB_USER};
-# EOSQL
+docker exec -i portfolio-db psql -U ${POSTGRES_USER} <<-EOSQL
+  CREATE USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';
+  CREATE DATABASE ${DB_NAME} OWNER ${DB_USER};
+  GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${DB_USER};
+EOSQL
 echo -e "${YELLOW}Operational user created successfully.${RESET}"
 
 # Cronjobでパブリックアドレスの変更を自動でドメインに反映
