@@ -11,3 +11,5 @@ cryptography
 django-allauth
 django-otp
 qrcode
+requests
+pyjwt

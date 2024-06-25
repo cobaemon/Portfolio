@@ -49,11 +49,14 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
 
     'django_otp',
     'django_otp.plugins.otp_totp',
 
     'accounts',
+    'service_management',
     'portfolio',
     'passwordbox',
 ]

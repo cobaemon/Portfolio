@@ -1,0 +1,43 @@
+{% extends "service_management/base.html" %}
+{% load static %}
+{% load i18n %}
+{% load csp %}
+
+{% block extra_body_head_title %}
+Join Service
+{% endblock extra_body_head_title %}
+
+{% block extra_body_form %}
+<div class="container py-4">
+    <h2 class="text-center">{{ service.name }}</h2>
+    <p>{{ service.description }}</p>
+    <h3>{% trans "Available Plans" %}</h3>
+    <form method="post">
+        {% csrf_token %}
+        <h4>{% trans "Fixed Plans" %}</h4>
+        {% for plan in fixed_plans %}
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="plan_id" id="fixedPlan{{ plan.id }}" value="{{ plan.id }}">
+            <label class="form-check-label" for="fixedPlan{{ plan.id }}">
+                <strong>{{ plan.name }}</strong>: {{ plan.description }} - {{ plan.price }} {% trans "USD for" %} {{ plan.duration_days }} {% trans "days" %}
+            </label>
+        </div>
+        {% endfor %}
+        <h4>{% trans "Metered Plans" %}</h4>
+        {% for plan in metered_plans %}
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="plan_id" id="meteredPlan{{ plan.id }}" value="{{ plan.id }}">
+            <label class="form-check-label" for="meteredPlan{{ plan.id }}">
+                <strong>{{ plan.name }}</strong>: {{ plan.description }} - {{ plan.base_price }} {% trans "USD plus" %}
+                {% for trigger in plan.triggers.all %}
+                {{ trigger.unit_price }} {% trans "USD per" %} {{ trigger.name }}
+                {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </label>
+        </div>
+        {% endfor %}
+        <input type="hidden" name="plan_type" value="fixed">
+        <button type="submit" class="btn btn-primary mt-3">{% trans "Join Now" %}</button>
+    </form>
+</div>
+{% endblock extra_body_form %}

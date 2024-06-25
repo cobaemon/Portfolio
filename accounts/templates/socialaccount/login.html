@@ -1,31 +1,32 @@
-{% extends "socialaccount/base_entrance.html" %}
+{% extends "account/base_entrance.html" %}
+{% load static %}
 {% load i18n %}
+{% load csp %}
 {% load allauth %}
-{% block head_title %}
-    {% trans "Sign In" %}
-{% endblock head_title %}
-{% block content %}
+{% load socialaccount %}
+
+{% block extra_body_head_title %}
+{% if process == "connect" %}
+{% blocktrans with provider.name as provider %}Connect {{ provider }}{% endblocktrans %}
+{% else %}
+{% blocktrans with provider.name as provider %}Sign In Via {{ provider }}{% endblocktrans %}
+{% endif %}
+{% endblock extra_body_head_title %}
+
+{% block extra_body_form %}
+<div class="container pb-5">
     {% if process == "connect" %}
-        {% element h1 %}
-            {% blocktrans with provider.name as provider %}Connect {{ provider }}{% endblocktrans %}
-        {% endelement %}
-        {% element p %}
+        <p class="text-center">
             {% blocktrans with provider.name as provider %}You are about to connect a new third-party account from {{ provider }}.{% endblocktrans %}
-        {% endelement %}
+        </p>
     {% else %}
-        {% element h1 %}
-            {% blocktrans with provider.name as provider %}Sign In Via {{ provider }}{% endblocktrans %}
-        {% endelement %}
-        {% element p %}
+        <p class="text-center">
             {% blocktrans with provider.name as provider %}You are about to sign in using a third-party account from {{ provider }}.{% endblocktrans %}
-        {% endelement %}
+        </p>
     {% endif %}
-    {% element form method="post" no_visible_fields=True %}
-        {% slot actions %}
-            {% csrf_token %}
-            {% element button type="submit" %}
-                {% trans "Continue" %}
-            {% endelement %}
-        {% endslot %}
-    {% endelement %}
-{% endblock content %}
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-primary btn-lg float-end mt-2" type="submit">{% trans "Continue" %}</button>
+    </form>
+</div>
+{% endblock extra_body_form %}

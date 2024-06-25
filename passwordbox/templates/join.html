@@ -1,0 +1,31 @@
+{% extends "passwordbox/base.html" %}
+{% load static %}
+{% load i18n %}
+{% load csp %}
+
+{% block extra_body_head_title %}
+Join PasswordBox
+{% endblock extra_body_head_title %}
+
+{% block extra_body_form %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h2 class="text-center">{% trans "Welcome to PasswordBox" %}</h2>
+            <p>{% trans "PasswordBox is a secure service for managing your passwords and authentication information. Here's how it works:" %}</p>
+            <ul>
+                <li>{% trans "Store your passwords securely in an encrypted format." %}</li>
+                <li>{% trans "Access your passwords from anywhere using your secure login." %}</li>
+                <li>{% trans "Easily generate strong passwords to enhance your security." %}</li>
+                <li>{% trans "Use two-factor authentication for added security." %}</li>
+            </ul>
+            <p>{% trans "Joining PasswordBox is simple and quick. Click the button below to get started." %}</p>
+            <form id="joinForm" method="post" action="{% url 'passwordbox:join' %}" class="py-4">
+                {% csrf_token %}
+                <!-- Join Button-->
+                <button class="btn btn-primary btn-xl float-end mt-4" id="joinButton" type="submit">{% trans "Join Now" %}</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock extra_body_form %}
