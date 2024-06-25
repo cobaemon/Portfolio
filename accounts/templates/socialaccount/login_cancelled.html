@@ -10,9 +10,6 @@
 
 {% block extra_body_form %}
 <div class="container pb-5">
-    <h1 class="h3 mb-3 fw-normal">
-        {% trans "Login Cancelled" %}
-    </h1>
     {% url 'account_login' as login_url %}
     <p>
         {% blocktrans %}You decided to cancel logging in to our site using one of your existing accounts. If this was a mistake, please proceed to <a href="{{login_url}}">sign in</a>.{% endblocktrans %}

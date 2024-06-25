@@ -10,12 +10,9 @@
 
 {% block extra_body_form %}
 <div class="container pb-5">
-    <h1 class="h3 mb-3 fw-normal">
-        {% trans "Third-Party Login Failure" %}
-    </h1>
     <p>
         {% trans "An error occurred while attempting to login via your third-party account." %}
     </p>
-    <a href="{% url 'account_login' %}" class="btn btn-primary btn-xl">{% trans "Return to Login" %}</a>
+    <a href="{% url 'account_login' %}" class="btn btn-primary btn-lg float-end mt-4">{% trans "Return to Login" %}</a>
 </div>
 {% endblock extra_body_form %}
