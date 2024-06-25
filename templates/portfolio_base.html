@@ -352,6 +352,12 @@
                                     <div class="fw-bold fs-4 text-white p-3 bg-primary rounded">{% trans "Sessions" %}</div>
                                 </a>
                             {% endif %}
+                            {% url 'socialaccount_connections' as socialaccount_connections_url %}
+                            {% if socialaccount_connections_url %}
+                                <a href="{{ socialaccount_connections_url }}" class="navbar-toggler rounded text-center d-block py-3 px-5 text-decoration-none">
+                                    <div class="fw-bold fs-4 text-white p-3 bg-primary rounded">{% trans "Socialaccount" %}</div>
+                                </a>
+                            {% endif %}
                             {% url 'account_logout' as logout_url %}
                             {% if logout_url %}
                                 <a href="{{ logout_url }}" class="navbar-toggler rounded text-center d-block py-3 px-5 text-decoration-none">

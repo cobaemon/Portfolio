@@ -11,16 +11,13 @@
 
 {% block extra_body_form %}
 <div class="container pb-5">
-    <h1 class="h3 mb-3 fw-normal">
-        {% trans "Account Connections" %}
-    </h1>
     {% if form.accounts %}
-        <p>
+        <p class="py-2">
             {% blocktrans %}You can sign in to your account using any of the following third-party accounts:{% endblocktrans %}
         </p>
-        <form method="post" action="{% url 'socialaccount_connections' %}">
+        <form method="post" action="{% url 'socialaccount_connections' %}" class="pb-4">
             {% csrf_token %}
-            <div class="mb-3">
+            <div class="py-3 pb-5 h4">
                 {% for acc in form.fields.account.choices %}
                     {% with account=acc.0.instance.get_provider_account %}
                         <div class="form-check">
@@ -33,21 +30,24 @@
                     {% endwith %}
                 {% endfor %}
             </div>
-            <button class="btn btn-danger" type="submit">{% trans "Remove" %}</button>
+            <button class="btn btn-lg btn-danger float-end" type="submit">{% trans "Remove" %}</button>
         </form>
     {% else %}
         <p>
             {% trans 'You currently have no third-party accounts connected to this account.' %}
         </p>
     {% endif %}
-    <h2 class="h4 mt-4">
+</div>
+<div class="container">
+    <hr class="py-4">
+    <h2 class="h4 pb-4">
         {% trans 'Add a Third-Party Account' %}
     </h2>
     <div class="social-login-buttons">
         {% get_providers as socialaccount_providers %}
         {% if socialaccount_providers %}
             {% for provider in socialaccount_providers %}
-                <a class="btn btn-outline-primary btn-xl d-block mb-2" href="{% provider_login_url provider.id %}">
+                <a class="btn btn-outline-primary btn-xl d-block mb-4" href="{% provider_login_url provider.id %}">
                     {{ provider.name }}
                 </a>
             {% endfor %}
