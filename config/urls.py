@@ -13,23 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.views.generic import RedirectView
-from django.urls import path, include
 from django.conf.urls.i18n import i18n_patterns
+from django.contrib import admin
 from django.shortcuts import redirect
+from django.urls import include, path
+from django.views.generic import RedirectView
 
 urlpatterns = [
     # Adminのログインページをallauthのログインページにリダイレクト
     path('admin/login/', RedirectView.as_view(url='/accounts/login/', query_string=True), name='admin_login_redirect'),
     path('admin/', admin.site.urls),
-    # path('accounts/', include('allauth.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
-]
 
-urlpatterns += i18n_patterns(
     path('', lambda request: redirect('portfolio/top/', permanent=True)),  # リダイレクト設定
     path('accounts/', include('accounts.urls')),
     path('portfolio/', include('portfolio.urls')),
     path('passwordbox/', include('passwordbox.urls')),
-)
+]
