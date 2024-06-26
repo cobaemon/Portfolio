@@ -265,3 +265,5 @@ MESSAGE_TAGS = {
     messages.WARNING: 'warning',
     messages.ERROR: 'danger',
 }
+
+SOCIALACCOUNT_ADAPTER = 'accounts.adapters.MySocialAccountAdapter'
