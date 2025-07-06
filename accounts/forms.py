@@ -6,10 +6,16 @@ from allauth.account.app_settings import AuthenticationMethod
 from allauth.account.internal import flows
 from allauth.account.models import EmailAddress, Login
 from allauth.account.stages import EmailVerificationStage
-from allauth.account.utils import (assess_unique_email, filter_users_by_email,
-                                   setup_user_email, sync_user_email_addresses,
-                                   url_str_to_user_pk, user_email,
-                                   user_pk_to_url_str, user_username)
+from allauth.account.utils import (
+    filter_users_by_email,
+    setup_user_email,
+    sync_user_email_addresses,
+    url_str_to_user_pk,
+    user_email,
+    user_pk_to_url_str,
+    user_username,
+)
+from allauth.account.internal.flows.manage_email import assess_unique_email
 from allauth.core import context, ratelimit
 from allauth.utils import get_username_max_length, set_form_field_order
 from django import forms
