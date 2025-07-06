@@ -15,6 +15,7 @@ from pathlib import Path
 
 from django.contrib.messages import constants as messages
 from django.urls import reverse_lazy
+from csp.constants import NONCE
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -183,45 +184,48 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSP_DEFAULT_SRC = ("'self'", 'https:')
-CSP_SCRIPT_SRC = (
-    "'self'",
-    'https://use.fontawesome.com',
-    'https://cdn.jsdelivr.net',
-    'https://cdn.startbootstrap.com',
-)
-CSP_SCRIPT_SRC_ELEM = (
-    "'self'",
-    'https://use.fontawesome.com',
-    'https://cdn.jsdelivr.net',
-    'https://cdn.startbootstrap.com',
-)
-CSP_STYLE_SRC = (
-    "'self'",
-    'https://fonts.googleapis.com',
-    'https://use.fontawesome.com',
-    'https://cdn.jsdelivr.net',
-    'https://cdn.startbootstrap.com',
-)
-CSP_STYLE_SRC_ELEM = (
-    "'self'",
-    'https://fonts.googleapis.com',
-    'https://use.fontawesome.com',
-    'https://cdn.jsdelivr.net',
-    'https://cdn.startbootstrap.com',
-)
-CSP_FONT_SRC = ("'self'", 'https://fonts.gstatic.com')
-CSP_IMG_SRC = ("'self'", 'data:')
-CSP_OBJECT_SRC = ("'none'")
-CSP_BASE_URI = ("'self'")
-CSP_FRAME_SRC = ("'none'")
-CSP_FRAME_ANCESTORS = ("'none'")
-CSP_REPORT_URI = ('/csp-report-endpoint',)
-
-# nonceを有効化
-CSP_INCLUDE_NONCE_IN = ['script-src', 'script-src-elem', 'style-src', 'style-src-elem']
-CSP_STYLE_SRC_NONCE = True
-CSP_SCRIPT_SRC_NONCE = True
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": ["'self'", "https:"],
+        "script-src": [
+            "'self'",
+            'https://use.fontawesome.com',
+            'https://cdn.jsdelivr.net',
+            'https://cdn.startbootstrap.com',
+            NONCE,
+        ],
+        "script-src-elem": [
+            "'self'",
+            'https://use.fontawesome.com',
+            'https://cdn.jsdelivr.net',
+            'https://cdn.startbootstrap.com',
+            NONCE,
+        ],
+        "style-src": [
+            "'self'",
+            'https://fonts.googleapis.com',
+            'https://use.fontawesome.com',
+            'https://cdn.jsdelivr.net',
+            'https://cdn.startbootstrap.com',
+            NONCE,
+        ],
+        "style-src-elem": [
+            "'self'",
+            'https://fonts.googleapis.com',
+            'https://use.fontawesome.com',
+            'https://cdn.jsdelivr.net',
+            'https://cdn.startbootstrap.com',
+            NONCE,
+        ],
+        "font-src": ["'self'", 'https://fonts.gstatic.com'],
+        "img-src": ["'self'", 'data:'],
+        "object-src": ["'none'"],
+        "base-uri": ["'self'"],
+        "frame-src": ["'none'"],
+        "frame-ancestors": ["'none'"],
+        "report-uri": ['/csp-report-endpoint'],
+    }
+}
 
 # カスタムユーザ
 AUTH_USER_MODEL = 'accounts.CustomUser'
